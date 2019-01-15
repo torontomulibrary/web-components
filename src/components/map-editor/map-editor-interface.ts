@@ -3,7 +3,6 @@ import { Coordinate, DescribedObject, NumberMap } from '../../interface';
 export interface MapElementDetailType extends DescribedObject {
   category: number;
   icon: string;
-  iconImg: string;
   cataloguePattern: string;
   priority: string;
 }
