@@ -1,6 +1,6 @@
 {
   "name": "@ryelib/web-components",
-  "version": "0.1.0",
+  "version": "0.1.1-0",
   "description": "Common web-components for Ryerson University Library.",
   "main": "dist/index.js",
   "module": "dist/esm/es5/index.js",
