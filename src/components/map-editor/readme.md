@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property                | Attribute   | Description                                                 | Type                  | Default             |
-| ----------------------- | ----------- | ----------------------------------------------------------- | --------------------- | ------------------- |
-| `elements` _(required)_ | --          | An array of the elements that will be displayed on the Map. | `MapElement[]`        | `undefined`         |
-| `mapImage`              | `map-image` | The image being displayed as the base of the map.           | `string \| undefined` | `undefined`         |
-| `maxScale`              | `max-scale` | The maximum scale factor.                                   | `number`              | `DEFAULT_MAX_SCALE` |
-| `minScale`              | `min-scale` | The minimum scale factor.                                   | `number`              | `DEFAULT_MIN_SCALE` |
+| Property   | Attribute   | Description                                                 | Type                        | Default             |
+| ---------- | ----------- | ----------------------------------------------------------- | --------------------------- | ------------------- |
+| `elements` | --          | An array of the elements that will be displayed on the Map. | `MapElement[] \| undefined` | `undefined`         |
+| `mapImage` | `map-image` | The image being displayed as the base of the map.           | `string \| undefined`       | `undefined`         |
+| `maxScale` | `max-scale` | The maximum scale factor.                                   | `number`                    | `DEFAULT_MAX_SCALE` |
+| `minScale` | `min-scale` | The minimum scale factor.                                   | `number`                    | `DEFAULT_MIN_SCALE` |
 
 
 ## Events

@@ -39,7 +39,7 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements': MapElement[];
+    'elements'?: MapElement[];
     /**
     * The image being displayed as the base of the map.
     */
@@ -61,7 +61,7 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements': MapElement[];
+    'elements'?: MapElement[];
     /**
     * The image being displayed as the base of the map.
     */
