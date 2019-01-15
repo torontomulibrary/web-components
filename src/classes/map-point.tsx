@@ -30,13 +30,12 @@ export class MapPoint extends MapElement {
     let contents: JSX.Element[] = [];
     let totalWidth = 0;
 
-    if (this.icons && this.icons.length) {
+    if (this.icons && this.icons.length !== 0) {
 
       contents = this.icons.map(icon => {
         const x = totalWidth;
-        const scale = CONTROL_SIZE / (icon.width ? icon.width : 1);
-        totalWidth += icon.width ? (icon.width * scale) : CONTROL_SIZE;
-
+        const scale = CONTROL_SIZE / (icon.width !== undefined ? icon.width : 1);
+        totalWidth += icon.width !== undefined ? (icon.width * scale) : CONTROL_SIZE;
 
         return ([
           <image

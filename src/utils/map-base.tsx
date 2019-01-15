@@ -67,7 +67,7 @@ export function parseElements(elements: MapElementMap, scale = 1): (MapPoint | M
     const decoded = decodeCoordinates(el.points, true);
     const parsedIcons: {src: string, width?: number, height?: number}[] = [];
 
-    if (el.icons && el.icons.length) {
+    if (el.icons && el.icons.length !== 0) {
       // Load all the icon images so they're cached later.
       el.icons.forEach((src, idx) => {
         const icon = new Image();
@@ -114,7 +114,7 @@ export function renderElements(els: ParsedMapElement[]) {
       const gTrans = 'translate(' + (el.coordinates[0].x - CONTROL_SIZE / 2) +
           ' ' + (el.coordinates[0].y - CONTROL_SIZE / 2) + ')';
 
-      if (el.iconImages && el.iconImages.length) {
+      if (el.iconImages && el.iconImages.length !== 0) {
         return el.iconImages.map(icon => {
           let iconAspect = icon.height / icon.width;
 

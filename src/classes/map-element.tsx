@@ -38,7 +38,7 @@ export class MapElement {
    * @param id A value to set as the ID of the `MapElement`.
    */
   constructor(id?: number) {
-    if (id) {
+    if (id !== undefined) {
       this.id = id;
     }
   }

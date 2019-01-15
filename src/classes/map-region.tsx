@@ -86,7 +86,7 @@ export class MapRegion extends MapElement {
   addPoint(c: Coordinate, index?: number) {
     const coords = this._coordinates;
 
-    this.coordinates = index ?
+    this.coordinates = index !== undefined ?
       [...coords.slice(0, index), c, ...coords.slice(index)] :
       [ ...coords, c ];
   }
@@ -97,7 +97,7 @@ export class MapRegion extends MapElement {
    * @param index The index of the point to remove
    */
   removePoint(index?: number) {
-    if (index) {
+    if (index !== undefined) {
       this.coordinates.splice(index, 1);
     } else {
       this.coordinates.splice(this._coordinates.length - 1, 1);

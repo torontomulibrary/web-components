@@ -95,7 +95,7 @@ export class RLMap implements ComponentInterface {
     * Handles when the map Image is loaded/updated.
     */
   onMapImageChanged() {
-    if (!this.mapImage) {
+    if (this.mapImage === undefined) {
       return;
     }
 
@@ -181,7 +181,7 @@ export class RLMap implements ComponentInterface {
 
     // Get the ID of the event target, if it is the correct type.
     const id = getTargetId(e.target);
-    if (id) {
+    if (id !== undefined) {
       this.targetElement = this.processedElements.find(i => i.id === id);
     }
   }
@@ -288,7 +288,7 @@ export class RLMap implements ComponentInterface {
    * @param e The triggering event.
    */
   @Listen('wheel')
-  onWheel(e: MouseWheelEvent) {
+  onWheel(e: WheelEvent) {
     const oldPos = this.toSvgSpace(new Coordinate(e.clientX, e.clientY));
 
     if (e.deltaY < 0) {
@@ -365,12 +365,12 @@ export class RLMap implements ComponentInterface {
     const img = this.imgSize;
     const svg = this.svgSize;
 
-    if (img === undefined || svg === undefined) {
-      this.svgScale = this.initialScale = 1;
-    } else {
-      this.svgScale = this.initialScale =
-          Math.max(svg.width / img.width, svg.height / img.height);
-    }
+    // if (img === undefined || svg === undefined) {
+    //   this.svgScale = this.initialScale = 1;
+    // } else {
+    this.svgScale = this.initialScale =
+        Math.max(svg.width / img.width, svg.height / img.height);
+    // }
   }
 
   /**

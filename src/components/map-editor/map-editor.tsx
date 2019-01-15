@@ -93,7 +93,7 @@ export class RLMapEditor implements ComponentInterface {
   /**
    * An array of the elements that will be displayed on the Map.
    */
-  @Prop({ mutable: true }) elements!: MapElement[];
+  @Prop({ mutable: true }) elements?: MapElement[];
 
   /**
    * The image being displayed as the base of the map.
@@ -101,7 +101,7 @@ export class RLMapEditor implements ComponentInterface {
   @Prop() mapImage?: string;
   @Watch('mapImage')
   onMapImageChanged() {
-    if (!this.mapImage) {
+    if (this.mapImage === undefined) {
       return;
     }
 
@@ -164,7 +164,7 @@ export class RLMapEditor implements ComponentInterface {
    */
   @Watch('elements')
   onElementsChanged() {
-    if (this.elements) {
+    if (this.elements !== undefined) {
       this.processedElements = parseElements(this.elements, this.svgScale);
     }
   }
@@ -197,7 +197,7 @@ export class RLMapEditor implements ComponentInterface {
     } else if (this.state !== STATES.ADD_POINT) {
       // Get the ID of the event target, if it is the correct type.
       const id = getTargetId(e.target);
-      if (id) {
+      if (id !== undefined) {
         this.targetElement = this.processedElements.find(i => i.id === id);
       }
 
@@ -437,7 +437,7 @@ export class RLMapEditor implements ComponentInterface {
    * @param e The triggering event.
    */
   @Listen('wheel')
-  onWheel(e: MouseWheelEvent) {
+  onWheel(e: WheelEvent) {
     const oldPos = this.toSvgSpace(new Coordinate(e.clientX, e.clientY));
 
     if (e.deltaY < 0) {
@@ -513,7 +513,8 @@ export class RLMapEditor implements ComponentInterface {
    */
   @Method()
   deleteRegion() {
-    if (this.state === STATES.NORMAL && this.activeElement) {
+    if (this.elements !== undefined && this.state === STATES.NORMAL &&
+        this.activeElement) {
       this.elementDeleted.emit(this.elements[this.activeElement.id]);
       this._clearActiveElement();
     }
@@ -531,7 +532,11 @@ export class RLMapEditor implements ComponentInterface {
     }
   }
 
-  private mapElementFromParsedElement(el: MapPoint | MapRegion): MapElement {
+  private mapElementFromParsedElement(el: MapPoint | MapRegion): MapElement | undefined {
+    if (this.elements === undefined) {
+      return undefined;
+    }
+
     const originalEl = this.elements[el.id] || {
       altText: '',
       description: '',
@@ -581,21 +586,17 @@ export class RLMapEditor implements ComponentInterface {
     const img = this.imgSize;
     const svg = this.svgSize;
 
-    if (img) {
-      this.svgScale = this.initialScale =
-          Math.max(svg.width / img.width, svg.height / img.height);
-    } else {
-      this.svgScale = this.initialScale = 1;
-    }
+    // if (img) {
+    this.svgScale = this.initialScale =
+        Math.max(svg.width / img.width, svg.height / img.height);
+    // } else {
+    //   this.svgScale = this.initialScale = 1;
+    // }
 
     this.processedElements.forEach(el => el.scale = this.svgScale);
   }
 
   protected computeSvgSize() {
-    if (!this.root) {
-      return;
-    }
-
     const svg = this.root.querySelector('svg');
 
     if (svg) {
@@ -623,7 +624,9 @@ export class RLMapEditor implements ComponentInterface {
     // if (this.state === STATES.ADD_REGION || this.activeElement.coordinates.length > 1) {
     //   this.activeControls = this.activeElement.coordinates;
     // }
-    this.elementSelected.emit(this.elements[this.activeElement.id]);
+    if (this.elements !== undefined) {
+      this.elementSelected.emit(this.elements[this.activeElement.id]);
+    }
   }
 
   /**

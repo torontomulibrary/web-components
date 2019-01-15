@@ -193,10 +193,6 @@ export class Coordinate {
       return true;
     }
 
-    if (!a || !b) {
-      return false;
-    }
-
     return a.x === b.x && a.y === b.y;
   }
 
