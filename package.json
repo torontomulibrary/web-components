@@ -1,0 +1,78 @@
+{
+  "name": "@ryelib/web-components",
+  "version": "0.0.0",
+  "description": "Common web-components for Ryerson University Library.",
+  "main": "dist/index.js",
+  "module": "dist/esm/es5/index.js",
+  "types": "dist/types/interface.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "unpkg": "/dist/ryelib.js",
+  "files": [
+    "dist/",
+    "css/"
+  ],
+  "scripts": {
+    "build": "npm run clean && stencil build --docs",
+    "build.css": "npm run css.sass && npm run css.minify",
+    "build.dev": "npm run clean && stencil build --dev",
+    "clean": "node scripts/clean.js",
+    "css.minify": "cleancss -02 -o ./css/ryelib.components.css ./css/ryelib.components.css",
+    "css.sass": "node-sass --output ./css src/css --output-style compressed",
+    "lint": "npm run lint.ts && npm run lint.sass",
+    "lint.fix": "npm run lint.ts.fix && npm run lint.sass.fix",
+    "lint.sass": "stylelint 'src/**/*.scss'",
+    "lint.sass.fix": "npm run lint.sass -- --fix",
+    "lint.ts": "tslint --project .",
+    "lint.ts.fix": "tslint --project . --fix",
+    "prerelease": "npm run validate && np prerelease --yolo --any-branch --tag next",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.spec": "stencil test --spec",
+    "test.e2e": "stencil test --e2e",
+    "tsc": "./node_modules/.bin/tsc -p .",
+    "test.treeshake": "agadoo dist/collection/index.js",
+    "validate": "npm run lint && npm run test && npm run build && npm run test.treeshake"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryersonlibrary/web-components"
+  },
+  "bugs": {
+    "url": "https://github.com/ryersonlibrary/web-components/issues"
+  },
+  "homepage": "https://library.ryerson.ca",
+  "keywords": [
+    "ryerson",
+    "library",
+    "stencil",
+    "component",
+    "web",
+    "component",
+    "app",
+    "webapp",
+    "progressive",
+    "web",
+    "app",
+    "pwa"
+  ],
+  "author": "Ryerson University Library",
+  "license": "MIT",
+  "devDependencies": {
+    "@stencil/core": "^0.16.3",
+    "@stencil/sass": "^0.1.1",
+    "@stencil/utils": "0.0.5",
+    "@types/jest": "^23.3.12",
+    "@types/puppeteer": "^1.11.1",
+    "agadoo": "^1.0.1",
+    "fs-extra": "^7.0.1",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "puppeteer": "^1.11.0",
+    "stylelint": "^9.9.0",
+    "stylelint-order": "^2.0.0",
+    "tslint": "^5.12.1",
+    "tslint-ionic-rules": "0.0.20",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.2.2"
+  }
+}

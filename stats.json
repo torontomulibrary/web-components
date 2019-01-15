@@ -1,0 +1,39 @@
+{
+  "diagnostics": [
+    {
+      "level": "error",
+      "type": "typescript",
+      "language": "typescript",
+      "header": "TypeScript",
+      "code": "17000",
+      "messageText": "JSX attributes must only be assigned a non-empty 'expression'.",
+      "relFilePath": "src/classes/map-region.tsx",
+      "absFilePath": "/data/dquast/_work/@ryelib/web-components/src/classes/map-region.tsx",
+      "lines": [
+        {
+          "lineIndex": 35,
+          "lineNumber": 36,
+          "text": "        tabindex=\"0\"",
+          "errorCharStart": -1,
+          "errorLength": -1
+        },
+        {
+          "lineIndex": 36,
+          "lineNumber": 37,
+          "text": "        aria-label={}",
+          "errorCharStart": 19,
+          "errorLength": 2
+        },
+        {
+          "lineIndex": 37,
+          "lineNumber": 38,
+          "text": "      />",
+          "errorCharStart": -1,
+          "errorLength": -1
+        }
+      ],
+      "lineNumber": 37,
+      "columnNumber": 19
+    }
+  ]
+}

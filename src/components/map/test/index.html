@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>rl-map Example || Ryerson Library Web Components</title>
+  <script src="/dist/ryelib.js"></script>
+  <style>
+    body { margin: 0 }
+
+    rl-map.rl-map {
+      top: 64px;
+      height: 700px;
+      width: 850px;
+      left: 40px;
+    }
+  </style>
+</head>
+<body class='demo-content'>
+  <script>
+    const elements = {
+      1: {id: 1, icons: undefined, name: "Region 1", points: "1140 890 940 770 456 1019", enabled: true},
+      2: {id: 2, icons: ["test/64.png", "test/64.png"], name: "Point 1", points: "200 300", enabled: true},
+      3: {id: 3, icons: ["test/64.png"], name: "Point 2", points: "200 400", enabled: true},
+    }
+
+    window.onload = async () => {
+      let map = document.querySelector('rl-map');
+      let log = document.querySelector('rl-text-log');
+      let activeEl = undefined;
+
+      map.elements = { ...elements };
+
+      map.addEventListener('elementSelected', evt => {
+        log.log(`Element selected: ${evt.detail.name}`);
+      });
+
+      map.addEventListener('elementDeselected', evt => {
+        log.log(`Element deselected: ${evt.detail ? evt.detail.name: ''}`);
+      });
+    }
+  </script>
+
+  <rl-map map-image="test/3840x2160.png"></rl-map>
+  <rl-text-log></rl-text-log>
+</div>
+</body>
+</html>

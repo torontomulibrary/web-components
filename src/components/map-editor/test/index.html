@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>rl-map-editor Example || Ryerson Library Web Components</title>
+  <script src="/dist/ryelib.js"></script>
+  <style>
+    body { margin: 0 }
+
+    rl-map-editor.rl-map {
+      top: 64px;
+      height: 700px;
+      width: 850px;
+      left: 40px;
+    }
+  </style>
+</head>
+<body class='demo-content'>
+  <script>
+    const elements = {
+      1: {id: 1, iconSrc: undefined, name: "Region 1", points: "1140 890 940 770 456 1019", enabled: true},
+    }
+
+    let lastId = 1;
+
+    window.onload = async () => {
+      let addRg = document.querySelector('.btn-add-rg');
+      let addPt = document.querySelector('.btn-add-pt');
+      let cancel = document.querySelector('.btn-cancel');
+      let delBtn = document.querySelector('.btn-delete');
+      let editor = document.querySelector('rl-map-editor');
+      let log = document.querySelector('rl-text-log');
+      let activeEl = undefined;
+
+      editor.elements = { ...elements };
+
+      addRg.addEventListener('click', () => {
+        editor.addRegion();
+        cancel.disabled = false;
+      });
+
+      addPt.addEventListener('click', () => {
+        editor.addPoint();
+        cancel.disabled = false;
+      });
+
+      cancel.addEventListener('click', () => {
+        editor.cancelAction();
+        cancel.disabled = true;
+      });
+
+      editor.addEventListener('elementSelected', evt => {
+        log.log(`Element clicked: ${evt.detail.name}`);
+        delBtn.disabled = false;
+      });
+
+      editor.addEventListener('elementUpdated', evt => {
+        const el = evt.detail;
+        elements[el.id] = evt.detail;
+        log.log(`Element updated, new path: ${evt.detail.points}`);
+      });
+
+      editor.addEventListener('elementDeselected', evt => {
+        delBtn.disabled = true;
+      });
+
+      editor.addEventListener('elementDeleted', evt => {
+        delete elements[evt.detail.id];
+        editor.elements = { ...elements };
+        editor.setActiveElement();
+        log.log(`Element deleted: ${evt.detail.name}`);
+        delBtn.disabled = true;
+      });
+
+      delBtn.addEventListener('click', () => {
+        editor.deleteRegion();
+      });
+
+      editor.addEventListener('elementCreated', evt => {
+        let el = evt.detail;
+        const newId = ++lastId;
+        el.id = newId;
+        elements[newId] = el; 
+        editor.elements = { ...elements };
+        editor.setActiveElement();
+        log.log(`Element added, new path: ${evt.detail}`);
+        cancel.disabled = true;
+      });
+    }
+  </script>
+
+  <div style="display: block;">
+    <button class='btn-add-rg'>Add new region</button>
+    <button class='btn-add-pt'>Add new point</button>
+    <button class='btn-cancel' disabled>Cancel add</button>
+    <button class='btn-delete' disabled>Delete region</button>
+  </div>
+  <rl-map-editor map-image="test/3840x2160.png"></rl-map-editor>
+  <rl-text-log></rl-text-log>
+</div>
+</body>
+</html>
