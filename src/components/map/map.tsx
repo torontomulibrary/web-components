@@ -158,6 +158,7 @@ export class RLMap implements ComponentInterface {
   componentDidLoad() {
     this.onMapImageChanged();
     this.onElementsChanged();
+    this.onResize();
 
   }
 
