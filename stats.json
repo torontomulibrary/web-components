@@ -8,7 +8,7 @@
       "code": "17000",
       "messageText": "JSX attributes must only be assigned a non-empty 'expression'.",
       "relFilePath": "src/classes/map-region.tsx",
-      "absFilePath": "/data/dquast/_work/@ryelib/web-components/src/classes/map-region.tsx",
+      "absFilePath": "/data/dquast/_work/@ryersonlibrary/web-components/src/classes/map-region.tsx",
       "lines": [
         {
           "lineIndex": 35,

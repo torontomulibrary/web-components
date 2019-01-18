@@ -1,12 +1,12 @@
 {
-  "name": "@ryelib/web-components",
-  "version": "0.1.1-1",
+  "name": "@ryersonlibrary/web-components",
+  "version": "0.1.1",
   "description": "Common web-components for Ryerson University Library.",
   "main": "dist/index.js",
   "module": "dist/esm/es5/index.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
-  "unpkg": "/dist/ryelib.js",
+  "unpkg": "/dist/rl-wc.js",
   "files": [
     "dist/",
     "css/"
@@ -15,9 +15,10 @@
     "build": "npm run clean && stencil build --docs",
     "build.css": "npm run css.sass && npm run css.minify",
     "build.dev": "npm run clean && stencil build --dev",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "clean": "node scripts/clean.js",
     "commit": "git-cz",
-    "css.minify": "cleancss -02 -o ./css/ryelib.components.css ./css/ryelib.components.css",
+    "css.minify": "cleancss -02 -o ./css/rl-wc.components.css ./css/rl-wc.components.css",
     "css.sass": "node-sass --output ./css src/css --output-style compressed",
     "lint": "npm run lint.ts && npm run lint.sass",
     "lint.sass": "stylelint config stylelint.yml 'src/**/*.scss'",
@@ -62,6 +63,7 @@
     "@types/puppeteer": "^1.11.1",
     "agadoo": "^1.0.1",
     "ansi-colors": "^3.2.3",
+    "conventional-changelog-cli": "^2.0.11",
     "execa": "^1.0.0",
     "fs-extra": "^7.0.1",
     "inquirer": "^6.2.1",
@@ -79,5 +81,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "dependencies": {}
 }

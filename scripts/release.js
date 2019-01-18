@@ -127,7 +127,7 @@ function runTasks(opts) {
         task: () => execa('npm', ['install'], { cwd: rootDir }),
       },
       {
-        title: 'Build @ryelib/web-components',
+        title: 'Build @ryersonlibrary/web-components',
         task: () => execa('npm', ['run', 'build'], { cwd: rootDir })
       },
       {
@@ -148,7 +148,7 @@ function runTasks(opts) {
   if (opts.publish) {
     tasks.push(
       {
-        title: 'Publish @ryelib/web-components',
+        title: 'Publish @ryersonlibrary/web-components',
         task: () => execa(
           'npm',
           ['publish'].concat(opts.tag ? ['--tag', opts.tag] : [])
@@ -169,10 +169,10 @@ function runTasks(opts) {
     if (opts.tag !== 'next' && opts.tag !== 'test') {
       tasks.push(
         {
-          title: 'Also set "next" tag on @ryelib/web-components',
+          title: 'Also set "next" tag on @ryersonlibrary/web-components',
           task: () => execa(
             'npm',
-            ['dist-tag', 'add', '@ryelib/web-components@' + opts.version, 'next']
+            ['dist-tag', 'add', '@ryersonlibrary/web-components@' + opts.version, 'next']
             .concat(opts.otp ? ['--otp', opts.otp] : []),
             { cwd: rootDir })
         }
