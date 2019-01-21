@@ -159,6 +159,11 @@ export class RLMapEditor implements ComponentInterface {
   @Event() elementDeleted!: EventEmitter<MapElement>;
 
   /**
+   * An event fired when one of the `MapElement`s on the map is double clicked.
+   */
+  @Event() elementDoubleClicked!: EventEmitter<MapElement>;
+
+  /**
    * Handle when the list of specified elements changes. The event details
    * contains the `MapElement` that was deleted.
    */
@@ -410,6 +415,16 @@ export class RLMapEditor implements ComponentInterface {
           this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
         }
         this.state = STATES.NORMAL;
+      }
+    }
+  }
+
+  @Listen('dblclick')
+  onDoubleClick(e: Event) {
+    if (this.state === STATES.NORMAL) {
+      const id = getTargetId(e.target);
+      if (id !== undefined && this.elements !== undefined) {
+        this.elementDoubleClicked.emit(this.elements[id]);
       }
     }
   }
