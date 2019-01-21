@@ -87,6 +87,10 @@ export namespace Components {
     */
     'onElementDeselected'?: (event: CustomEvent<undefined>) => void;
     /**
+    * An event fired when one of the `MapElement`s on the map is double clicked.
+    */
+    'onElementDoubleClicked'?: (event: CustomEvent<MapElement>) => void;
+    /**
     * An even fired when the user selects a `MapElement`. The clicked element's `id` will be passed in the event details.
     */
     'onElementSelected'?: (event: CustomEvent<MapElement>) => void;

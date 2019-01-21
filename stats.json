@@ -5,35 +5,35 @@
       "type": "typescript",
       "language": "typescript",
       "header": "TypeScript",
-      "code": "17000",
-      "messageText": "JSX attributes must only be assigned a non-empty 'expression'.",
-      "relFilePath": "src/classes/map-region.tsx",
-      "absFilePath": "/data/dquast/_work/@ryersonlibrary/web-components/src/classes/map-region.tsx",
+      "code": "2532",
+      "messageText": "Object is possibly 'undefined'.",
+      "relFilePath": "src/components/map-editor/map-editor.tsx",
+      "absFilePath": "/data/dquast/_work/@ryelib/web-components/src/components/map-editor/map-editor.tsx",
       "lines": [
         {
-          "lineIndex": 35,
-          "lineNumber": 36,
-          "text": "        tabindex=\"0\"",
+          "lineIndex": 425,
+          "lineNumber": 426,
+          "text": "      if (id !== undefined) {",
           "errorCharStart": -1,
           "errorLength": -1
         },
         {
-          "lineIndex": 36,
-          "lineNumber": 37,
-          "text": "        aria-label={}",
-          "errorCharStart": 19,
-          "errorLength": 2
+          "lineIndex": 426,
+          "lineNumber": 427,
+          "text": "        this.elementDoubleClicked.emit(this.elements[id]);",
+          "errorCharStart": 39,
+          "errorLength": 13
         },
         {
-          "lineIndex": 37,
-          "lineNumber": 38,
-          "text": "      />",
+          "lineIndex": 427,
+          "lineNumber": 428,
+          "text": "      }",
           "errorCharStart": -1,
           "errorLength": -1
         }
       ],
-      "lineNumber": 37,
-      "columnNumber": 19
+      "lineNumber": 427,
+      "columnNumber": 39
     }
   ]
 }
