@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>rl-map-editor Example || Ryerson Library Web Components</title>
-  <script src="/dist/ryelib.js"></script>
+  <script src="/dist/rl-web-components.js"></script>
   <style>
     body { margin: 0 }
 
@@ -54,6 +54,10 @@
         log.log(`Element clicked: ${evt.detail.name}`);
         delBtn.disabled = false;
       });
+
+      editor.addEventListener('elementDoubleClicked', evt => {
+        log.log(`Element double clicked: ${evt.detail.name}`);
+      })
 
       editor.addEventListener('elementUpdated', evt => {
         const el = evt.detail;
