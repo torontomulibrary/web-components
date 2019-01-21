@@ -67,6 +67,7 @@
     "conventional-changelog-cli": "^2.0.11",
     "execa": "^1.0.0",
     "fs-extra": "^7.0.1",
+    "git-cz": "^1.8.0",
     "inquirer": "^6.2.1",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
