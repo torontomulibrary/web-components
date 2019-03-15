@@ -9,8 +9,11 @@ import '@stencil/core';
 
 
 import {
-  MapElement,
-  MapElementMap,
+  MapElementData,
+  MapElementDataMap,
+  MapElementDetail,
+  MapElementDetailMap,
+  MapElementDetailType,
 } from './interface';
 import {
   EventEmitter,
@@ -18,6 +21,59 @@ import {
 
 
 export namespace Components {
+
+  interface RlDetailDialogItem {
+    /**
+    * An array of all the different categories that can be selected.
+    */
+    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
+    /**
+    * The currently selected Category.
+    */
+    'categorySelection'?: { name: string, id: number, items: MapElementDetailType[] };
+    'detail'?: MapElementDetail;
+    'getDetail': () => MapElementDetail;
+    'toRemove': () => boolean;
+    /**
+    * An array of all the different detail types that are available.
+    */
+    'typeOptions': MapElementDetailType[];
+    'typeSelection'?: MapElementDetailType;
+  }
+  interface RlDetailDialogItemAttributes extends StencilHTMLAttributes {
+    /**
+    * An array of all the different categories that can be selected.
+    */
+    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
+    /**
+    * The currently selected Category.
+    */
+    'categorySelection'?: { name: string, id: number, items: MapElementDetailType[] };
+    'detail'?: MapElementDetail;
+    /**
+    * An array of all the different detail types that are available.
+    */
+    'typeOptions'?: MapElementDetailType[];
+    'typeSelection'?: MapElementDetailType;
+  }
+
+  interface RlDetailDialog {
+    'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    'details'?: MapElementDetailMap;
+    'dialogActions': string[];
+    'dialogTitle': string;
+    'elementId': any;
+    'getDetails': () => any[];
+    'open': () => void;
+  }
+  interface RlDetailDialogAttributes extends StencilHTMLAttributes {
+    'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    'details'?: MapElementDetailMap;
+    'dialogActions'?: string[];
+    'dialogTitle'?: string;
+    'elementId'?: any;
+    'onAddDetail'?: (event: CustomEvent) => void;
+  }
 
   interface RlMapEditor {
     /**
@@ -39,7 +95,7 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements'?: MapElement[];
+    'elements'?: MapElementData[];
     /**
     * The image being displayed as the base of the map.
     */
@@ -61,7 +117,7 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements'?: MapElement[];
+    'elements'?: MapElementData[];
     /**
     * The image being displayed as the base of the map.
     */
@@ -77,11 +133,11 @@ export namespace Components {
     /**
     * An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.
     */
-    'onElementCreated'?: (event: CustomEvent<MapElement>) => void;
+    'onElementCreated'?: (event: CustomEvent<MapElementData>) => void;
     /**
     * An event fired when one of the `MapElements` on this map is deleted.
     */
-    'onElementDeleted'?: (event: CustomEvent<MapElement>) => void;
+    'onElementDeleted'?: (event: CustomEvent<MapElementData>) => void;
     /**
     * An event fired when the user deselects a `MapElement`.
     */
@@ -89,15 +145,15 @@ export namespace Components {
     /**
     * An event fired when one of the `MapElement`s on the map is double clicked.
     */
-    'onElementDoubleClicked'?: (event: CustomEvent<MapElement>) => void;
+    'onElementDoubleClicked'?: (event: CustomEvent<MapElementData>) => void;
     /**
     * An even fired when the user selects a `MapElement`. The clicked element's `id` will be passed in the event details.
     */
-    'onElementSelected'?: (event: CustomEvent<MapElement>) => void;
+    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
     /**
     * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was moved.
     */
-    'onElementUpdated'?: (event: CustomEvent<MapElement>) => void;
+    'onElementUpdated'?: (event: CustomEvent<MapElementData>) => void;
   }
 
   interface RlMap {
@@ -108,7 +164,7 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements': MapElementMap;
+    'elements': MapElementDataMap;
     /**
     * An image that will be displayed on the Map.
     */
@@ -130,7 +186,7 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements': MapElementMap;
+    'elements': MapElementDataMap;
     /**
     * An image that will be displayed on the Map.
     */
@@ -157,6 +213,42 @@ export namespace Components {
     'onMapRendered'?: (event: CustomEvent) => void;
   }
 
+  interface RlSelectMenu {
+    'label': string;
+    'options': string[];
+    'selectedOption'?: string;
+  }
+  interface RlSelectMenuAttributes extends StencilHTMLAttributes {
+    'label'?: string;
+    'onSelected'?: (event: CustomEvent) => void;
+    'options'?: string[];
+    'selectedOption'?: string;
+  }
+
+  interface RlTextField {
+    'disabled': boolean;
+    'fullwidth': boolean;
+    'helperText': string;
+    'icon': string;
+    'iconLocation': 'trailing' | 'leading';
+    'label': string;
+    'outlined': boolean;
+    'textarea': boolean;
+    'value': string;
+  }
+  interface RlTextFieldAttributes extends StencilHTMLAttributes {
+    'disabled'?: boolean;
+    'fullwidth'?: boolean;
+    'helperText'?: string;
+    'icon'?: string;
+    'iconLocation'?: 'trailing' | 'leading';
+    'label'?: string;
+    'onChangeValue'?: (event: CustomEvent) => void;
+    'outlined'?: boolean;
+    'textarea'?: boolean;
+    'value'?: string;
+  }
+
   interface RlTextLog {
     /**
     * Add a new line to the log.
@@ -168,17 +260,37 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
+    'RlDetailDialogItem': Components.RlDetailDialogItem;
+    'RlDetailDialog': Components.RlDetailDialog;
     'RlMapEditor': Components.RlMapEditor;
     'RlMap': Components.RlMap;
+    'RlSelectMenu': Components.RlSelectMenu;
+    'RlTextField': Components.RlTextField;
     'RlTextLog': Components.RlTextLog;
   }
 
   interface StencilIntrinsicElements {
+    'rl-detail-dialog-item': Components.RlDetailDialogItemAttributes;
+    'rl-detail-dialog': Components.RlDetailDialogAttributes;
     'rl-map-editor': Components.RlMapEditorAttributes;
     'rl-map': Components.RlMapAttributes;
+    'rl-select-menu': Components.RlSelectMenuAttributes;
+    'rl-text-field': Components.RlTextFieldAttributes;
     'rl-text-log': Components.RlTextLogAttributes;
   }
 
+
+  interface HTMLRlDetailDialogItemElement extends Components.RlDetailDialogItem, HTMLStencilElement {}
+  var HTMLRlDetailDialogItemElement: {
+    prototype: HTMLRlDetailDialogItemElement;
+    new (): HTMLRlDetailDialogItemElement;
+  };
+
+  interface HTMLRlDetailDialogElement extends Components.RlDetailDialog, HTMLStencilElement {}
+  var HTMLRlDetailDialogElement: {
+    prototype: HTMLRlDetailDialogElement;
+    new (): HTMLRlDetailDialogElement;
+  };
 
   interface HTMLRlMapEditorElement extends Components.RlMapEditor, HTMLStencilElement {}
   var HTMLRlMapEditorElement: {
@@ -192,6 +304,18 @@ declare global {
     new (): HTMLRlMapElement;
   };
 
+  interface HTMLRlSelectMenuElement extends Components.RlSelectMenu, HTMLStencilElement {}
+  var HTMLRlSelectMenuElement: {
+    prototype: HTMLRlSelectMenuElement;
+    new (): HTMLRlSelectMenuElement;
+  };
+
+  interface HTMLRlTextFieldElement extends Components.RlTextField, HTMLStencilElement {}
+  var HTMLRlTextFieldElement: {
+    prototype: HTMLRlTextFieldElement;
+    new (): HTMLRlTextFieldElement;
+  };
+
   interface HTMLRlTextLogElement extends Components.RlTextLog, HTMLStencilElement {}
   var HTMLRlTextLogElement: {
     prototype: HTMLRlTextLogElement;
@@ -199,14 +323,22 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'rl-detail-dialog-item': HTMLRlDetailDialogItemElement
+    'rl-detail-dialog': HTMLRlDetailDialogElement
     'rl-map-editor': HTMLRlMapEditorElement
     'rl-map': HTMLRlMapElement
+    'rl-select-menu': HTMLRlSelectMenuElement
+    'rl-text-field': HTMLRlTextFieldElement
     'rl-text-log': HTMLRlTextLogElement
   }
 
   interface ElementTagNameMap {
+    'rl-detail-dialog-item': HTMLRlDetailDialogItemElement;
+    'rl-detail-dialog': HTMLRlDetailDialogElement;
     'rl-map-editor': HTMLRlMapEditorElement;
     'rl-map': HTMLRlMapElement;
+    'rl-select-menu': HTMLRlSelectMenuElement;
+    'rl-text-field': HTMLRlTextFieldElement;
     'rl-text-log': HTMLRlTextLogElement;
   }
 

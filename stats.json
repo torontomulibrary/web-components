@@ -5,35 +5,35 @@
       "type": "typescript",
       "language": "typescript",
       "header": "TypeScript",
-      "code": "2532",
-      "messageText": "Object is possibly 'undefined'.",
-      "relFilePath": "src/components/map-editor/map-editor.tsx",
-      "absFilePath": "/data/dquast/_work/@ryelib/web-components/src/components/map-editor/map-editor.tsx",
+      "code": "2322",
+      "messageText": "Type 'boolean | undefined' is not assignable to type 'boolean'. Type 'undefined' is not assignable to type 'boolean'.",
+      "relFilePath": "src/utils/map-base.tsx",
+      "absFilePath": "/data/dquast/_work/@ryelib/web-components/src/utils/map-base.tsx",
       "lines": [
         {
-          "lineIndex": 425,
-          "lineNumber": 426,
-          "text": "      if (id !== undefined) {",
+          "lineIndex": 115,
+          "lineNumber": 116,
+          "text": "    newEl.scale = scale;",
           "errorCharStart": -1,
           "errorLength": -1
         },
         {
-          "lineIndex": 426,
-          "lineNumber": 427,
-          "text": "        this.elementDoubleClicked.emit(this.elements[id]);",
-          "errorCharStart": 39,
-          "errorLength": 13
+          "lineIndex": 116,
+          "lineNumber": 117,
+          "text": "    newEl.clickable = el.clickable",
+          "errorCharStart": 4,
+          "errorLength": 15
         },
         {
-          "lineIndex": 427,
-          "lineNumber": 428,
-          "text": "      }",
+          "lineIndex": 117,
+          "lineNumber": 118,
+          "text": "    return newEl;",
           "errorCharStart": -1,
           "errorLength": -1
         }
       ],
-      "lineNumber": 427,
-      "columnNumber": 39
+      "lineNumber": 117,
+      "columnNumber": 4
     }
   ]
 }
