@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>rl-detail-dialog Example || Ryerson Library Web Components</title>
+  <script src="/dist/rl-web-components.js"></script>
+  <style>
+    body { margin: 0 }
+
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body class='demo-content'>
+  <script>
+    let details = {
+      1: {
+        id: 1,
+        detailTypeId: 38,
+        name: "Detail 1",
+        description: "A basic description",
+        altText: "Extra details",
+      },
+      2: {
+        id: 2,
+        detailTypeId: 9,
+        name: "Detail 2",
+        description: "A simple description",
+        altText: "Even more text",
+      }
+    }
+
+    let categories = [
+      {
+        "name": "Region",
+        "id": 1,
+        "items": [
+          {
+            "id": 1,
+            "category": 1,
+            "name": "Study Room",
+            "description": "A room dedicated to individual or group work and study.",
+            "altText": null,
+            "iconPath": null,
+            "cataloguePattern": null,
+            "priority": null
+          },
+          {
+            "id": 9,
+            "category": 1,
+            "name": "Study Area",
+            "description": "Open area with seating or carrels dedicated to work or study.",
+            "altText": null,
+            "iconPath": null,
+            "cataloguePattern": null,
+            "priority": null
+          },
+        ]
+      },
+      {
+        "name": "Point",
+        "id": 2,
+        "items": [
+          {
+            "id": 37,
+            "category": 2,
+            "name": "Text Label",
+            "description": "Text label used on maps.",
+            "altText": null,
+            "iconPath": null,
+            "cataloguePattern": null,
+            "priority": null
+          },
+          {
+            "id": 38,
+            "category": 2,
+            "name": "Accessible Access",
+            "description": "Indicator that an area is accessible.",
+            "altText": null,
+            "iconPath": "71df5-sym_accessible.png",
+            "cataloguePattern": null,
+            "priority": null
+          },
+        ],
+      },
+    ];
+
+    let nextId = 3;
+
+    window.onload = async () => {
+      let dialog = document.querySelector('rl-detail-dialog');
+      let btnOpen = document.querySelector('#btn-open');
+
+      dialog.details = details;
+      dialog.categories = categories;
+
+      dialog.dialogActions = ['Save', 'Cancel'];
+
+      btnOpen.addEventListener('click', () => {
+        dialog.open();
+      });
+
+      dialog.addEventListener('MDCDialog:closed', evt => {
+        if (evt.detail.action === 'save') {
+          details = dialog.getDetails();
+          dialog.details = { ...details };
+        }
+      });
+
+      dialog.addEventListener('addDetail', evt => {
+        const d = {
+          name: `Detail ${nextId}`,
+          id: -1,
+          description: "A simple description",
+          altText: "Alt text rules!",
+        }
+        details[nextId++] = d;
+
+        dialog.details = { ...details };
+      })
+
+    }
+  </script>
+
+  <div style="display: block;">
+    <button id="btn-open">Open Dialog</button>
+  </div>
+  <rl-detail-dialog></rl-detail-dialog>
+  <rl-text-log></rl-text-log>
+</div>
+</body>
+</html>

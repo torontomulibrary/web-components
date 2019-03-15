@@ -1,0 +1,23 @@
+@import "@material/elevation/mixins";
+
+.rl-detail-dialog-item {
+  @include mdc-elevation(2);
+
+  display: block;
+  
+  margin: 16px;
+  
+  padding: 8px;
+  
+  border-radius: 4px;
+
+  .rl-text-field-container {
+    display: block;
+  }
+
+  &--removed {
+    display: none;
+    
+    visibility: hidden;
+  }
+}
