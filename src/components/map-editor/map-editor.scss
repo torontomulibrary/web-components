@@ -22,8 +22,8 @@
   }
 }
 
-.rl-map-element {
-  &__region {
+.rl-map {
+  &-region {
     fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
     stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
     stroke-width: 4;
@@ -43,7 +43,7 @@
     }
   }
 
-  &__text {
+  &-text {
     font-family: var(--rl-map-element-font-family, "sans");
     font-size: var(--rl-map-element-font-size, 24px);
     // Text shouldn't be focusable or selectable, it's just a label.
@@ -55,13 +55,13 @@
     }
   }
 
-  &__outline {
+  &-outline {
     fill: none;
     stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
     stroke-width: 2;
   }
 
-  &__control {
+  &-control {
     stroke: black;
     fill: rgba(255, 255, 255, 0.6);
     stroke-width: 2;
@@ -73,7 +73,7 @@
     }
   }
 
-  &__midpoint {
+  &-midpoint {
     stroke: rgba(0, 0, 0, 0.6);
     fill: rgba(255, 255, 255, 0.3);
     stroke-width: 2;
@@ -85,7 +85,7 @@
     }
   }
 
-  &__point {
+  &-point {
     &:focus {
       outline: none;
     }
@@ -99,9 +99,10 @@
     }
   }
 
-  &__rect {
-    fill: none;
-    stroke: none;
+  &-rect {
+    fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
+    stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
+    stroke-width: 4;
 
     &--activated {
       @include rl-element-activated();

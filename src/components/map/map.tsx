@@ -1,6 +1,5 @@
 import {
   Component,
-  ComponentInterface,
   Element,
   Event,
   EventEmitter,
@@ -11,10 +10,10 @@ import {
   Watch,
 } from '@stencil/core';
 
-import { MapPoint } from '../../classes/map-point';
-import { MapRegion } from '../../classes/map-region';
+import { MapMarker } from '../../classes/map-marker';
+import { MapPolygon } from '../../classes/map-polygon';
 import {
-  MapElementMap,
+  MapElementDataMap,
 } from '../../interface';
 import { Coordinate } from '../../utils/coordinate';
 import { coordinateFromEvent } from '../../utils/helpers';
@@ -33,15 +32,15 @@ import {
   styleUrl: 'map.scss',
 })
 
-export class RLMap implements ComponentInterface {
+export class RLMap {
   /**
    * The array of MapElements currently being displayed.  Created from the
    * `elements` Prop with additional internal information added.
    */
-  private processedElements: (MapPoint | MapRegion)[] = [];
+  private processedElements: (MapMarker | MapPolygon)[] = [];
 
   // The element being targeted by user interaction.
-  private targetElement: MapPoint | MapRegion | undefined;
+  private targetElement: MapMarker | MapPolygon | undefined;
 
   // The full size of the image being displayed by the map.
   private imgSize!: DOMRect;
@@ -73,7 +72,7 @@ export class RLMap implements ComponentInterface {
   /**
    * The currently active element.
    */
-  @State() activeElement: MapPoint | MapRegion | undefined;
+  @State() activeElement: MapMarker | MapPolygon | undefined;
 
   /**
    * The factor by which the Map contents are changed to fit within the SVG.
@@ -145,14 +144,13 @@ export class RLMap implements ComponentInterface {
   /**
    * An array of the elements that will be displayed on the Map.
    */
-  @Prop({ mutable: true }) elements!: MapElementMap;
+  @Prop({ mutable: true }) elements!: MapElementDataMap;
   /**
    * Handle when the list of specified elements changes.
    */
   @Watch('elements')
   onElementsChanged() {
     this.processedElements = parseElements(this.elements);
-
   }
 
   componentDidLoad() {
@@ -233,7 +231,7 @@ export class RLMap implements ComponentInterface {
       this.state = STATES.NORMAL;
     } else if (this.state === STATES.GESTURE_DOWN) {
       if (this.targetElement) {
-        if (this.targetElement !== this.activeElement) {
+        if (this.targetElement !== this.activeElement && this.targetElement.clickable) {
           this._setActiveElement(this.targetElement);
           this.targetElement = undefined;
         }
@@ -311,7 +309,8 @@ export class RLMap implements ComponentInterface {
   @Listen('keydown.enter')
   onEnter(e: KeyboardEvent) {
     if (e.target && e.target instanceof SVGElement &&
-      e.target.classList.contains('rl-map-element')) {
+      (e.target.classList.contains('rl-map-polygon') ||
+      e.target.classList.contains('rl-map-marker'))) {
       const id = Number(e.target.id);
       const el = this.processedElements.find(i => i.id === id);
       this._setActiveElement(el);
@@ -392,7 +391,7 @@ export class RLMap implements ComponentInterface {
    *
    * @param el The Element that will be set as the active element.
    */
-  private _setActiveElement(el?: MapPoint | MapRegion, shouldEmit = true) {
+  private _setActiveElement(el?: MapMarker | MapPolygon, shouldEmit = true) {
     if (!el || (this.activeElement && el.id === this.activeElement.id)) {
       return;
     }

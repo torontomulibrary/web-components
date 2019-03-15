@@ -105,7 +105,7 @@ export function coordinateFromEvent(a: any, b?: any) {
  */
 export function decodeCoordinates(data: string, closed: boolean) {
   const pointData = data.split(' ');
-  const points: Coordinate[] = [];
+  let points: Coordinate | Coordinate[] = [];
   let i = pointData.length - 2;
   let x;
   let y;
@@ -119,6 +119,10 @@ export function decodeCoordinates(data: string, closed: boolean) {
     points.push(new Coordinate(x, y));
     path = (i === 0 ? ['M', x, y, path].join(' ') : ['L', x, y, path].join(' '));
     i -= 2;
+  }
+
+  if (points.length === 1) {
+    points = points[0];
   }
 
   return { path, points };
@@ -154,4 +158,16 @@ export function pathFromCoordinateArray(points: Coordinate[], open = false): str
       return ' L ' + i.toPathString();
     }
   }).join();
+}
+
+export function isSVGPath(str: string) {
+  str = str.trim();
+
+  // https://www.w3.org/TR/SVG/paths.html#PathDataBNF
+  if (/^[mzlhvcsqta]\s*[-+.0-9][^mlhvzcsqta]+/i.test(str) &&
+      /[\dz]$/i.test(str) && str.length > 4) {
+    return true;
+  }
+
+  return false;
 }

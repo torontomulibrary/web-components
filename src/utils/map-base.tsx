@@ -1,6 +1,9 @@
-import { MapPoint } from '../classes/map-point';
-import { MapRegion } from '../classes/map-region';
-import { MapElementMap, ParsedMapElement } from '../interface';
+import { MapMarker } from '../classes/map-marker';
+import { MapPolygon } from '../classes/map-polygon';
+import { MarkerIcon } from '../classes/marker-icon';
+import { MarkerSymbol } from '../classes/marker-symbol';
+import { MapElementDataMap, ParsedMapElement } from '../interface';
+import { Coordinate } from '../utils/coordinate';
 import { decodeCoordinates } from '../utils/helpers';
 
 export const CONTROL_SIZE = 100;
@@ -25,6 +28,10 @@ export const STATES = {
   ADD_POINT:        20,
   DRAG_ELEMENT:     30,
 };
+
+enum MarkerSymbolPaths {
+  computer = 'M 8 36 c -2 0 -4 -2 -4 -4 v -20 c 0 -2 2 -4 4 -4 h 32 c 2 0 4 2 4 4 v 20 c 0 2 -2 4 -4 4 h 8 v 4 h -48 v -4 z M 8 12 h 32 v 20 h -32 z',
+}
 
 export const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -61,35 +68,53 @@ export function getTargetId(el: EventTarget | null): number | undefined {
  * a map.
  * @param elements An array of `MapElement`s to process.
  */
-export function parseElements(elements: MapElementMap, scale = 1): (MapPoint | MapRegion)[] {
+export function parseElements(elements: MapElementDataMap, scale = 1): (MapMarker | MapPolygon)[] {
   return Object.keys(elements).map(i => {
     const el = elements[Number(i)];
     const decoded = decodeCoordinates(el.points, true);
-    const parsedIcons: {src: string, width?: number, height?: number}[] = [];
+    // const parsedIcons: {src: string, width?: number, height?: number}[] = [];
 
-    if (el.icons && el.icons.length !== 0) {
-      // Load all the icon images so they're cached later.
-      el.icons.forEach((src, idx) => {
-        const icon = new Image();
-        icon.src = src;
-        icon.onload = () => {
-          parsedIcons[idx] = {
-            src: icon.src,
-            width: icon.width,
-            height: icon.height,
-          };
-        };
-      });
+    // if (el.icons && el.icons.length !== 0) {
+    //   // Load all the icon images so they're cached later.
+    //   el.icons.forEach((src, idx) => {
+    //     const icon = new Image();
+    //     icon.src = src;
+    //     icon.onload = () => {
+    //       parsedIcons[idx] = {
+    //         src: icon.src,
+    //         width: icon.width,
+    //         height: icon.height,
+    //       };
+    //     };
+    //   });
+    // }
+
+    let icon;
+    if (el.icon && typeof el.icon === 'string') {
+      icon = new MarkerIcon();
+      icon.url = el.icon;
+    } else if (el.symbol && typeof el.symbol === 'string' && el.symbol in MarkerSymbolPaths) {
+      icon = new MarkerSymbol();
+      icon.path = el.symbol;
     }
 
-    const newEl = decoded.points.length === 1 ? new MapPoint() : new MapRegion();
+    let newEl: MapPolygon | MapMarker;
 
-    newEl.icons = parsedIcons;
+    if (decoded.points instanceof Coordinate) {
+      newEl = new MapMarker();
+      newEl.icon = icon;
+      newEl.position = decoded.points;
+      newEl.available = el.available || false;
+    } else {
+      newEl = new MapPolygon();
+      newEl.points = decoded.points;
+    }
+
     newEl.id = el.id;
     newEl.name = el.name;
-    newEl.enabled = el.enabled;
-    newEl.coordinates = decoded.points;
+    newEl.visible = el.enabled;
     newEl.scale = scale;
+    newEl.clickable = el.clickable !== undefined ? el.clickable : true;
     return newEl;
   });
 }
@@ -155,6 +180,7 @@ export function renderElements(els: ParsedMapElement[]) {
       const regionClass = {
         'rl-map-element__region': true,
         'rl-map-element__region--activated': el.active,
+        'rl-map-element__region--available': el.available,
       };
 
       return (

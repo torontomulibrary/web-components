@@ -1,6 +1,5 @@
 import {
   Component,
-  ComponentInterface,
   Element,
   Event,
   EventEmitter,
@@ -11,9 +10,9 @@ import {
   Watch,
 } from '@stencil/core';
 
-import { MapPoint } from '../../classes/map-point';
-import { MapRegion } from '../../classes/map-region';
-import { MapElement } from '../../interface';
+import { MapMarker } from '../../classes/map-marker';
+import { MapPolygon } from '../../classes/map-polygon';
+import { MapElementData } from '../../interface';
 import { Coordinate } from '../../utils/coordinate';
 import {
   coordinateFromEvent,
@@ -34,15 +33,15 @@ import {
   styleUrl: 'map-editor.scss',
 })
 
-export class RLMapEditor implements ComponentInterface {
+export class RLMapEditor {
   /**
    * The array of MapElements currently being displayed.  Created from the
    * `elements` Prop with additional internal information added.
    */
-  private processedElements: (MapPoint | MapRegion)[] = [];
+  private processedElements: (MapMarker | MapPolygon)[] = [];
 
   // The element being targeted by user interaction.
-  private targetElement: MapPoint | MapRegion | undefined;
+  private targetElement: MapMarker | MapPolygon | undefined;
 
   // The control point being targeted by user interaction.
   private targetControl: number | undefined;
@@ -77,7 +76,7 @@ export class RLMapEditor implements ComponentInterface {
   /**
    * The currently active element.
    */
-  @State() activeElement: MapPoint | MapRegion | undefined;
+  @State() activeElement: MapMarker | MapPolygon | undefined;
 
   /**
    * The factor by which the Map contents are changed to fit within the SVG.
@@ -93,7 +92,7 @@ export class RLMapEditor implements ComponentInterface {
   /**
    * An array of the elements that will be displayed on the Map.
    */
-  @Prop({ mutable: true }) elements?: MapElement[];
+  @Prop({ mutable: true }) elements?: MapElementData[];
 
   /**
    * The image being displayed as the base of the map.
@@ -135,18 +134,18 @@ export class RLMapEditor implements ComponentInterface {
    * An even fired when the user selects a `MapElement`. The clicked element's
    * `id` will be passed in the event details.
    */
-  @Event() elementSelected!: EventEmitter<MapElement>;
+  @Event() elementSelected!: EventEmitter<MapElementData>;
   /**
    * An event fired when a `MapElement` is updated (moved or changes shape).
    * The event details contains the `MapElement` that was moved.
    */
-  @Event() elementUpdated!: EventEmitter<MapElement>;
+  @Event() elementUpdated!: EventEmitter<MapElementData>;
 
   /**
    * An event fired when a new `MapElement` is created. The event details
    * contains the `MapElement` that was created.
    */
-  @Event() elementCreated!: EventEmitter<MapElement>;
+  @Event() elementCreated!: EventEmitter<MapElementData>;
 
   /**
    * An event fired when the user deselects a `MapElement`.
@@ -156,12 +155,12 @@ export class RLMapEditor implements ComponentInterface {
   /**
    * An event fired when one of the `MapElements` on this map is deleted.
    */
-  @Event() elementDeleted!: EventEmitter<MapElement>;
+  @Event() elementDeleted!: EventEmitter<MapElementData>;
 
   /**
    * An event fired when one of the `MapElement`s on the map is double clicked.
    */
-  @Event() elementDoubleClicked!: EventEmitter<MapElement>;
+  @Event() elementDoubleClicked!: EventEmitter<MapElementData>;
 
   /**
    * Handle when the list of specified elements changes. The event details
@@ -194,7 +193,7 @@ export class RLMapEditor implements ComponentInterface {
     }
 
     if (this.state === STATES.ADD_REGION_INIT) {
-      if (this.activeElement) {
+      if (this.activeElement && this.activeElement instanceof MapPolygon) {
         this.activeElement.addPoint(this.toSvgSpace(this.start));
         this.root.forceUpdate();
       }
@@ -207,8 +206,8 @@ export class RLMapEditor implements ComponentInterface {
       }
 
       if (e.target && e.target instanceof SVGCircleElement) {
-        if (e.target.classList.contains('rl-map-element__control') ||
-            e.target.classList.contains('rl-map-element__midpoint')) {
+        if (e.target.classList.contains('rl-map-control') ||
+            e.target.classList.contains('rl-map-midpoint')) {
           this.targetControl = Number(e.target.getAttribute('index'));
         }
       }
@@ -242,7 +241,7 @@ export class RLMapEditor implements ComponentInterface {
             break;
           }
         case STATES.DRAGGING:
-          if (this.targetControl !== undefined && this.activeElement !== undefined) {
+          if (this.targetControl !== undefined && this.activeElement !== undefined && this.activeElement instanceof MapPolygon) {
             if (this.targetControl % 2 === 1) {
               // If the target control is a midpoint, Add it to the array of
               // controls.
@@ -277,15 +276,15 @@ export class RLMapEditor implements ComponentInterface {
           break;
         case STATES.ADD_REGION_FIRST:
           dist = Coordinate.squareDistance(this.start, point);
-          if (this.activeElement && dist > HYSTERESIS) {
+          if (this.activeElement && this.activeElement instanceof MapPolygon && dist > HYSTERESIS) {
             this.state = STATES.ADD_REGION;
             this.activeElement.addPoint(this.toSvgSpace(point));
             this.root.forceUpdate();
           }
           break;
         case STATES.ADD_REGION:
-          if (this.activeElement) {
-            const idx = this.activeElement.coordinates.length - 1;
+          if (this.activeElement && this.activeElement instanceof MapPolygon) {
+            const idx = this.activeElement.points.length - 1;
             this.activeElement.movePoint(this.toSvgScale(delta), idx);
             this.root.forceUpdate();
           }
@@ -321,7 +320,7 @@ export class RLMapEditor implements ComponentInterface {
           break;
         case STATES.DRAGGING:
           const delta = Coordinate.difference(point, this.last);
-          if (this.activeElement && this.targetControl !== undefined) {
+          if (this.activeElement && this.activeElement instanceof MapPolygon && this.targetControl !== undefined) {
             this.activeElement.movePoint(
               this.toSvgScale(delta),
               this.targetControl / 2
@@ -342,14 +341,14 @@ export class RLMapEditor implements ComponentInterface {
           this.state = STATES.NORMAL;
           break;
         case STATES.ADD_REGION_FIRST:
-          if (this.activeElement) {
+          if (this.activeElement && this.activeElement instanceof MapPolygon) {
             this.activeElement.addPoint(this.toSvgSpace(point));
           }
           // this.activeControls = [...this.activeControls, this.toSvgSpace(point)];
           this.state = STATES.ADD_REGION;
           break;
         case STATES.ADD_REGION:
-          if (this.activeElement) {
+          if (this.activeElement && this.activeElement instanceof MapPolygon) {
             if (this.targetControl === 0) {
               // Remove the last point, it was used as a placeholder for drawing
               // a line to the cursor.
@@ -366,8 +365,8 @@ export class RLMapEditor implements ComponentInterface {
           }
           break;
         case STATES.ADD_POINT:
-          if (this.activeElement && this.root) {
-            this.activeElement.coordinates = [ this.toSvgSpace(point) ];
+          if (this.activeElement && this.activeElement instanceof MapMarker && this.root) {
+            this.activeElement.position = this.toSvgSpace(point);
             this.state = STATES.NORMAL;
             this.root.forceUpdate();
             this.elementCreated.emit(
@@ -395,7 +394,7 @@ export class RLMapEditor implements ComponentInterface {
 
       if (this.state === STATES.DRAGGING && this.activeElement) {
         const delta = Coordinate.difference(point, this.last);
-        if (this.activeElement && this.targetControl !== undefined) {
+        if (this.activeElement && this.activeElement instanceof MapPolygon && this.targetControl !== undefined) {
           this.activeElement.movePoint(
             this.toSvgScale(delta),
             this.targetControl
@@ -495,8 +494,9 @@ export class RLMapEditor implements ComponentInterface {
   addRegion() {
     this._clearActiveElement();
     this.state = STATES.ADD_REGION_INIT;
-    this.activeElement = new MapRegion(-1);
+    this.activeElement = new MapPolygon();
     this.activeElement.open = true;
+    this.activeElement.scale = this.svgScale;
     this.processedElements = [...this.processedElements, this.activeElement];
   }
 
@@ -508,7 +508,7 @@ export class RLMapEditor implements ComponentInterface {
   addPoint() {
     this._clearActiveElement();
     this.state = STATES.ADD_POINT;
-    this.activeElement = new MapPoint(-1);
+    this.activeElement = new MapMarker();
     this.processedElements = [...this.processedElements, this.activeElement];
   }
 
@@ -547,7 +547,7 @@ export class RLMapEditor implements ComponentInterface {
     }
   }
 
-  private mapElementFromParsedElement(el: MapPoint | MapRegion): MapElement | undefined {
+  private mapElementFromParsedElement(el: MapMarker | MapPolygon): MapElementData | undefined {
     if (this.elements === undefined) {
       return undefined;
     }
@@ -567,9 +567,10 @@ export class RLMapEditor implements ComponentInterface {
       enabled: originalEl.enabled,
       floorId: originalEl.floorId,
       id: el.id,
-      icons: originalEl.icons,
+      icon: originalEl.icon,
+      symbol: originalEl.symbol,
       name: el.name,
-      points: encodeCoordinates(el.coordinates),
+      points: el instanceof MapPolygon ? encodeCoordinates(el.points) : encodeCoordinates(el.position),
     };
   }
 
@@ -625,7 +626,7 @@ export class RLMapEditor implements ComponentInterface {
    *
    * @param el The Element that will be set as the active element.
    */
-  private _setActiveElement(el?: MapPoint | MapRegion) {
+  private _setActiveElement(el?: MapMarker | MapPolygon) {
     if (!el) {
       this._clearActiveElement();
       this.elementDeselected.emit();
@@ -636,9 +637,6 @@ export class RLMapEditor implements ComponentInterface {
     this.activeElement = el;
     this.activeElement.active = true;
 
-    // if (this.state === STATES.ADD_REGION || this.activeElement.coordinates.length > 1) {
-    //   this.activeControls = this.activeElement.coordinates;
-    // }
     if (this.elements !== undefined) {
       this.elementSelected.emit(this.elements[this.activeElement.id]);
     }
@@ -692,7 +690,7 @@ export class RLMapEditor implements ComponentInterface {
           <g class="rl-map__elements">
             {this.processedElements.map(el => el.render())}
           </g>
-          {this.activeElement && this.activeElement.renderControls()}
+          {this.activeElement && this.activeElement instanceof MapPolygon && this.activeElement.renderControls()}
         </g>
       </svg>
     );

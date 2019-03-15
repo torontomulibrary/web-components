@@ -12,6 +12,7 @@ export interface MapElementDetailTypeMap extends NumberMap<MapElementDetailType>
 export interface MapElementDetail extends DescribedObject {
   elementId: number;
   detailTypeId: number;
+  // category: number;
   code: string;
   callStart: string;
   callEnd: string;
@@ -20,23 +21,29 @@ export interface MapElementDetail extends DescribedObject {
 
 export interface MapElementDetailMap extends NumberMap<MapElementDetail> {}
 
-export interface MapElement extends DescribedObject {
+export interface MapElementData extends DescribedObject {
   details?: MapElementDetailMap;
+  clickable?: boolean;
   floorId: number;
-  icons: string[];
+  icon: string;
   points: string;
   enabled: boolean;
+  available?: boolean;
+  category?: number;
+  symbol?: string;
 }
 
-export interface MapElementMap extends NumberMap<MapElement> {}
+export interface MapElementDataMap extends NumberMap<MapElementData> {}
 
 export interface ParsedMapElement {
+  available: boolean;
   active: boolean;
   coordinates: Coordinate[];
   enabled: boolean;
-  icons?: string[];
+  icons?: string;
   iconImages?: HTMLImageElement[];
   id: number;
   name: string;
   path: string;
+  category?: number;
 }

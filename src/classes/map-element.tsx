@@ -1,53 +1,69 @@
-import { Coordinate } from '../utils/coordinate';
-import { movePoints } from '../utils/helpers';
+import { iMapElementOptions } from '../interface';
 
+/**
+ * The base class for the different kinds of items that can be drawn on a
+ * Map.
+ */
 export class MapElement {
+  _active = false;
   /**
-   * A flag indicating if this `MapElement` is currently active.  The active
-   * element is styled differently to make it stand out.
+   * Indicates whether this `MapElement` is currently selected by the user. When
+   * active, the `MapElement` is styled differently.  Defaults to `false`.
    */
-  active = false;
+  set active(isActive: boolean) { this._active = isActive; }
+  get active() { return this._active; }
+
+  _clickable = true;
+  /**
+   * Indicates whether this `MapElement` receives mouse and touch events.
+   * Defaults to `true`.
+   */
+  set clickable(isActive: boolean) { this._clickable = isActive; }
+  get clickable() { return this._clickable; }
 
   /**
-   * A flag indicating if this `MapElement` is currently enabled.  An element
-   * that is not enabled is not rendered on the Map.
+   * The internal identifier for this `MapElement`.
    */
-  enabled = false;
+  _id = -1;
+  set id(newId: number) { this._id = newId; }
+  get id() { return this._id; }
 
-  /**
-   * The identifier for this `MapElement`.
-   */
-  id = -1;
-
+  _name = '';
   /**
    * The name of this `MapElement`.
    */
-  name = 'New Element';
+  set name(newName: string) { this._name = newName; }
+  get name() { return this._name; }
 
+  _scale = 1;
   /**
-   * The array of `Coordinate`s that are used to draw this `MapElement`.
+   * The scale of this `MapElement`.
    */
-  _coordinates: Coordinate[] = [];
+  set scale(newScale: number) { this._scale = newScale; }
+  get scale() { return this._scale; }
 
-  icons: {src: string, width?: number, height?: number}[] = [];
+  _visible = true;
+  /**
+   * Indicates if this `MapElement` is currently visible. Defaults to `true`.
+   */
+  set visible(isVisible: boolean) { this._visible = isVisible; }
+  get visible() { return this._visible; }
 
-  scale = 1;
+  _zIndex = 1;
+  /**
+   * The z-index used to draw this `MapElement`.  Defaults to 1.
+   */
+  set zIndex(isVisible: number) { this._zIndex = isVisible; }
+  get zIndex() { return this._zIndex; }
 
   /**
    * Create a new `MapElement`.
    * @param id A value to set as the ID of the `MapElement`.
    */
-  constructor(id?: number) {
-    if (id !== undefined) {
-      this.id = id;
+  constructor(opts?: iMapElementOptions) {
+    if (opts) {
+      this.name = opts.name ? opts.name : '';
+      this.zIndex = opts.zIndex ? opts.zIndex : 1;
     }
-  }
-
-  /**
-   * Move this `MapElement` by a specified amount.
-   * @param delta The amount to move
-   */
-  move(delta: Coordinate) {
-    this._coordinates = movePoints(this._coordinates, delta);
   }
 }
