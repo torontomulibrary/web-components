@@ -7,24 +7,24 @@
 
 ## Properties
 
-| Property   | Attribute   | Description                                                 | Type                        | Default             |
-| ---------- | ----------- | ----------------------------------------------------------- | --------------------------- | ------------------- |
-| `elements` | --          | An array of the elements that will be displayed on the Map. | `MapElement[] \| undefined` | `undefined`         |
-| `mapImage` | `map-image` | The image being displayed as the base of the map.           | `string \| undefined`       | `undefined`         |
-| `maxScale` | `max-scale` | The maximum scale factor.                                   | `number`                    | `DEFAULT_MAX_SCALE` |
-| `minScale` | `min-scale` | The minimum scale factor.                                   | `number`                    | `DEFAULT_MIN_SCALE` |
+| Property   | Attribute   | Description                                                 | Type                            | Default             |
+| ---------- | ----------- | ----------------------------------------------------------- | ------------------------------- | ------------------- |
+| `elements` | --          | An array of the elements that will be displayed on the Map. | `MapElementData[] \| undefined` | `undefined`         |
+| `mapImage` | `map-image` | The image being displayed as the base of the map.           | `string \| undefined`           | `undefined`         |
+| `maxScale` | `max-scale` | The maximum scale factor.                                   | `number`                        | `DEFAULT_MAX_SCALE` |
+| `minScale` | `min-scale` | The minimum scale factor.                                   | `number`                        | `DEFAULT_MIN_SCALE` |
 
 
 ## Events
 
-| Event                  | Description                                                                                                                         | Type                      |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| `elementCreated`       | An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.                    | `CustomEvent<MapElement>` |
-| `elementDeleted`       | An event fired when one of the `MapElements` on this map is deleted.                                                                | `CustomEvent<MapElement>` |
-| `elementDeselected`    | An event fired when the user deselects a `MapElement`.                                                                              | `CustomEvent<undefined>`  |
-| `elementDoubleClicked` | An event fired when one of the `MapElement`s on the map is double clicked.                                                          | `CustomEvent<MapElement>` |
-| `elementSelected`      | An even fired when the user selects a `MapElement`. The clicked element's `id` will be passed in the event details.                 | `CustomEvent<MapElement>` |
-| `elementUpdated`       | An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was moved. | `CustomEvent<MapElement>` |
+| Event                  | Description                                                                                                                         | Type                          |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `elementCreated`       | An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.                    | `CustomEvent<MapElementData>` |
+| `elementDeleted`       | An event fired when one of the `MapElements` on this map is deleted.                                                                | `CustomEvent<MapElementData>` |
+| `elementDeselected`    | An event fired when the user deselects a `MapElement`.                                                                              | `CustomEvent<undefined>`      |
+| `elementDoubleClicked` | An event fired when one of the `MapElement`s on the map is double clicked.                                                          | `CustomEvent<MapElementData>` |
+| `elementSelected`      | An even fired when the user selects a `MapElement`. The clicked element's `id` will be passed in the event details.                 | `CustomEvent<MapElementData>` |
+| `elementUpdated`       | An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was moved. | `CustomEvent<MapElementData>` |
 
 
 ## Methods
