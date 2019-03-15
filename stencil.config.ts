@@ -4,7 +4,9 @@ import { sass } from '@stencil/sass';
 export const config: Config = {
   namespace: 'rl-web-components',
   plugins: [
-    sass()
+    sass({
+      includePaths: ['./node_modules', './src/global']
+    }),
   ],
   outputTargets: [
     {

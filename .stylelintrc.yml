@@ -250,17 +250,6 @@ rules:
     - right
     - left
     - float
-    - padding
-    - padding-left
-    - padding-right
-    - margin
-    - margin-left
-    - margin-right
-    - border-radius
-    - border-top-left-radius
-    - border-top-right-radius
-    - border-bottom-right-radius
-    - border-bottom-left-radius
     - transform-origin
 
   string-quotes:
