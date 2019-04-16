@@ -39,9 +39,9 @@ export class MapMarker extends MapElement {
       this.anchor = opts.anchor ? opts.anchor : new Coordinate(0, 0);
       this.available = opts.available ? opts.available : false;
       this.icon = opts.icon ? opts.icon : undefined;
-      this.label = opts.label ? opts.label : '';
-      this.opacity = opts.opacity ? opts.opacity : 1;
-      this.position = opts.position ? opts.position : new Coordinate(0, 0);
+      this.label = (opts.label !== undefined) ? opts.label : '';
+      this.opacity = (opts.opacity !== undefined) ? opts.opacity : 1;
+      this.position = opts.position;
     }
   }
 
@@ -56,7 +56,6 @@ export class MapMarker extends MapElement {
     };
 
     const contents: JSX.Element[] = [];
-    // let totalWidth = 0;
 
     if (this._icon === undefined) {
       contents.push((<rect class={rectClass} rx="12" ry="12" width={CONTROL_SIZE} height={CONTROL_SIZE}/>));

@@ -25,7 +25,7 @@ export interface MapElementData extends DescribedObject {
   details?: MapElementDetailMap;
   clickable?: boolean;
   floorId: number;
-  icon: string;
+  icon?: string;
   points: string;
   enabled: boolean;
   available?: boolean;

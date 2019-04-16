@@ -71,9 +71,9 @@ export class TextField {
         rows={8}
         cols={40}
         onChange={e => {
-          if (e !== undefined && e.target !== undefined &&
-              e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement
-              && e.target.value) {
+          if (e.target !== null &&
+              (e.target instanceof HTMLInputElement ||
+              e.target instanceof HTMLTextAreaElement)) {
             this.changeValue.emit(e.target.value);
           }
         }}
@@ -90,9 +90,9 @@ export class TextField {
         class="mdc-text-field__input"
         value={this.value}
         onChange={e => {
-          if (e !== undefined && e.target !== undefined &&
-              e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement
-              && e.target.value) {
+          if (e.target !== null &&
+              (e.target instanceof HTMLInputElement ||
+              e.target instanceof HTMLTextAreaElement)) {
             this.changeValue.emit(e.target.value);
           }
         }}

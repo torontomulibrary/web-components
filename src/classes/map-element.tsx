@@ -62,8 +62,8 @@ export class MapElement {
    */
   constructor(opts?: iMapElementOptions) {
     if (opts) {
-      this.name = opts.name ? opts.name : '';
-      this.zIndex = opts.zIndex ? opts.zIndex : 1;
+      this.name = (opts.name !== undefined) ? opts.name : '';
+      this.zIndex = (opts.zIndex !== undefined) ? opts.zIndex : 1;
     }
   }
 }

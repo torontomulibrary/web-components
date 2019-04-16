@@ -59,9 +59,9 @@ export class DetailDialogItem {
   @Prop({ mutable: true }) categoryOptions!: { name: string, id: number, items: MapElementDetailType[] }[];
   @Watch('categoryOptions')
   onCategoryOptionsChanged() {
-    if (this.categoryOptions !== undefined && this.categorySelection === undefined) {
-      this.categorySelection = { ...this.categoryOptions[0] };
-    }
+    // if (this.categorySelection === undefined) {
+    this.categorySelection = { ...this.categoryOptions[0] };
+    // }
   }
 
   /**
@@ -84,9 +84,9 @@ export class DetailDialogItem {
   @Prop({ mutable: true }) typeOptions: MapElementDetailType[] = [];
   @Watch('typeOptions')
   onTypeOptionsChanged() {
-    if (this.typeOptions !== undefined) {
-      this.typeSelection = this.typeOptions[0];
-    }
+    // if (this.typeOptions !== undefined) {
+    this.typeSelection = this.typeOptions[0];
+    // }
   }
 
   @Prop({ mutable: true }) typeSelection?: MapElementDetailType;

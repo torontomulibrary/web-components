@@ -90,10 +90,10 @@ export function parseElements(elements: MapElementDataMap, scale = 1): (MapMarke
     // }
 
     let icon;
-    if (el.icon && typeof el.icon === 'string') {
+    if (el.icon !== undefined) {
       icon = new MarkerIcon();
       icon.url = el.icon;
-    } else if (el.symbol && typeof el.symbol === 'string' && el.symbol in MarkerSymbolPaths) {
+    } else if (el.symbol !== undefined && el.symbol in MarkerSymbolPaths) {
       icon = new MarkerSymbol();
       icon.path = el.symbol;
     }
