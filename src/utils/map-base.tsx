@@ -50,7 +50,7 @@ export function computeLimits(iSize: DOMRect, sSize: DOMRect, scale: number) {
  * @param el The Element to use to find the ID.
  */
 export function getTargetId(el: EventTarget | null): number | undefined {
-  if (el instanceof HTMLImageElement || el instanceof SVGRectElement) {
+  if (el instanceof SVGImageElement || el instanceof SVGRectElement) {
     // There are two cases where the element is a child of the elemen
     el = el.parentElement;
   }
