@@ -49,12 +49,10 @@ export type MapElement = MapPolygon | MapMarker;
  */
 export type StrokePosition = 'CENTER' | 'INSIDE' | 'OUTSIDE';
 
-/**
- * Allowed values for predefined map Symbols.
- */
-export enum MarkerSymbolPaths {
-  computer = 'M 8 36 c -2 0 -4 -2 -4 -4 v -20 c 0 -2 2 -4 4 -4 h 32 c 2 0 4 2 4 4 v 20 c 0 2 -2 4 -4 4 h 8 v 4 h -48 v -4 z M 8 12 h 32 v 20 h -32 z',
-}
+
+// export enum MarkerSymbolPaths {
+//   computer = 'M 8 36 c -2 0 -4 -2 -4 -4 v -20 c 0 -2 2 -4 4 -4 h 32 c 2 0 4 2 4 4 v 20 c 0 2 -2 4 -4 4 h 8 v 4 h -48 v -4 z M 8 12 h 32 v 20 h -32 z',
+// }
 
 export interface Size {
   height: number;

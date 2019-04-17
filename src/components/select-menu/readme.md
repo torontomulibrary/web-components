@@ -7,18 +7,18 @@
 
 ## Properties
 
-| Property         | Attribute         | Description | Type                  | Default     |
-| ---------------- | ----------------- | ----------- | --------------------- | ----------- |
-| `label`          | `label`           |             | `string`              | `''`        |
-| `options`        | --                |             | `string[]`            | `[]`        |
-| `selectedOption` | `selected-option` |             | `string \| undefined` | `undefined` |
+| Property         | Attribute         | Description                                                          | Type                  | Default     |
+| ---------------- | ----------------- | -------------------------------------------------------------------- | --------------------- | ----------- |
+| `label`          | `label`           | The label displayed on the select.                                   | `string`              | `''`        |
+| `options`        | --                | An array of the different options displayed in the select menu.      | `string[]`            | `[]`        |
+| `selectedOption` | `selected-option` | The currently selected option or `undefined` if nothing is selected. | `string \| undefined` | `undefined` |
 
 
 ## Events
 
-| Event      | Description | Type                |
-| ---------- | ----------- | ------------------- |
-| `selected` |             | `CustomEvent<void>` |
+| Event      | Description                                                                                                   | Type                  |
+| ---------- | ------------------------------------------------------------------------------------------------------------- | --------------------- |
+| `selected` | An event emitted when an item is selected.  The detail of the event is set to the index of the item selected. | `CustomEvent<number>` |
 
 
 ----------------------------------------------

@@ -31,13 +31,25 @@ export namespace Components {
     * The currently selected Category.
     */
     'categorySelection'?: { name: string, id: number, items: MapElementDetailType[] };
-    'detail'?: MapElementDetail;
-    'getDetail': () => MapElementDetail;
-    'toRemove': () => boolean;
     /**
-    * An array of all the different detail types that are available.
+    * The `MapElementDetail` that this item is displaying the information of.
+    */
+    'detail'?: MapElementDetail;
+    /**
+    * Returns a `Promise` that resolves to a `MapElementDetail` object with values set as those of this `DetailDialogItem`.
+    */
+    'getDetail': () => Promise<MapElementDetail>;
+    /**
+    * Returns a `Promise` that resolves to whether or not this `DetailDialogItem` is to be removed or not.
+    */
+    'toRemove': () => Promise<boolean>;
+    /**
+    * All the possible values for the type of this `DetailDialogItem`.
     */
     'typeOptions': MapElementDetailType[];
+    /**
+    * The currently selected type of this `DetailDialogItem`.
+    */
     'typeSelection'?: MapElementDetailType;
   }
   interface RlDetailDialogItemAttributes extends StencilHTMLAttributes {
@@ -49,29 +61,66 @@ export namespace Components {
     * The currently selected Category.
     */
     'categorySelection'?: { name: string, id: number, items: MapElementDetailType[] };
+    /**
+    * The `MapElementDetail` that this item is displaying the information of.
+    */
     'detail'?: MapElementDetail;
     /**
-    * An array of all the different detail types that are available.
+    * All the possible values for the type of this `DetailDialogItem`.
     */
     'typeOptions'?: MapElementDetailType[];
+    /**
+    * The currently selected type of this `DetailDialogItem`.
+    */
     'typeSelection'?: MapElementDetailType;
   }
 
   interface RlDetailDialog {
+    /**
+    * The different categories that each item can display.  Each category has a set of Detailtypes.
+    */
     'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    /**
+    * The details that will be displayed in this dialog.
+    */
     'details'?: MapElementDetailMap;
+    /**
+    * An array of strings that will be used to create action buttons for the dialog.  When the corresponding button is clicked by the user, MDCDialog will emit an event with the lowercase version of the action. For example the action `Yes` would emit the `MDCDialog:closing` with the property `event.detail.action === 'yes'`.
+    */
     'dialogActions': string[];
+    /**
+    * The title of the dialog window.
+    */
     'dialogTitle': string;
-    'elementId': any;
-    'getDetails': () => any[];
+    /**
+    * Returns the values of all the DetailDialogItems as an array of `MapElementDetails`
+    */
+    'getDetails': () => Promise<Promise<any>[]>;
+    /**
+    * Opens this dialog.
+    */
     'open': () => void;
   }
   interface RlDetailDialogAttributes extends StencilHTMLAttributes {
+    /**
+    * The different categories that each item can display.  Each category has a set of Detailtypes.
+    */
     'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    /**
+    * The details that will be displayed in this dialog.
+    */
     'details'?: MapElementDetailMap;
+    /**
+    * An array of strings that will be used to create action buttons for the dialog.  When the corresponding button is clicked by the user, MDCDialog will emit an event with the lowercase version of the action. For example the action `Yes` would emit the `MDCDialog:closing` with the property `event.detail.action === 'yes'`.
+    */
     'dialogActions'?: string[];
+    /**
+    * The title of the dialog window.
+    */
     'dialogTitle'?: string;
-    'elementId'?: any;
+    /**
+    * An event emitted when a new `DetailDialogItem` is added to the dialog.
+    */
     'onAddDetail'?: (event: CustomEvent) => void;
   }
 
@@ -214,38 +263,116 @@ export namespace Components {
   }
 
   interface RlSelectMenu {
+    /**
+    * The label displayed on the select.
+    */
     'label': string;
+    /**
+    * An array of the different options displayed in the select menu.
+    */
     'options': string[];
+    /**
+    * The currently selected option or `undefined` if nothing is selected.
+    */
     'selectedOption'?: string;
   }
   interface RlSelectMenuAttributes extends StencilHTMLAttributes {
+    /**
+    * The label displayed on the select.
+    */
     'label'?: string;
-    'onSelected'?: (event: CustomEvent) => void;
+    /**
+    * An event emitted when an item is selected.  The detail of the event is set to the index of the item selected.
+    */
+    'onSelected'?: (event: CustomEvent<number>) => void;
+    /**
+    * An array of the different options displayed in the select menu.
+    */
     'options'?: string[];
+    /**
+    * The currently selected option or `undefined` if nothing is selected.
+    */
     'selectedOption'?: string;
   }
 
   interface RlTextField {
+    /**
+    * A flag indicating if the text field is disabled and does not allow user input.
+    */
     'disabled': boolean;
+    /**
+    * A flag indicating if the text field uses the full-width style.
+    */
     'fullwidth': boolean;
+    /**
+    * Additional text displayed below the main text field.
+    */
     'helperText': string;
+    /**
+    * An icon displayed within the text field.
+    */
     'icon': string;
+    /**
+    * The location of the icon displayed within the text field.
+    */
     'iconLocation': 'trailing' | 'leading';
+    /**
+    * The supplemental label for the text field.
+    */
     'label': string;
+    /**
+    * A flag indicating if the text field has an outlined style.
+    */
     'outlined': boolean;
+    /**
+    * A flag indicating if the text field uses a textarea instead of an input.
+    */
     'textarea': boolean;
+    /**
+    * The current value of the text field input or text area.
+    */
     'value': string;
   }
   interface RlTextFieldAttributes extends StencilHTMLAttributes {
+    /**
+    * A flag indicating if the text field is disabled and does not allow user input.
+    */
     'disabled'?: boolean;
+    /**
+    * A flag indicating if the text field uses the full-width style.
+    */
     'fullwidth'?: boolean;
+    /**
+    * Additional text displayed below the main text field.
+    */
     'helperText'?: string;
+    /**
+    * An icon displayed within the text field.
+    */
     'icon'?: string;
+    /**
+    * The location of the icon displayed within the text field.
+    */
     'iconLocation'?: 'trailing' | 'leading';
+    /**
+    * The supplemental label for the text field.
+    */
     'label'?: string;
+    /**
+    * An event emitted when the value of the input or textarea changes.
+    */
     'onChangeValue'?: (event: CustomEvent) => void;
+    /**
+    * A flag indicating if the text field has an outlined style.
+    */
     'outlined'?: boolean;
+    /**
+    * A flag indicating if the text field uses a textarea instead of an input.
+    */
     'textarea'?: boolean;
+    /**
+    * The current value of the text field input or text area.
+    */
     'value'?: string;
   }
 

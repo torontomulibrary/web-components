@@ -7,34 +7,36 @@
 
 ## Properties
 
-| Property                       | Attribute | Description                                                    | Type                                                                        | Default     |
-| ------------------------------ | --------- | -------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------- |
-| `categoryOptions` _(required)_ | --        | An array of all the different categories that can be selected. | `{ name: string; id: number; items: MapElementDetailType[]; }[]`            | `undefined` |
-| `categorySelection`            | --        | The currently selected Category.                               | `undefined \| { name: string; id: number; items: MapElementDetailType[]; }` | `undefined` |
-| `detail`                       | --        |                                                                | `MapElementDetail \| undefined`                                             | `undefined` |
-| `typeOptions`                  | --        | An array of all the different detail types that are available. | `MapElementDetailType[]`                                                    | `[]`        |
-| `typeSelection`                | --        |                                                                | `MapElementDetailType \| undefined`                                         | `undefined` |
+| Property                       | Attribute | Description                                                             | Type                                                                        | Default     |
+| ------------------------------ | --------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------- |
+| `categoryOptions` _(required)_ | --        | An array of all the different categories that can be selected.          | `{ name: string; id: number; items: MapElementDetailType[]; }[]`            | `undefined` |
+| `categorySelection`            | --        | The currently selected Category.                                        | `undefined \| { name: string; id: number; items: MapElementDetailType[]; }` | `undefined` |
+| `detail`                       | --        | The `MapElementDetail` that this item is displaying the information of. | `MapElementDetail \| undefined`                                             | `undefined` |
+| `typeOptions`                  | --        | All the possible values for the type of this `DetailDialogItem`.        | `MapElementDetailType[]`                                                    | `[]`        |
+| `typeSelection`                | --        | The currently selected type of this `DetailDialogItem`.                 | `MapElementDetailType \| undefined`                                         | `undefined` |
 
 
 ## Methods
 
-### `getDetail() => MapElementDetail`
+### `getDetail() => Promise<MapElementDetail>`
 
-
-
-#### Returns
-
-Type: `MapElementDetail`
-
-
-
-### `toRemove() => boolean`
-
-
+Returns a `Promise` that resolves to a `MapElementDetail` object with
+values set as those of this `DetailDialogItem`.
 
 #### Returns
 
-Type: `boolean`
+Type: `Promise<MapElementDetail>`
+
+
+
+### `toRemove() => Promise<boolean>`
+
+Returns a `Promise` that resolves to whether or not this `DetailDialogItem`
+is to be removed or not.
+
+#### Returns
+
+Type: `Promise<boolean>`
 
 
 
