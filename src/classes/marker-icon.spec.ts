@@ -35,4 +35,9 @@ describe('marker-icon', () => {
     mi.url = 'foo';
     expect(mi.url).toEqual('foo');
   });
+
+  it('renders', () => {
+    const el = mi.render();
+    expect(el).toBeTruthy();
+  })
 });
