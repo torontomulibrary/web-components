@@ -1,7 +1,7 @@
 import { iMapElementOptions } from '../interface';
 
 /**
- * The base class for the different kinds of items that can be drawn on a
+ * The base class for the different kinds of elements that can be rendered on a
  * Map.
  */
 export class MapElement {
@@ -21,10 +21,10 @@ export class MapElement {
   set clickable(isActive: boolean) { this._clickable = isActive; }
   get clickable() { return this._clickable; }
 
-  /**
-   * The internal identifier for this `MapElement`.
-   */
   _id = -1;
+  /**
+   * The unique identifier for this `MapElement`.
+   */
   set id(newId: number) { this._id = newId; }
   get id() { return this._id; }
 
@@ -58,6 +58,7 @@ export class MapElement {
 
   /**
    * Create a new `MapElement`.
+   *
    * @param id A value to set as the ID of the `MapElement`.
    */
   constructor(opts?: iMapElementOptions) {

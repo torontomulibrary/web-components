@@ -18,39 +18,80 @@ let nextId = 0;
 })
 
 export class DetailDialog {
+  /**
+   * Internal index used to differentiate multiple dialogs.
+   */
   private index = nextId++;
 
+  /**
+   * Reference to the Material Dialog underlying this `DetailDialog`.
+   */
   private dialog: MDCDialog;
 
+  /**
+   * Array of the child `DetailDialogItem` elements.
+   */
   private detailItems: HTMLRlDetailDialogItemElement[] = [];
 
+  /**
+   * Internal root of this component.
+   */
   @Element() root!: HTMLElement;
 
-  @Prop() elementId = -1;
+  // @Prop() elementId = -1;
 
+  /**
+   * The title of the dialog window.
+   */
   @Prop() dialogTitle = 'Detail Dialog';
 
+  /**
+   * An array of strings that will be used to create action buttons for the
+   * dialog.  When the corresponding button is clicked by the user, MDCDialog
+   * will emit an event with the lowercase version of the action. For example
+   * the action `Yes` would emit the `MDCDialog:closing` with the property
+   * `event.detail.action === 'yes'`.
+   */
   @Prop() dialogActions: string[] = ['No', 'Yes'];
 
+  /**
+   * The details that will be displayed in this dialog.
+   */
   @Prop() details?: MapElementDetailMap;
 
+  /**
+   * The different categories that each item can display.  Each category has
+   * a set of Detailtypes.
+   */
   @Prop() categories!: { name: string, id: number, items: MapElementDetailType[] }[];
 
+  /**
+   * An event emitted when a new `DetailDialogItem` is added to the dialog.
+   */
   @Event() addDetail!: EventEmitter;
 
   componentDidLoad() {
     this.dialog = new MDCDialog(this.root);
   }
 
+  /**
+   * Opens this dialog.
+   */
   @Method()
   open() {
     this.dialog.open();
   }
 
+  /**
+   * Returns the values of all the DetailDialogItems as an array of
+   * `MapElementDetails`
+   */
   @Method()
-  getDetails() {
-    const details = this.detailItems.map(item => {
-      return { ...item.getDetail(), remove: item.toRemove() };
+  async getDetails() {
+    const details = this.detailItems.map(async item => {
+      const det = await item.getDetail();
+      const rem = await item.toRemove();
+      return Promise.resolve({ ...det, remove: rem });
     });
     return details;
   }

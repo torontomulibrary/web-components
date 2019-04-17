@@ -10,24 +10,53 @@ import { MapElementDetail, MapElementDetailType } from '../../interface';
 
 let nextId = 0;
 
+/**
+ * An entry to be displayed as part of a `DetailDialog`.
+ */
 @Component({
   tag: 'rl-detail-dialog-item',
   styleUrl: 'detail-dialog-item.scss',
 })
-
 export class DetailDialogItem {
   private index = nextId++;
   private itemId = 0;
 
+  /**
+   * A flag indicating that this item will be removed when all the details are
+   * serialized and sent to the server.
+   */
   @State() remove = false;
+
+  /**
+   * The description for this item.
+   */
   @State() description = '';
+
+  /**
+   * The name of this item.
+   */
   @State() name = '';
+
+  /**
+   * Alternate text for this item.
+   */
   @State() altText = '';
+
+  /**
+   * The ID of the detail type of this item.
+   */
   @State() detailTypeId = -1;
+
+  /**
+   * The short code of this item.
+   */
   @State() code = '';
 
   // @Prop() detailTypes!: MapElementDetailTypeMap;
 
+  /**
+   * The `MapElementDetail` that this item is displaying the information of.
+   */
   @Prop() detail?: MapElementDetail;
   @Watch('detail')
   onDetailChanged() {
@@ -76,10 +105,8 @@ export class DetailDialogItem {
     }
   }
 
-  // @Prop() categoryId?: number;
-
   /**
-   * An array of all the different detail types that are available.
+   * All the possible values for the type of this `DetailDialogItem`.
    */
   @Prop({ mutable: true }) typeOptions: MapElementDetailType[] = [];
   @Watch('typeOptions')
@@ -89,6 +116,9 @@ export class DetailDialogItem {
     // }
   }
 
+  /**
+   * The currently selected type of this `DetailDialogItem`.
+   */
   @Prop({ mutable: true }) typeSelection?: MapElementDetailType;
   @Watch('typeSelection')
   onTypeSelectionChanged() {
@@ -102,21 +132,29 @@ export class DetailDialogItem {
     this.onCategoryOptionsChanged();
   }
 
+  /**
+   * Returns a `Promise` that resolves to a `MapElementDetail` object with
+   * values set as those of this `DetailDialogItem`.
+   */
   @Method()
   getDetail() {
-    return {
+    return Promise.resolve({
       description: this.description,
       name: this.name,
       code: this.code,
       altText: this.altText,
       id: this.itemId,
       detailTypeId: this.typeSelection ? this.typeSelection.id : 1,
-    } as MapElementDetail;
+    } as MapElementDetail);
   }
 
+  /**
+   * Returns a `Promise` that resolves to whether or not this `DetailDialogItem`
+   * is to be removed or not.
+   */
   @Method()
   toRemove() {
-    return this.remove;
+    return Promise.resolve(this.remove);
   }
 
   hostData() {

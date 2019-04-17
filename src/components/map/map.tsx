@@ -306,9 +306,9 @@ export class RLMap {
     this.svgTransform.translate(delta).limit(this.limits).round();
   }
 
-  @Listen('keydown.enter')
+  @Listen('keydown')
   onEnter(e: KeyboardEvent) {
-    if (e.target && e.target instanceof SVGElement &&
+    if (e.key === 'enter' && e.target && e.target instanceof SVGElement &&
       (e.target.classList.contains('rl-map-polygon') ||
       e.target.classList.contains('rl-map-marker'))) {
       const id = Number(e.target.id);

@@ -7,28 +7,54 @@ import { MarkerSymbol } from './marker-symbol';
 
 const CONTROL_SIZE = 50;
 
+/**
+ * A type of `MapElement`.  A marker is an image or text rendered at a specific
+ * point on a Map.
+ */
 export class MapMarker extends MapElement {
   _anchor: Coordinate = new Coordinate(0, 0);
+  /**
+   * An offset relative to the `position` of the marker.
+   */
   set anchor(newAnchor: Coordinate) { this._anchor = newAnchor; }
   get anchor() { return this._anchor; }
 
   _available = false;
+  /**
+   * A flag indicating if the this `MapMarker` represents an active or inactive
+   * point.  When the marker is available, it gets a matching `--available` CSS
+   * class added.
+   */
   set available(isAvailable: boolean) { this._available = isAvailable; }
   get available() { return this._available; }
 
   _icon?: MarkerIcon | MarkerSymbol;
+  /**
+   * The icon that will be drawn for this `MapMarker`.
+   */
   set icon(newIcon: undefined | MarkerIcon | MarkerSymbol) { this._icon = newIcon; }
   get icon() { return this._icon; }
 
   _label = '';
+  /**
+   * A line of text dispayed on the map either on its own as a simple text
+   * label or along side the `icon`.
+   */
   set label(newLabel: string) { this._label = newLabel; }
   get label() { return this._label; }
 
   _opacity = 1;
+  /**
+   * The opacity of the marker, 1 being fully opaque and 0 being fully
+   * transparent.
+   */
   set opacity(newOpacity: number) { this._opacity = Math.max(0, Math.min(1, newOpacity)); }
   get opacity() { return this._opacity; }
 
   _position: Coordinate = new Coordinate(0, 0);
+  /**
+   * The overall position of the marker on the `Map`.
+   */
   set position(newPosition: Coordinate) { this._position = newPosition; }
   get position() { return this._position; }
 
@@ -45,6 +71,14 @@ export class MapMarker extends MapElement {
     }
   }
 
+  /**
+   * Moves this marker by a given amount.
+   * @param delta The amount to move by
+   */
+  move(delta: Coordinate) {
+    this._position.translate(delta);
+  }
+
   render() {
     if (!this.visible) {
       return undefined;
@@ -56,22 +90,23 @@ export class MapMarker extends MapElement {
     };
 
     const contents: JSX.Element[] = [];
+    const rect = (
+      <rect
+        class={rectClass}
+        rx="12"
+        ry="12"
+        height={CONTROL_SIZE}
+        width={CONTROL_SIZE}
+      />
+    );
 
     if (this._icon === undefined) {
-      contents.push((<rect class={rectClass} rx="12" ry="12" width={CONTROL_SIZE} height={CONTROL_SIZE}/>));
+      contents.push(rect);
     } else {
       this._icon.size = { width: CONTROL_SIZE, height: CONTROL_SIZE };
       contents.push(this._icon.render());
 
-      contents.push((
-        <rect
-          class={rectClass}
-          width={CONTROL_SIZE}
-          height={CONTROL_SIZE}
-          rx="12"
-          ry="12"
-        />
-      ));
+      contents.push(rect);
     }
 
     const gTrans = `translate(${this.position.toPathString()})`;
@@ -87,13 +122,5 @@ export class MapMarker extends MapElement {
         {contents}
       </g>
     );
-  }
-
-  /**
-   * Moves this marker by a given amount.
-   * @param delta The amount to move by
-   */
-  move(delta: Coordinate) {
-    this._position.translate(delta);
   }
 }

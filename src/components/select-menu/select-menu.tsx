@@ -9,23 +9,49 @@ import {
 
 let nextId = 0;
 
+/**
+ * A component that wraps a `Material Select Menu` component.
+ */
 @Component({
   tag: 'rl-select-menu',
   styleUrl: 'select-menu.scss',
 })
-
 export class Select {
+  /**
+   * Internal ID used to differentiate multiple menus.
+   */
   readonly id = nextId++;
 
+  /**
+   * Reference to the internal Material Select component.
+   */
   private select!: MDCSelect;
 
+  /**
+   * Root element.
+   */
   @Element() root!: HTMLElement;
 
+  /**
+   * The label displayed on the select.
+   */
   @Prop() label = '';
+
+  /**
+   * An array of the different options displayed in the select menu.
+   */
   @Prop() options: string[] = [];
+
+  /**
+   * The currently selected option or `undefined` if nothing is selected.
+   */
   @Prop() selectedOption?: string;
 
-  @Event() selected!: EventEmitter;
+  /**
+   * An event emitted when an item is selected.  The detail of the event is set
+   * to the index of the item selected.
+   */
+  @Event() selected!: EventEmitter<number>;
 
   componentDidLoad() {
     this.select = new MDCSelect(this.root);

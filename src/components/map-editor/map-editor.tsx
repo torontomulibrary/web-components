@@ -475,9 +475,9 @@ export class RLMapEditor {
    * Handle when the user pressses the Enter key.
    * @param e The triggering event
    */
-  @Listen('keydown.enter')
+  @Listen('keydown')
   onEnter(e: KeyboardEvent) {
-    if (e.target && e.target instanceof SVGElement &&
+    if (e.key === 'enter' && e.target && e.target instanceof SVGElement &&
       e.target.classList.contains('rl-map-element')) {
       const id = Number(e.target.id);
       const el = this.processedElements.find(i => i.id === id);

@@ -9,32 +9,73 @@ import {
 
 let nextId = 0;
 
+/**
+ * A component that wraps a `Material Text Field` component.
+ */
 @Component({
   tag: 'rl-text-field',
   styleUrl: 'text-field.scss',
 })
-
 export class TextField {
+  /**
+   * Internal ID used to differentiate multiple text fields.
+   */
   readonly id = nextId++;
 
-  // private input!: HTMLTextAreaElement | HTMLInputElement;
-
+  /**
+   * The root element of this component.
+   */
   @Element() root!: HTMLElement;
 
+  /**
+   * The supplemental label for the text field.
+   */
   @Prop() label = '';
 
+  /**
+   * A flag indicating if the text field has an outlined style.
+   */
   @Prop() outlined = false;
+
+  /**
+   * A flag indicating if the text field is disabled and does not allow user
+   * input.
+   */
   @Prop() disabled = false;
+
+  /**
+   * A flag indicating if the text field uses the full-width style.
+   */
   @Prop() fullwidth = false;
+
+  /**
+   * A flag indicating if the text field uses a textarea instead of an input.
+   */
   @Prop() textarea = false;
 
+  /**
+   * Additional text displayed below the main text field.
+   */
   @Prop() helperText = '';
 
+  /**
+   * The current value of the text field input or text area.
+   */
   @Prop() value = '';
 
+  /**
+   * An icon displayed within the text field.
+   */
   @Prop() icon = '';
+
+  /**
+   * The location of the icon displayed within the text field.
+   */
   @Prop() iconLocation: 'trailing' | 'leading' = 'leading';
 
+  /**
+   * An event emitted when the value of the input or textarea changes.
+   */
   @Event() changeValue!: EventEmitter;
 
   componentDidLoad() {
@@ -77,14 +118,12 @@ export class TextField {
             this.changeValue.emit(e.target.value);
           }
         }}
-        // ref={el => {if (el !== undefined) { this.input = el; }}}
       >
         {this.value}
       </textarea>
     ) :
     (
       <input
-        // ref={el => {if (el !== undefined) { this.input = el; }}}
         type="text"
         id={fieldId}
         class="mdc-text-field__input"
