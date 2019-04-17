@@ -157,7 +157,7 @@ export function pathFromCoordinateArray(points: Coordinate[], open = false): str
     } else {
       return ' L ' + i.toPathString();
     }
-  }).join();
+  }).join('');
 }
 
 export function isSVGPath(str: string) {
