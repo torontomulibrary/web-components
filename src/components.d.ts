@@ -144,9 +144,9 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements'?: MapElementData[];
+    'elements': MapElementDataMap;
     /**
-    * The image being displayed as the base of the map.
+    * The image displayed on the Map.
     */
     'mapImage'?: string;
     /**
@@ -166,9 +166,9 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements'?: MapElementData[];
+    'elements': MapElementDataMap;
     /**
-    * The image being displayed as the base of the map.
+    * The image displayed on the Map.
     */
     'mapImage'?: string;
     /**
@@ -190,17 +190,17 @@ export namespace Components {
     /**
     * An event fired when the user deselects a `MapElement`.
     */
-    'onElementDeselected'?: (event: CustomEvent<undefined>) => void;
+    'onElementDeselected'?: (event: CustomEvent) => void;
     /**
     * An event fired when one of the `MapElement`s on the map is double clicked.
     */
     'onElementDoubleClicked'?: (event: CustomEvent<MapElementData>) => void;
     /**
-    * An even fired when the user selects a `MapElement`. The clicked element's `id` will be passed in the event details.
+    * An event fired when the user selects a MapElement. The clicked element will be passed as the event parameter.
     */
     'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
     /**
-    * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was moved.
+    * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was updated.
     */
     'onElementUpdated'?: (event: CustomEvent<MapElementData>) => void;
   }
@@ -215,7 +215,7 @@ export namespace Components {
     */
     'elements': MapElementDataMap;
     /**
-    * An image that will be displayed on the Map.
+    * The image displayed on the Map.
     */
     'mapImage'?: string;
     /**
@@ -237,7 +237,7 @@ export namespace Components {
     */
     'elements': MapElementDataMap;
     /**
-    * An image that will be displayed on the Map.
+    * The image displayed on the Map.
     */
     'mapImage'?: string;
     /**
@@ -249,17 +249,13 @@ export namespace Components {
     */
     'minScale'?: number;
     /**
-    * An event fired when the user deselects the selected MapElement. The clicked element will be passed as the event parameter.
+    * An event fired when the user deselects the selected `MapElement`.
     */
     'onElementDeselected'?: (event: CustomEvent) => void;
     /**
-    * An event fired when the user selects a MapElement. The clicked element will be passed as the event parameter.
+    * An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter.
     */
-    'onElementSelected'?: (event: CustomEvent) => void;
-    /**
-    * An event fired when the map floorplan is updated.
-    */
-    'onMapRendered'?: (event: CustomEvent) => void;
+    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
   }
 
   interface RlSelectMenu {
