@@ -1,3 +1,17 @@
+## [0.4.2](https://github.com/ryersonlibrary/web-components/compare/v0.4.1...v0.4.2) (2019-05-08)
+
+
+### Features
+
+* 🎸 Map image fades in when changing ([f1eef8e](https://github.com/ryersonlibrary/web-components/commit/f1eef8e))
+
+
+### BREAKING CHANGES
+
+* mapRendered event removed, use componentDidUpdate
+
+
+
 ## [0.4.1](https://github.com/ryersonlibrary/web-components/compare/v0.2.0...v0.4.1) (2019-04-17)
 
 
