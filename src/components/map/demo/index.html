@@ -8,11 +8,10 @@
   <style>
     body { margin: 0 }
 
-    rl-map.rl-map {
-      top: 64px;
+    .map-container {
+      margin: 32px;
       height: 700px;
       width: 850px;
-      left: 40px;
     }
 
     .rl-map-symbol--computer {
@@ -42,6 +41,7 @@
       let activeEl = undefined;
 
       map.elements = { ...elements };
+      // map.size={ width: 850, height: 700 };
 
       map.addEventListener('elementSelected', evt => {
         log.log(`Element selected: ${evt.detail.name}`);
@@ -50,10 +50,33 @@
       map.addEventListener('elementDeselected', evt => {
         log.log(`Element deselected: ${evt.detail ? evt.detail.name: ''}`);
       });
+
+      setTimeout(() => {
+        map.mapImage="demo/3840x2160.png";
+      }, 1000);
+
+      let btn1 = document.querySelector('#btn-main');
+      btn1.disabled = true;
+      btn1.addEventListener('click', evt => {
+        map.mapImage = "demo/3840x2160.png"
+        btn1.disabled = true;
+        btn2.disabled = false;
+      });
+
+      let btn2 = document.querySelector('#btn-alt');
+      btn2.addEventListener('click', evt => {
+        map.mapImage = "demo/3840x2160_alt.png"
+        btn1.disabled = false;
+        btn2.disabled = true;
+      });
     }
   </script>
 
-  <rl-map map-image="demo/3840x2160.png"></rl-map>
+  <button id="btn-main">Main Image</button>
+  <button id="btn-alt">Alt Image</button>
+  <div class="map-container">
+    <rl-map></rl-map>
+  </div>
   <rl-text-log></rl-text-log>
 </div>
 </body>
