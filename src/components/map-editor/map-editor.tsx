@@ -12,7 +12,11 @@ import {
 
 import { MapMarker } from '../../classes/map-marker';
 import { MapPolygon } from '../../classes/map-polygon';
-import { MapElementData } from '../../interface';
+import {
+  MapElementData,
+  MapElementDataMap,
+  Size,
+} from '../../interface';
 import { Coordinate } from '../../utils/coordinate';
 import {
   coordinateFromEvent,
@@ -38,45 +42,69 @@ export class RLMapEditor {
    * The array of MapElements currently being displayed.  Created from the
    * `elements` Prop with additional internal information added.
    */
-  private processedElements: (MapMarker | MapPolygon)[] = [];
+  protected processedElements: (MapMarker | MapPolygon)[] = [];
 
-  // The element being targeted by user interaction.
-  private targetElement: MapMarker | MapPolygon | undefined;
+  /**
+   * The MapElement that is the target of any user interaction.
+   */
+  protected targetElement?: MapMarker | MapPolygon;
+
+  /**
+   * The original size of the image being displayed by the map.
+   */
+  protected imgSize?: Size;
+
+  /**
+   * The original scale factor used to size the SVG so it fits into the SVG and
+   * covers the entire SVG.
+   */
+  protected initialScale = 1;
+
+  /**
+   * The position of the most recent user interaction (mouse/touch-move).
+   */
+  protected last!: Coordinate;
+
+  /**
+   * The bounds used to restrict how far the SVG can be dragged.
+   */
+  protected limits?: DOMRect;
+
+  /**
+   * Timer used to debounce multiple resize events.
+   */
+  protected resizeDebounce: any;
+
+  /**
+   * The initial position of a user interaction (mousedown/touchstart).
+   */
+  protected start!: Coordinate;
+
+  /**
+   * The current state of the Map.
+   */
+  protected state = STATES.NORMAL;
 
   // The control point being targeted by user interaction.
   private targetControl: number | undefined;
 
-  // The full size of the image being displayed by the map.
-  private imgSize!: DOMRect;
-
-  // The original scale factor used to size the SVG so it fits.
-  private initialScale = 1;
-
-  // The position of the most recent user interaction (mouse/touch-move).
-  private last: Coordinate | undefined;
-
-  // The bounds used to restrict how far the SVG can be dragged.
-  private limits: DOMRect | undefined;
-
-  // Timer reference used to debounce multiple resize events.
-  private resizeDebounce: any;
-
-  // The initial position of a user interaction (mousedown/touchstart).
-  private start: Coordinate | undefined;
-
-  // The current state of the Map.
-  private state = STATES.NORMAL;
-
-  // The current size of the SVG element used to display the map.
-  private svgSize!: DOMRect;
-
-  // Reference to the root node (`rula-map`).
+  // Reference to the root node (`rl-map-editor`).
   @Element() root!: HTMLStencilElement;
 
   /**
    * The currently active element.
    */
   @State() activeElement: MapMarker | MapPolygon | undefined;
+
+  /**
+   * Flag indicating if the map image has loaded or not.
+   */
+  @State() imageLoaded = false;
+
+  /**
+   * The current size of the SVG element used to display the map.
+   */
+  @State() size: Size = { width: 1, height: 1 };
 
   /**
    * The factor by which the Map contents are changed to fit within the SVG.
@@ -92,10 +120,10 @@ export class RLMapEditor {
   /**
    * An array of the elements that will be displayed on the Map.
    */
-  @Prop({ mutable: true }) elements?: MapElementData[];
+  @Prop({ mutable: true }) elements!: MapElementDataMap;
 
   /**
-   * The image being displayed as the base of the map.
+   * The image displayed on the Map.
    */
   @Prop() mapImage?: string;
   @Watch('mapImage')
@@ -106,17 +134,19 @@ export class RLMapEditor {
 
     const img = new Image();
     img.src = this.mapImage;
+    this.imageLoaded = false;
     img.onload = () => {
+      this.imageLoaded = true;
+
       if (this.imgSize &&
         this.imgSize.width === img.width &&
         this.imgSize.height === img.height) {
           return;
       }
 
-      this.imgSize = new DOMRect(0, 0, img.width, img.height);
-      this.computeSvgSize();
+      this.imgSize = { width: img.width, height: img.height };
       this.computeScale();
-      this.updateLimits();
+      this.limits = this.computeLimits();
     };
   }
 
@@ -131,17 +161,6 @@ export class RLMapEditor {
   @Prop() minScale: number = DEFAULT_MIN_SCALE;
 
   /**
-   * An even fired when the user selects a `MapElement`. The clicked element's
-   * `id` will be passed in the event details.
-   */
-  @Event() elementSelected!: EventEmitter<MapElementData>;
-  /**
-   * An event fired when a `MapElement` is updated (moved or changes shape).
-   * The event details contains the `MapElement` that was moved.
-   */
-  @Event() elementUpdated!: EventEmitter<MapElementData>;
-
-  /**
    * An event fired when a new `MapElement` is created. The event details
    * contains the `MapElement` that was created.
    */
@@ -150,7 +169,19 @@ export class RLMapEditor {
   /**
    * An event fired when the user deselects a `MapElement`.
    */
-  @Event() elementDeselected!: EventEmitter<undefined>;
+  @Event() elementDeselected!: EventEmitter;
+
+  /**
+   * An event fired when the user selects a MapElement. The clicked element
+   * will be passed as the event parameter.
+   */
+  @Event() elementSelected!: EventEmitter<MapElementData>;
+
+  /**
+   * An event fired when a `MapElement` is updated (moved or changes shape).
+   * The event details contains the `MapElement` that was updated.
+   */
+  @Event() elementUpdated!: EventEmitter<MapElementData>;
 
   /**
    * An event fired when one of the `MapElements` on this map is deleted.
@@ -176,6 +207,7 @@ export class RLMapEditor {
   componentDidLoad() {
     this.onMapImageChanged();
     this.onElementsChanged();
+    this.onResize();
   }
 
   /**
@@ -270,8 +302,10 @@ export class RLMapEditor {
             this.root.forceUpdate();
           } else {
             // Move the canvas otherwise.
-            this.state = STATES.DRAGGING;
-            this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
+            if (this.limits !== undefined) {
+              this.state = STATES.DRAGGING;
+              this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
+            }
           }
           break;
         case STATES.ADD_REGION_FIRST:
@@ -314,7 +348,7 @@ export class RLMapEditor {
             }
           } else {
             this._clearActiveElement();
-            this.elementDeselected.emit();
+            this.elementDeselected.emit(this.activeElement);
           }
           this.state = STATES.NORMAL;
           break;
@@ -336,7 +370,9 @@ export class RLMapEditor {
                 this.mapElementFromParsedElement(this.activeElement));
           } else {
             // Move the canvas otherwise.
-            this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
+            if (this.limits) {
+              this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
+            }
           }
           this.state = STATES.NORMAL;
           break;
@@ -411,7 +447,9 @@ export class RLMapEditor {
               this.mapElementFromParsedElement(this.activeElement));
         } else {
           // Move the canvas otherwise.
-          this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
+          if (this.limits !== undefined) {
+            this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
+          }
         }
         this.state = STATES.NORMAL;
       }
@@ -439,7 +477,7 @@ export class RLMapEditor {
       // perform the resize action only when the user is 'done' resizing.
       this.computeSvgSize();
       this.computeScale();
-      this.updateLimits();
+      this.limits = this.computeLimits();
       this.svgTransform = this.svgTransform.clone().limit(this.limits);
     }, 150);
   }
@@ -464,7 +502,7 @@ export class RLMapEditor {
       }
     }
 
-    this.updateLimits();
+    this.limits = this.computeLimits();
     this.processedElements.forEach(el => el.scale = this.svgScale);
     const newPos = this.toSvgSpace(new Coordinate(e.clientX, e.clientY));
     const delta = Coordinate.difference(newPos, oldPos).scale(this.svgScale);
@@ -588,8 +626,14 @@ export class RLMapEditor {
    * Updates the limits used to restrict the how far the SVG transform can be
    * moved keeping the map from being panning beyond the edge of the image.
    */
-  private updateLimits() {
-    this.limits = computeLimits(this.imgSize, this.svgSize, this.svgScale);
+  private computeLimits() {
+    const { imgSize, size } = this;
+
+    if (imgSize !== undefined && size !== undefined) {
+      return computeLimits(imgSize, size, this.svgScale);
+    } else {
+      return new DOMRect(0, 0, 1, 1);
+    }
   }
 
   /**
@@ -599,15 +643,14 @@ export class RLMapEditor {
    * like CSS `background-size: cover` or SVG `aspectRatio xMidYMid slice`.
    */
   private computeScale() {
-    const img = this.imgSize;
-    const svg = this.svgSize;
+    const { imgSize, size } = this;
 
-    // if (img) {
-    this.svgScale = this.initialScale =
-        Math.max(svg.width / img.width, svg.height / img.height);
-    // } else {
-    //   this.svgScale = this.initialScale = 1;
-    // }
+    if (imgSize === undefined) {
+      this.svgScale = this.initialScale = 1;
+    } else {
+      this.svgScale = this.initialScale =
+          Math.max(size.width / imgSize.width, size.height / imgSize.height);
+    }
 
     this.processedElements.forEach(el => el.scale = this.svgScale);
   }
@@ -617,7 +660,7 @@ export class RLMapEditor {
 
     if (svg) {
       const rect = svg.getBoundingClientRect();
-      this.svgSize = new DOMRect(0, 0, rect.width, rect.height);
+      this.size = { width: rect.width, height: rect.height };
     }
   }
 

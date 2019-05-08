@@ -147,7 +147,7 @@ export class Coordinate {
    *
    * @param limits A rectangle to restrict the Coordinate to.
    */
-  limit(limits?: DOMRect) {
+  limit(limits: DOMRect) {
     // Abort if limits is undefined.
     if (!limits) {
       throw new Error('Unable to limit Corrdinate, limits undefined!');

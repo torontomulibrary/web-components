@@ -6,6 +6,7 @@ import {
   MapElementData,
   MapElementDataMap,
   ParsedMapElement,
+  Size,
 } from '../interface';
 import { Coordinate } from '../utils/coordinate';
 import { decodeCoordinates } from '../utils/helpers';
@@ -35,7 +36,7 @@ export const STATES = {
 
 export const SVG_NS = 'http://www.w3.org/2000/svg';
 
-export function computeLimits(iSize: DOMRect, sSize: DOMRect, scale: number) {
+export function computeLimits(iSize: Size, sSize: Size, scale: number) {
   return new DOMRect(
     Math.min(0, sSize.width - iSize.width * scale),    // left / x
     Math.min(0, sSize.height - iSize.height * scale),  // top / y
@@ -66,14 +67,15 @@ export function getTargetId(el: EventTarget | null): number | undefined {
  * Processes an array of `MapElement`s, turning them into an array of
  * `ParsedMapElement` objects.  These parsed map elements are then rendered onto
  * a map.
- * @param elements An array of `MapElement`s to process.
+ * @param elements An array of `MapElement`s to process
+ * @param scale The scale applied to the `ParsedElement`
  */
 export function parseElements(elements: MapElementDataMap, scale = 1): (MapMarker | MapPolygon)[] {
   return Object.values(elements).map((el: MapElementData) => {
     const decoded = decodeCoordinates(el.points, true);
 
     let icon;
-    if (el.icon !== undefined) {
+    if (typeof el.icon === 'string') {
       icon = new MarkerIcon();
       icon.url = el.icon;
     } else if (el.symbol !== undefined && el.symbol in MarkerSymbolPaths) {
