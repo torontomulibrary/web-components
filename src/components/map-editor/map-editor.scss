@@ -109,6 +109,15 @@
   }
 
   &-marker {
+    text {
+      font-size: 52pt;
+
+      text-anchor: middle;
+
+      cursor: default;
+      user-select: none;
+    }
+
     &:focus rect {
       @include rl-element-focused();
     }

@@ -102,13 +102,15 @@ export class MapMarker extends MapElement {
     );
 
     if (this._icon === undefined) {
-      contents.push(rect);
+      if (this._label !== '') {
+        contents.push((<text y={CONTROL_SIZE - 11} x={CONTROL_SIZE / 2}>{this._label}</text>));
+      }
     } else {
       this._icon.size = { width: CONTROL_SIZE, height: CONTROL_SIZE };
       contents.push(this._icon.render());
-
-      contents.push(rect);
     }
+
+    contents.push(rect);
 
     const gTrans = `translate(${this.position.toPathString()})`;
 
