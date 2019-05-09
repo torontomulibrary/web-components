@@ -94,7 +94,8 @@ export class MapPolygon extends MapElement {
 
     const regionClass = {
       'rl-map-polygon': true,
-      'rl-map-polygon--activated': this._active,
+      'rl-map-polygon--activated': this._active && !this._open,
+      'rl-map-polygon--open': this._open,
     };
 
     return (

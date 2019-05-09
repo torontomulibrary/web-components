@@ -23,7 +23,7 @@
 }
 
 .rl-map {
-  &-region {
+  &-polygon {
     fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
     stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
     stroke-width: 4;
@@ -34,6 +34,11 @@
 
     &--activated {
       @include rl-element-activated();
+    }
+
+    &--open {
+      fill: none;
+      stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
     }
 
     &:hover {
@@ -52,6 +57,18 @@
     &:hover {
       // In the editor, text can be clicked.
       cursor: pointer;
+    }
+  }
+
+  &-comp {
+    fill: red;
+    fill-rule: evenodd;
+    stroke: red;
+    stroke-width: 2;
+    
+    &--available {
+      fill: green;
+      stroke: green;
     }
   }
 
@@ -85,28 +102,26 @@
     }
   }
 
-  &-point {
-    &:focus {
-      outline: none;
+  &-marker {
+    &:focus rect {
+      @include rl-element-focused();
     }
 
-    &:hover {
-      rect {
+    &--clickable {
+      &:hover rect {
         @include rl-element-focused();
-
+    
         cursor: pointer;
       }
     }
   }
 
   &-rect {
-    fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
-    stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
-    stroke-width: 4;
+    fill: none;
+    stroke: none;
 
     &--activated {
       @include rl-element-activated();
-      @include rl-element-focused();
     }
   }
 }
