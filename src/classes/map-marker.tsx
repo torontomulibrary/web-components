@@ -5,7 +5,7 @@ import { MapElement } from './map-element';
 import { MarkerIcon } from './marker-icon';
 import { MarkerSymbol } from './marker-symbol';
 
-const CONTROL_SIZE = 50;
+const CONTROL_SIZE = 72;
 
 /**
  * A type of `MapElement`.  A marker is an image or text rendered at a specific
