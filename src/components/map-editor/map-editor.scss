@@ -36,15 +36,21 @@
       @include rl-element-activated();
     }
 
-    &--open {
-      fill: none;
-      stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
-    }
-
     &:hover {
       @include rl-element-focused();
 
       cursor: pointer;
+    }
+
+    &--open {
+      fill: none;
+      stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
+
+      &:hover {
+        fill: none;
+        
+        cursor: default;
+      }
     }
   }
 
@@ -117,11 +123,13 @@
   }
 
   &-rect {
-    fill: none;
-    stroke: none;
+    fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
+    stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
+    stroke-width: 4;
 
     &--activated {
       @include rl-element-activated();
+      @include rl-element-focused();
     }
   }
 }
