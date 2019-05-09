@@ -80,7 +80,8 @@ export class MapMarker extends MapElement {
   }
 
   render() {
-    if (!this.visible) {
+    if (!this.visible || this._id === -1 &&
+        this._position.equals(new Coordinate(0, 0))) {
       return undefined;
     }
 
