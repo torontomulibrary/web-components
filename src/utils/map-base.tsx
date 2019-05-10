@@ -89,7 +89,7 @@ export function parseElements(elements: MapElementDataMap, scale = 1): (MapMarke
       newEl = new MapMarker();
       newEl.icon = icon;
       newEl.position = decoded.points;
-      newEl.label = (el.icon !== 'string' && el.symbol === undefined) ? el.name : '';
+      newEl.label = (el.icon !== 'string' && !el.symbol) ? el.name : '';
       newEl.available = el.available || false;
     } else {
       newEl = new MapPolygon();
