@@ -102,8 +102,9 @@
 
       dialog.addEventListener('MDCDialog:closed', evt => {
         if (evt.detail.action === 'save') {
-          details = dialog.getDetails();
-          dialog.details = { ...details };
+          dialog.getDetails().then(details => {
+            dialog.details = { ...details };
+          });
         }
       });
 

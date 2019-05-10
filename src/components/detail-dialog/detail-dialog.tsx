@@ -8,7 +8,11 @@ import {
   Prop,
 } from '@stencil/core';
 
-import { MapElementDetailMap, MapElementDetailType } from '../../interface';
+import {
+  MapElementDetail,
+  MapElementDetailMap,
+  MapElementDetailType
+} from '../../interface';
 
 let nextId = 0;
 
@@ -87,13 +91,14 @@ export class DetailDialog {
    * `MapElementDetails`
    */
   @Method()
-  async getDetails() {
-    const details = this.detailItems.map(async item => {
-      const det = await item.getDetail();
-      const rem = await item.toRemove();
-      return Promise.resolve({ ...det, remove: rem });
-    });
-    return details;
+  getDetails() {
+    return Promise.all(
+      this.detailItems.map(item => {
+        return Promise.all([item.getDetail(), item.toRemove()]).then(values =>
+          Promise.resolve({ ...values[0], remove: values[1] } as MapElementDetail)
+        );
+      })
+    );
   }
 
   hostData() {

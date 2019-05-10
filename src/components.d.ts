@@ -95,7 +95,7 @@ export namespace Components {
     /**
     * Returns the values of all the DetailDialogItems as an array of `MapElementDetails`
     */
-    'getDetails': () => Promise<Promise<any>[]>;
+    'getDetails': () => Promise<MapElementDetail[]>;
     /**
     * Opens this dialog.
     */

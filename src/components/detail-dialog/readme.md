@@ -24,14 +24,14 @@
 
 ## Methods
 
-### `getDetails() => Promise<Promise<any>[]>`
+### `getDetails() => Promise<MapElementDetail[]>`
 
 Returns the values of all the DetailDialogItems as an array of
 `MapElementDetails`
 
 #### Returns
 
-Type: `Promise<Promise<any>[]>`
+Type: `Promise<MapElementDetail[]>`
 
 
 
