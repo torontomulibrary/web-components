@@ -1,3 +1,22 @@
+## [0.4.3](https://github.com/ryersonlibrary/web-components/compare/v0.4.2...v0.4.3) (2019-05-10)
+
+
+### Bug Fixes
+
+* 🐛 changed case to use label of element ([8cc359b](https://github.com/ryersonlibrary/web-components/commit/8cc359b))
+* 🐛 fix additional styles for the map editor ([089ddb9](https://github.com/ryersonlibrary/web-components/commit/089ddb9))
+* 🐛 fix polygon styles in MapEditor ([b96c907](https://github.com/ryersonlibrary/web-components/commit/b96c907))
+* 🐛 getDetails now properly uses and returns Promise ([da43f34](https://github.com/ryersonlibrary/web-components/commit/da43f34))
+* 🐛 increase size of map marker ([2f6ca8a](https://github.com/ryersonlibrary/web-components/commit/2f6ca8a))
+* 🐛 MapMarker hidden until 'created' when user clicks ([fa33d29](https://github.com/ryersonlibrary/web-components/commit/fa33d29))
+
+
+### Features
+
+* 🎸 MapMarker shows name as label ([20da53c](https://github.com/ryersonlibrary/web-components/commit/20da53c))
+
+
+
 ## [0.4.2](https://github.com/ryersonlibrary/web-components/compare/v0.4.1...v0.4.2) (2019-05-08)
 
 
