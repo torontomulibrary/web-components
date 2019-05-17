@@ -7,13 +7,10 @@
 
 ## Properties
 
-| Property                       | Attribute | Description                                                             | Type                                                                        | Default     |
-| ------------------------------ | --------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------- |
-| `categoryOptions` _(required)_ | --        | An array of all the different categories that can be selected.          | `{ name: string; id: number; items: MapElementDetailType[]; }[]`            | `undefined` |
-| `categorySelection`            | --        | The currently selected Category.                                        | `undefined \| { name: string; id: number; items: MapElementDetailType[]; }` | `undefined` |
-| `detail`                       | --        | The `MapElementDetail` that this item is displaying the information of. | `MapElementDetail \| undefined`                                             | `undefined` |
-| `typeOptions`                  | --        | All the possible values for the type of this `DetailDialogItem`.        | `MapElementDetailType[]`                                                    | `[]`        |
-| `typeSelection`                | --        | The currently selected type of this `DetailDialogItem`.                 | `MapElementDetailType \| undefined`                                         | `undefined` |
+| Property                       | Attribute | Description                                                             | Type                                                             | Default     |
+| ------------------------------ | --------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------- |
+| `categoryOptions` _(required)_ | --        | An array of all the different categories that can be selected.          | `{ name: string; id: number; items: MapElementDetailType[]; }[]` | `undefined` |
+| `detail`                       | --        | The `MapElementDetail` that this item is displaying the information of. | `MapElementDetail \| undefined`                                  | `undefined` |
 
 
 ## Methods

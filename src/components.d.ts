@@ -28,10 +28,6 @@ export namespace Components {
     */
     'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
     /**
-    * The currently selected Category.
-    */
-    'categorySelection'?: { name: string, id: number, items: MapElementDetailType[] };
-    /**
     * The `MapElementDetail` that this item is displaying the information of.
     */
     'detail'?: MapElementDetail;
@@ -43,14 +39,6 @@ export namespace Components {
     * Returns a `Promise` that resolves to whether or not this `DetailDialogItem` is to be removed or not.
     */
     'toRemove': () => Promise<boolean>;
-    /**
-    * All the possible values for the type of this `DetailDialogItem`.
-    */
-    'typeOptions': MapElementDetailType[];
-    /**
-    * The currently selected type of this `DetailDialogItem`.
-    */
-    'typeSelection'?: MapElementDetailType;
   }
   interface RlDetailDialogItemAttributes extends StencilHTMLAttributes {
     /**
@@ -58,21 +46,9 @@ export namespace Components {
     */
     'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
     /**
-    * The currently selected Category.
-    */
-    'categorySelection'?: { name: string, id: number, items: MapElementDetailType[] };
-    /**
     * The `MapElementDetail` that this item is displaying the information of.
     */
     'detail'?: MapElementDetail;
-    /**
-    * All the possible values for the type of this `DetailDialogItem`.
-    */
-    'typeOptions'?: MapElementDetailType[];
-    /**
-    * The currently selected type of this `DetailDialogItem`.
-    */
-    'typeSelection'?: MapElementDetailType;
   }
 
   interface RlDetailDialog {
@@ -268,9 +244,9 @@ export namespace Components {
     */
     'options': string[];
     /**
-    * The currently selected option or `undefined` if nothing is selected.
+    * The index of the currently selected option or `-1`.
     */
-    'selectedOption'?: string;
+    'selectedOption': any;
   }
   interface RlSelectMenuAttributes extends StencilHTMLAttributes {
     /**
@@ -286,9 +262,9 @@ export namespace Components {
     */
     'options'?: string[];
     /**
-    * The currently selected option or `undefined` if nothing is selected.
+    * The index of the currently selected option or `-1`.
     */
-    'selectedOption'?: string;
+    'selectedOption'?: any;
   }
 
   interface RlTextField {

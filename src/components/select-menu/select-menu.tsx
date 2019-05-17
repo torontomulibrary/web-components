@@ -43,9 +43,9 @@ export class Select {
   @Prop() options: string[] = [];
 
   /**
-   * The currently selected option or `undefined` if nothing is selected.
+   * The index of the currently selected option or `-1`.
    */
-  @Prop() selectedOption?: string;
+  @Prop() selectedOption = -1;
 
   /**
    * An event emitted when an item is selected.  The detail of the event is set
@@ -76,9 +76,9 @@ export class Select {
     return ([
       <i class="mdc-select__dropdown-icon"></i>,
       <select class="mdc-select__native-control">
-        {this.options.map(option => {
+        {this.options.map((option, index) => {
           const o = option.toLowerCase();
-          return option === this.selectedOption ?
+          return index === this.selectedOption ?
           <option value={o} selected>{option}</option> :
           <option value={o}>{option}</option>;
         })}
