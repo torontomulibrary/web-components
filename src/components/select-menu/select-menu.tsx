@@ -45,7 +45,7 @@ export class Select {
   /**
    * The index of the currently selected option or `-1`.
    */
-  @Prop() selectedOption = -1;
+  @Prop() selectedOption: number = -1;
 
   /**
    * An event emitted when an item is selected.  The detail of the event is set
