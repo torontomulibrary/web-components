@@ -170,9 +170,9 @@ export class RLMap {
    */
   @Watch('elements')
   onElementsChanged() {
-    if (this.elements !== undefined) {
-      this.processedElements = parseElements(this.elements);
-    }
+    // if (this.elements !== undefined) {
+    this.processedElements = parseElements(this.elements);
+    // }
   }
 
   componentDidLoad() {
@@ -379,7 +379,7 @@ export class RLMap {
   private computeLimits() {
     const { imgSize, size } = this;
 
-    if (imgSize !== undefined && size !== undefined) {
+    if (imgSize !== undefined) {
       return computeLimits(imgSize, size, this.svgScale);
     } else {
       return new DOMRect(0, 0, 1, 1);

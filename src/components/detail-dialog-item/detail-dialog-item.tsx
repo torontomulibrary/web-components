@@ -113,9 +113,7 @@ export class DetailDialogItem {
   componentWillLoad() {
     // If categories have already been provided, set the types options to the
     // items of the first category, as that is selected by default.
-    if (this.categoryOptions) {
-      this.typeOptions = this.categoryOptions[0].items;
-    }
+    this.typeOptions = this.categoryOptions[0].items;
   }
 
   componentDidLoad() {
@@ -135,7 +133,7 @@ export class DetailDialogItem {
       code: this.code,
       altText: this.altText,
       id: this.itemId,
-      detailTypeId: this.typeSelection ? this.typeOptions[this.typeSelection].id : 1,
+      detailTypeId: this.typeOptions[this.typeSelection].id,
     } as MapElementDetail);
   }
 
@@ -159,9 +157,9 @@ export class DetailDialogItem {
   }
 
   render() {
-    if (this.categorySelection === undefined || this.typeSelection === undefined || this.remove) {
-      return null;
-    }
+    // if (this.categorySelection === undefined || this.typeSelection === undefined || this.remove) {
+    //   return null;
+    // }
 
     return ([
       <div class="rl-text-field-container">

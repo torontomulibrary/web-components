@@ -78,7 +78,7 @@ export class RLMapEditor {
   /**
    * The initial position of a user interaction (mousedown/touchstart).
    */
-  protected start!: Coordinate;
+  protected start?: Coordinate;
 
   /**
    * The current state of the Map.
@@ -199,9 +199,9 @@ export class RLMapEditor {
    */
   @Watch('elements')
   onElementsChanged() {
-    if (this.elements !== undefined) {
-      this.processedElements = parseElements(this.elements, this.svgScale);
-    }
+    // if (this.elements !== undefined) {
+    this.processedElements = parseElements(this.elements, this.svgScale);
+    // }
   }
 
   componentDidLoad() {
@@ -414,6 +414,7 @@ export class RLMapEditor {
 
       this.targetControl = undefined;
       this.targetElement = undefined;
+      this.start = undefined;
     // }
   }
 
@@ -460,7 +461,7 @@ export class RLMapEditor {
   onDoubleClick(e: Event) {
     if (this.state === STATES.NORMAL) {
       const id = getTargetId(e.target);
-      if (id !== undefined && this.elements !== undefined) {
+      if (id !== undefined) {
         this.elementDoubleClicked.emit(this.elements[id]);
       }
     }
@@ -566,8 +567,7 @@ export class RLMapEditor {
    */
   @Method()
   deleteRegion() {
-    if (this.elements !== undefined && this.state === STATES.NORMAL &&
-        this.activeElement) {
+    if (this.state === STATES.NORMAL && this.activeElement !== undefined) {
       this.elementDeleted.emit(this.elements[this.activeElement.id]);
       this._clearActiveElement();
     }
@@ -586,9 +586,9 @@ export class RLMapEditor {
   }
 
   private mapElementFromParsedElement(el: MapMarker | MapPolygon): MapElementData | undefined {
-    if (this.elements === undefined) {
-      return undefined;
-    }
+    // if (this.elements === undefined) {
+    //   return undefined;
+    // }
 
     const originalEl = this.elements[el.id] || {
       altText: '',
@@ -629,7 +629,7 @@ export class RLMapEditor {
   private computeLimits() {
     const { imgSize, size } = this;
 
-    if (imgSize !== undefined && size !== undefined) {
+    if (imgSize !== undefined) {
       return computeLimits(imgSize, size, this.svgScale);
     } else {
       return new DOMRect(0, 0, 1, 1);
@@ -680,9 +680,9 @@ export class RLMapEditor {
     this.activeElement = el;
     this.activeElement.active = true;
 
-    if (this.elements !== undefined) {
-      this.elementSelected.emit(this.elements[this.activeElement.id]);
-    }
+    // if (this.elements !== undefined) {
+    this.elementSelected.emit(this.elements[this.activeElement.id]);
+    // }
   }
 
   /**

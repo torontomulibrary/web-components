@@ -246,7 +246,7 @@ export namespace Components {
     /**
     * The index of the currently selected option or `-1`.
     */
-    'selectedOption': any;
+    'selectedOption': number;
   }
   interface RlSelectMenuAttributes extends StencilHTMLAttributes {
     /**
@@ -264,7 +264,7 @@ export namespace Components {
     /**
     * The index of the currently selected option or `-1`.
     */
-    'selectedOption'?: any;
+    'selectedOption'?: number;
   }
 
   interface RlTextField {

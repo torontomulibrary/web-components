@@ -148,11 +148,6 @@ export class Coordinate {
    * @param limits A rectangle to restrict the Coordinate to.
    */
   limit(limits: DOMRect) {
-    // Abort if limits is undefined.
-    if (!limits) {
-      throw new Error('Unable to limit Corrdinate, limits undefined!');
-    }
-
     // Limit in the x direction.
     const left = !isNaN(limits.left) ? limits.left : undefined;
     const width = !isNaN(limits.width) ? limits.width : 0;
