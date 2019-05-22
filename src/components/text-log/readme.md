@@ -7,19 +7,13 @@
 
 ## Methods
 
-### `log(str?: string) => void`
+### `log(str?: string) => Promise<void>`
 
 Add a new line to the log.
 
-#### Parameters
-
-| Name  | Type     | Description                  |
-| ----- | -------- | ---------------------------- |
-| `str` | `string` | A string to write to the log |
-
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
 
 

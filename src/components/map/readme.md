@@ -19,35 +19,29 @@
 
 | Event               | Description                                                                                                     | Type                          |
 | ------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| `elementDeselected` | An event fired when the user deselects the selected `MapElement`.                                               | `CustomEvent<void>`           |
+| `elementDeselected` | An event fired when the user deselects the selected `MapElement`.                                               | `CustomEvent<any>`            |
 | `elementSelected`   | An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter. | `CustomEvent<MapElementData>` |
 
 
 ## Methods
 
-### `clearActiveElement() => void`
+### `clearActiveElement() => Promise<void>`
 
 Clears the currently active element.
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
 
 
-### `setActiveElement(id: number) => void`
+### `setActiveElement(id: number) => Promise<void>`
 
 Sets the element with the specified ID to active.
 
-#### Parameters
-
-| Name | Type     | Description                             |
-| ---- | -------- | --------------------------------------- |
-| `id` | `number` | The ID of the element to set as active. |
-
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
 
 

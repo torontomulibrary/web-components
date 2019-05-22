@@ -2,7 +2,7 @@ import { Config } from '@stencil/core';
 import { sass } from '@stencil/sass';
 
 export const config: Config = {
-  namespace: 'rl-web-components',
+  namespace: 'rlwc',
   plugins: [
     sass({
       includePaths: ['./node_modules', './src/global']
@@ -13,12 +13,8 @@ export const config: Config = {
       type: 'dist',
     },
     {
-      type: 'docs',
+      type: 'docs-readme',
       strict: true,
-    },
-    {
-      type: 'stats',
-      file: 'stats.json',
     },
   ],
   copy: [{ src: '**.*.scss' }],

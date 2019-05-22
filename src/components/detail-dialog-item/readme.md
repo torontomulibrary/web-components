@@ -38,6 +38,26 @@ Type: `Promise<boolean>`
 
 
 
+## Dependencies
+
+### Used by
+
+ - [rl-detail-dialog](../detail-dialog)
+
+### Depends on
+
+- [rl-select-menu](../select-menu)
+- [rl-text-field](../text-field)
+
+### Graph
+```mermaid
+graph TD;
+  rl-detail-dialog-item --> rl-select-menu
+  rl-detail-dialog-item --> rl-text-field
+  rl-detail-dialog --> rl-detail-dialog-item
+  style rl-detail-dialog-item fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

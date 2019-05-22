@@ -1,3 +1,5 @@
+import { h } from '@stencil/core';
+
 import { MapMarker } from '../classes/map-marker';
 import { MapPolygon } from '../classes/map-polygon';
 import { MarkerIcon } from '../classes/marker-icon';
@@ -134,7 +136,7 @@ export function renderElements(els: ParsedMapElement[]) {
           }
 
           return (
-            <g id={el.id} class="rl-map-element__point" tabindex="0" transform={gTrans}>
+            <g id={`${el.id}`} class="rl-map-element__point" tabIndex={0} transform={gTrans}>
               <image
                 class="rl-map-element__icon"
                 // Don't set width.  Some icons are not square and leaving width
@@ -155,7 +157,7 @@ export function renderElements(els: ParsedMapElement[]) {
       } else {
         // We have a text node.
         return (
-          <g id={el.id} class="rl-map-element__point" tabindex="0" transform={gTrans}>
+          <g id={`${el.id}`} class="rl-map-element__point" tabIndex={0} transform={gTrans}>
             <rect rx="12" ry="12" width={CONTROL_SIZE} height={CONTROL_SIZE}/>
           </g>
           // <text id={el.id} class="rl-map-element__text" transform={gTrans}>
@@ -170,7 +172,7 @@ export function renderElements(els: ParsedMapElement[]) {
       };
 
       return (
-        <path class={regionClass} id={el.id} d={el.path} tabindex="0"/>
+        <path class={regionClass} id={`${el.id}`} d={el.path} tabIndex={0}/>
       );
     }
   });

@@ -5,6 +5,7 @@ import {
   Event,
   EventEmitter,
   Prop,
+  h,
 } from '@stencil/core';
 
 let nextId = 0;

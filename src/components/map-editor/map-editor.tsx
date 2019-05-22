@@ -8,6 +8,7 @@ import {
   Prop,
   State,
   Watch,
+  h,
 } from '@stencil/core';
 
 import { MapMarker } from '../../classes/map-marker';
@@ -89,7 +90,7 @@ export class RLMapEditor {
   private targetControl: number | undefined;
 
   // Reference to the root node (`rl-map-editor`).
-  @Element() root!: HTMLStencilElement;
+  @Element() root!: HTMLRlMapEditorElement;
 
   /**
    * The currently active element.
@@ -240,7 +241,7 @@ export class RLMapEditor {
       if (e.target && e.target instanceof SVGCircleElement) {
         if (e.target.classList.contains('rl-map-control') ||
             e.target.classList.contains('rl-map-midpoint')) {
-          this.targetControl = Number(e.target.getAttribute('index'));
+          this.targetControl = Number(e.target.dataset.index);
         }
       }
     }
@@ -379,6 +380,7 @@ export class RLMapEditor {
         case STATES.ADD_REGION_FIRST:
           if (this.activeElement && this.activeElement instanceof MapPolygon) {
             this.activeElement.addPoint(this.toSvgSpace(point));
+            this.root.forceUpdate();
           }
           // this.activeControls = [...this.activeControls, this.toSvgSpace(point)];
           this.state = STATES.ADD_REGION;
@@ -397,6 +399,7 @@ export class RLMapEditor {
             } else {
               // Add a new point to the active controls array.
               this.activeElement.addPoint(this.toSvgSpace(point));
+              this.root.forceUpdate();
             }
           }
           break;
@@ -414,7 +417,6 @@ export class RLMapEditor {
 
       this.targetControl = undefined;
       this.targetElement = undefined;
-      this.start = undefined;
     // }
   }
 
@@ -470,7 +472,7 @@ export class RLMapEditor {
   /**
    * Handles when the window is resized.
    */
-  @Listen('window:resize')
+  @Listen('resize', { target: 'window' })
   onResize() {
     clearTimeout(this.resizeDebounce);
     this.resizeDebounce = setTimeout(_ => {
@@ -530,7 +532,7 @@ export class RLMapEditor {
    * when clicking again on the original point is the region added.
    */
   @Method()
-  addRegion() {
+  async addRegion() {
     this._clearActiveElement();
     this.state = STATES.ADD_REGION_INIT;
     this.activeElement = new MapPolygon();
@@ -544,7 +546,7 @@ export class RLMapEditor {
    * process.  The user must then click somewhere on the map to add the point.
    */
   @Method()
-  addPoint() {
+  async addPoint() {
     this._clearActiveElement();
     this.state = STATES.ADD_POINT;
     this.activeElement = new MapMarker();
@@ -556,7 +558,7 @@ export class RLMapEditor {
    * for futher action.
    */
   @Method()
-  cancelAction() {
+  async cancelAction() {
     this._clearActiveElement();
     this.state = STATES.NORMAL;
   }
@@ -566,7 +568,7 @@ export class RLMapEditor {
    * this method is called, it has no effect.
    */
   @Method()
-  deleteRegion() {
+  async deleteRegion() {
     if (this.state === STATES.NORMAL && this.activeElement !== undefined) {
       this.elementDeleted.emit(this.elements[this.activeElement.id]);
       this._clearActiveElement();
@@ -579,7 +581,7 @@ export class RLMapEditor {
    * @param id The ID of the element to set as active.
    */
   @Method()
-  setActiveElement(id: number) {
+  async setActiveElement(id: number) {
     if (this.processedElements.length > 0) {
       this._setActiveElement(this.processedElements.find(i => i.id === id));
     }

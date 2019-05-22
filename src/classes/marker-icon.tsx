@@ -1,3 +1,5 @@
+import { h } from '@stencil/core';
+
 import { Coordinate } from '../utils/coordinate';
 
 interface Size {

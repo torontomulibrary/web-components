@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Method,
   Prop,
+  h,
 } from '@stencil/core';
 
 import {
@@ -82,7 +83,7 @@ export class DetailDialog {
    * Opens this dialog.
    */
   @Method()
-  open() {
+  async open() {
     this.dialog.open();
   }
 

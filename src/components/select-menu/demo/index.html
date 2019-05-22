@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>rl-select-menu Example || Ryerson Library Web Components</title>
-  <script src="/dist/rl-web-components.js"></script>
+  <script type="module" src="/dist/rlwc/rlwc.esm.js"></script>
   <style>
     body { margin: 0 }
   </style>
@@ -12,25 +12,16 @@
 </head>
 <body class='demo-content'>
   <script>
-    const details = {
-      1: {
-        id: 1,
-        name: "Detail 1",
-        description: "A basic description",
-        altText: "Extra details",
-      },
-      2: {
-        id: 2,
-        name: "Detail 2",
-        description: "A simple description",
-        altText: "Even more text",
-      }
-    }
+    const options = [
+      "Option 1",
+      "Option 2",
+    ];
 
     let lastId = 1;
 
     window.onload = async () => {
       let select = document.querySelector('rl-select-menu');
+      select.options = options;
     }
   </script>
 

@@ -2,6 +2,7 @@ import {
   Component,
   Method,
   State,
+  h,
 } from '@stencil/core';
 
 @Component({
@@ -18,7 +19,7 @@ export class RLTextLog {
    * @param str A string to write to the log
    */
   @Method()
-  log(str = '') {
+  async log(str = '') {
     this.strings = [ ...this.strings, str ];
   }
 

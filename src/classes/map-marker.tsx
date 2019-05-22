@@ -1,3 +1,5 @@
+import { h } from '@stencil/core';
+
 import { iMapMarkerOptions } from '../interface';
 import { Coordinate } from '../utils/coordinate';
 
@@ -90,7 +92,7 @@ export class MapMarker extends MapElement {
       'rl-map-rect--activated': this.active,
     };
 
-    const contents: JSX.Element[] = [];
+    const contents: any[] = [];
     const rect = (
       <rect
         class={rectClass}
@@ -121,7 +123,7 @@ export class MapMarker extends MapElement {
     };
 
     return (
-      <g id={this._id} class={gClass} tabindex={this._clickable ? '0' : undefined} transform={gTrans}>
+      <g id={`${this._id}`} class={gClass} tabIndex={this._clickable ? 0 : undefined} transform={gTrans}>
         {contents}
       </g>
     );

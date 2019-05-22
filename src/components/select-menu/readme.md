@@ -21,6 +21,19 @@
 | `selected` | An event emitted when an item is selected.  The detail of the event is set to the index of the item selected. | `CustomEvent<number>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [rl-detail-dialog-item](../detail-dialog-item)
+
+### Graph
+```mermaid
+graph TD;
+  rl-detail-dialog-item --> rl-select-menu
+  style rl-select-menu fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event       | Description                                                            | Type                |
-| ----------- | ---------------------------------------------------------------------- | ------------------- |
-| `addDetail` | An event emitted when a new `DetailDialogItem` is added to the dialog. | `CustomEvent<void>` |
+| Event       | Description                                                            | Type               |
+| ----------- | ---------------------------------------------------------------------- | ------------------ |
+| `addDetail` | An event emitted when a new `DetailDialogItem` is added to the dialog. | `CustomEvent<any>` |
 
 
 ## Methods
@@ -35,16 +35,31 @@ Type: `Promise<MapElementDetail[]>`
 
 
 
-### `open() => void`
+### `open() => Promise<void>`
 
 Opens this dialog.
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
 
 
+
+## Dependencies
+
+### Depends on
+
+- [rl-detail-dialog-item](../detail-dialog-item)
+
+### Graph
+```mermaid
+graph TD;
+  rl-detail-dialog --> rl-detail-dialog-item
+  rl-detail-dialog-item --> rl-select-menu
+  rl-detail-dialog-item --> rl-text-field
+  style rl-detail-dialog fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

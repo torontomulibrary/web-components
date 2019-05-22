@@ -22,10 +22,23 @@
 
 ## Events
 
-| Event         | Description                                                       | Type                |
-| ------------- | ----------------------------------------------------------------- | ------------------- |
-| `changeValue` | An event emitted when the value of the input or textarea changes. | `CustomEvent<void>` |
+| Event         | Description                                                       | Type               |
+| ------------- | ----------------------------------------------------------------- | ------------------ |
+| `changeValue` | An event emitted when the value of the input or textarea changes. | `CustomEvent<any>` |
 
+
+## Dependencies
+
+### Used by
+
+ - [rl-detail-dialog-item](../detail-dialog-item)
+
+### Graph
+```mermaid
+graph TD;
+  rl-detail-dialog-item --> rl-text-field
+  style rl-text-field fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

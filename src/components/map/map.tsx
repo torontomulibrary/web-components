@@ -8,6 +8,7 @@ import {
   Prop,
   State,
   Watch,
+  h,
 } from '@stencil/core';
 
 import { MapMarker } from '../../classes/map-marker';
@@ -292,7 +293,7 @@ export class RLMap {
   /**
    * Handles when the user performs a resize action.
    */
-  @Listen('window:resize')
+  @Listen('resize', { target: 'window' })
   onResize() {
     clearTimeout(this.resizeDebounce);
     this.resizeDebounce = setTimeout(_ => {
@@ -346,7 +347,7 @@ export class RLMap {
    * Clears the currently active element.
    */
   @Method()
-  clearActiveElement() {
+  async clearActiveElement() {
     this._clearActiveElement();
   }
 
@@ -356,7 +357,7 @@ export class RLMap {
    * @param id The ID of the element to set as active.
    */
   @Method()
-  setActiveElement(id: number) {
+  async setActiveElement(id: number) {
     if (this.processedElements.length > 0) {
       this._setActiveElement(this.processedElements.find(i => i.id === id), false);
     }

@@ -4,6 +4,7 @@ import {
   Prop,
   State,
   Watch,
+  h,
 } from '@stencil/core';
 
 import { MapElementDetail, MapElementDetailType } from '../../interface';

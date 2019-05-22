@@ -5,9 +5,7 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   MapElementData,
   MapElementDataMap,
@@ -15,42 +13,9 @@ import {
   MapElementDetailMap,
   MapElementDetailType,
 } from './interface';
-import {
-  EventEmitter,
-} from '@stencil/core';
 
 
 export namespace Components {
-
-  interface RlDetailDialogItem {
-    /**
-    * An array of all the different categories that can be selected.
-    */
-    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
-    /**
-    * The `MapElementDetail` that this item is displaying the information of.
-    */
-    'detail'?: MapElementDetail;
-    /**
-    * Returns a `Promise` that resolves to a `MapElementDetail` object with values set as those of this `DetailDialogItem`.
-    */
-    'getDetail': () => Promise<MapElementDetail>;
-    /**
-    * Returns a `Promise` that resolves to whether or not this `DetailDialogItem` is to be removed or not.
-    */
-    'toRemove': () => Promise<boolean>;
-  }
-  interface RlDetailDialogItemAttributes extends StencilHTMLAttributes {
-    /**
-    * An array of all the different categories that can be selected.
-    */
-    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
-    /**
-    * The `MapElementDetail` that this item is displaying the information of.
-    */
-    'detail'?: MapElementDetail;
-  }
-
   interface RlDetailDialog {
     /**
     * The different categories that each item can display.  Each category has a set of Detailtypes.
@@ -75,117 +40,31 @@ export namespace Components {
     /**
     * Opens this dialog.
     */
-    'open': () => void;
+    'open': () => Promise<void>;
   }
-  interface RlDetailDialogAttributes extends StencilHTMLAttributes {
+  interface RlDetailDialogItem {
     /**
-    * The different categories that each item can display.  Each category has a set of Detailtypes.
+    * An array of all the different categories that can be selected.
     */
-    'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
     /**
-    * The details that will be displayed in this dialog.
+    * The `MapElementDetail` that this item is displaying the information of.
     */
-    'details'?: MapElementDetailMap;
+    'detail'?: MapElementDetail;
     /**
-    * An array of strings that will be used to create action buttons for the dialog.  When the corresponding button is clicked by the user, MDCDialog will emit an event with the lowercase version of the action. For example the action `Yes` would emit the `MDCDialog:closing` with the property `event.detail.action === 'yes'`.
+    * Returns a `Promise` that resolves to a `MapElementDetail` object with values set as those of this `DetailDialogItem`.
     */
-    'dialogActions'?: string[];
+    'getDetail': () => Promise<MapElementDetail>;
     /**
-    * The title of the dialog window.
+    * Returns a `Promise` that resolves to whether or not this `DetailDialogItem` is to be removed or not.
     */
-    'dialogTitle'?: string;
-    /**
-    * An event emitted when a new `DetailDialogItem` is added to the dialog.
-    */
-    'onAddDetail'?: (event: CustomEvent) => void;
+    'toRemove': () => Promise<boolean>;
   }
-
-  interface RlMapEditor {
-    /**
-    * Add a new `MapPoint` element to the map.  Calling this method starts the process.  The user must then click somewhere on the map to add the point.
-    */
-    'addPoint': () => void;
-    /**
-    * Add a new `MapRegion` to the map. Calling this method starts the process. The user must then click numerous times on the map to add points.  Only when clicking again on the original point is the region added.
-    */
-    'addRegion': () => void;
-    /**
-    * Cancels the current action and returns the map to its default state, ready for futher action.
-    */
-    'cancelAction': () => void;
-    /**
-    * Removes the currently active element.  If no element is selected when this method is called, it has no effect.
-    */
-    'deleteRegion': () => void;
-    /**
-    * An array of the elements that will be displayed on the Map.
-    */
-    'elements': MapElementDataMap;
-    /**
-    * The image displayed on the Map.
-    */
-    'mapImage'?: string;
-    /**
-    * The maximum scale factor.
-    */
-    'maxScale': number;
-    /**
-    * The minimum scale factor.
-    */
-    'minScale': number;
-    /**
-    * Sets the element with the specified ID to active.
-    */
-    'setActiveElement': (id: number) => void;
-  }
-  interface RlMapEditorAttributes extends StencilHTMLAttributes {
-    /**
-    * An array of the elements that will be displayed on the Map.
-    */
-    'elements': MapElementDataMap;
-    /**
-    * The image displayed on the Map.
-    */
-    'mapImage'?: string;
-    /**
-    * The maximum scale factor.
-    */
-    'maxScale'?: number;
-    /**
-    * The minimum scale factor.
-    */
-    'minScale'?: number;
-    /**
-    * An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.
-    */
-    'onElementCreated'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when one of the `MapElements` on this map is deleted.
-    */
-    'onElementDeleted'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when the user deselects a `MapElement`.
-    */
-    'onElementDeselected'?: (event: CustomEvent) => void;
-    /**
-    * An event fired when one of the `MapElement`s on the map is double clicked.
-    */
-    'onElementDoubleClicked'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when the user selects a MapElement. The clicked element will be passed as the event parameter.
-    */
-    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was updated.
-    */
-    'onElementUpdated'?: (event: CustomEvent<MapElementData>) => void;
-  }
-
   interface RlMap {
     /**
     * Clears the currently active element.
     */
-    'clearActiveElement': () => void;
+    'clearActiveElement': () => Promise<void>;
     /**
     * An array of the elements that will be displayed on the Map.
     */
@@ -205,9 +84,25 @@ export namespace Components {
     /**
     * Sets the element with the specified ID to active.
     */
-    'setActiveElement': (id: number) => void;
+    'setActiveElement': (id: number) => Promise<void>;
   }
-  interface RlMapAttributes extends StencilHTMLAttributes {
+  interface RlMapEditor {
+    /**
+    * Add a new `MapPoint` element to the map.  Calling this method starts the process.  The user must then click somewhere on the map to add the point.
+    */
+    'addPoint': () => Promise<void>;
+    /**
+    * Add a new `MapRegion` to the map. Calling this method starts the process. The user must then click numerous times on the map to add points.  Only when clicking again on the original point is the region added.
+    */
+    'addRegion': () => Promise<void>;
+    /**
+    * Cancels the current action and returns the map to its default state, ready for futher action.
+    */
+    'cancelAction': () => Promise<void>;
+    /**
+    * Removes the currently active element.  If no element is selected when this method is called, it has no effect.
+    */
+    'deleteRegion': () => Promise<void>;
     /**
     * An array of the elements that will be displayed on the Map.
     */
@@ -219,21 +114,16 @@ export namespace Components {
     /**
     * The maximum scale factor.
     */
-    'maxScale'?: number;
+    'maxScale': number;
     /**
     * The minimum scale factor.
     */
-    'minScale'?: number;
+    'minScale': number;
     /**
-    * An event fired when the user deselects the selected `MapElement`.
+    * Sets the element with the specified ID to active.
     */
-    'onElementDeselected'?: (event: CustomEvent) => void;
-    /**
-    * An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter.
-    */
-    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
+    'setActiveElement': (id: number) => Promise<void>;
   }
-
   interface RlSelectMenu {
     /**
     * The label displayed on the select.
@@ -248,25 +138,6 @@ export namespace Components {
     */
     'selectedOption': number;
   }
-  interface RlSelectMenuAttributes extends StencilHTMLAttributes {
-    /**
-    * The label displayed on the select.
-    */
-    'label'?: string;
-    /**
-    * An event emitted when an item is selected.  The detail of the event is set to the index of the item selected.
-    */
-    'onSelected'?: (event: CustomEvent<number>) => void;
-    /**
-    * An array of the different options displayed in the select menu.
-    */
-    'options'?: string[];
-    /**
-    * The index of the currently selected option or `-1`.
-    */
-    'selectedOption'?: number;
-  }
-
   interface RlTextField {
     /**
     * A flag indicating if the text field is disabled and does not allow user input.
@@ -305,7 +176,134 @@ export namespace Components {
     */
     'value': string;
   }
-  interface RlTextFieldAttributes extends StencilHTMLAttributes {
+  interface RlTextLog {
+    /**
+    * Add a new line to the log.
+    */
+    'log': (str?: string) => Promise<void>;
+  }
+}
+
+declare namespace LocalJSX {
+  interface RlDetailDialog extends JSXBase.HTMLAttributes {
+    /**
+    * The different categories that each item can display.  Each category has a set of Detailtypes.
+    */
+    'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    /**
+    * The details that will be displayed in this dialog.
+    */
+    'details'?: MapElementDetailMap;
+    /**
+    * An array of strings that will be used to create action buttons for the dialog.  When the corresponding button is clicked by the user, MDCDialog will emit an event with the lowercase version of the action. For example the action `Yes` would emit the `MDCDialog:closing` with the property `event.detail.action === 'yes'`.
+    */
+    'dialogActions'?: string[];
+    /**
+    * The title of the dialog window.
+    */
+    'dialogTitle'?: string;
+    /**
+    * An event emitted when a new `DetailDialogItem` is added to the dialog.
+    */
+    'onAddDetail'?: (event: CustomEvent<any>) => void;
+  }
+  interface RlDetailDialogItem extends JSXBase.HTMLAttributes {
+    /**
+    * An array of all the different categories that can be selected.
+    */
+    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
+    /**
+    * The `MapElementDetail` that this item is displaying the information of.
+    */
+    'detail'?: MapElementDetail;
+  }
+  interface RlMap extends JSXBase.HTMLAttributes {
+    /**
+    * An array of the elements that will be displayed on the Map.
+    */
+    'elements': MapElementDataMap;
+    /**
+    * The image displayed on the Map.
+    */
+    'mapImage'?: string;
+    /**
+    * The maximum scale factor.
+    */
+    'maxScale'?: number;
+    /**
+    * The minimum scale factor.
+    */
+    'minScale'?: number;
+    /**
+    * An event fired when the user deselects the selected `MapElement`.
+    */
+    'onElementDeselected'?: (event: CustomEvent<any>) => void;
+    /**
+    * An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter.
+    */
+    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
+  }
+  interface RlMapEditor extends JSXBase.HTMLAttributes {
+    /**
+    * An array of the elements that will be displayed on the Map.
+    */
+    'elements': MapElementDataMap;
+    /**
+    * The image displayed on the Map.
+    */
+    'mapImage'?: string;
+    /**
+    * The maximum scale factor.
+    */
+    'maxScale'?: number;
+    /**
+    * The minimum scale factor.
+    */
+    'minScale'?: number;
+    /**
+    * An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.
+    */
+    'onElementCreated'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when one of the `MapElements` on this map is deleted.
+    */
+    'onElementDeleted'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when the user deselects a `MapElement`.
+    */
+    'onElementDeselected'?: (event: CustomEvent<any>) => void;
+    /**
+    * An event fired when one of the `MapElement`s on the map is double clicked.
+    */
+    'onElementDoubleClicked'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when the user selects a MapElement. The clicked element will be passed as the event parameter.
+    */
+    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was updated.
+    */
+    'onElementUpdated'?: (event: CustomEvent<MapElementData>) => void;
+  }
+  interface RlSelectMenu extends JSXBase.HTMLAttributes {
+    /**
+    * The label displayed on the select.
+    */
+    'label'?: string;
+    /**
+    * An event emitted when an item is selected.  The detail of the event is set to the index of the item selected.
+    */
+    'onSelected'?: (event: CustomEvent<number>) => void;
+    /**
+    * An array of the different options displayed in the select menu.
+    */
+    'options'?: string[];
+    /**
+    * The index of the currently selected option or `-1`.
+    */
+    'selectedOption'?: number;
+  }
+  interface RlTextField extends JSXBase.HTMLAttributes {
     /**
     * A flag indicating if the text field is disabled and does not allow user input.
     */
@@ -333,7 +331,7 @@ export namespace Components {
     /**
     * An event emitted when the value of the input or textarea changes.
     */
-    'onChangeValue'?: (event: CustomEvent) => void;
+    'onChangeValue'?: (event: CustomEvent<any>) => void;
     /**
     * A flag indicating if the text field has an outlined style.
     */
@@ -347,43 +345,32 @@ export namespace Components {
     */
     'value'?: string;
   }
+  interface RlTextLog extends JSXBase.HTMLAttributes {}
 
-  interface RlTextLog {
-    /**
-    * Add a new line to the log.
-    */
-    'log': (str?: string) => void;
+  interface IntrinsicElements {
+    'rl-detail-dialog': RlDetailDialog;
+    'rl-detail-dialog-item': RlDetailDialogItem;
+    'rl-map': RlMap;
+    'rl-map-editor': RlMapEditor;
+    'rl-select-menu': RlSelectMenu;
+    'rl-text-field': RlTextField;
+    'rl-text-log': RlTextLog;
   }
-  interface RlTextLogAttributes extends StencilHTMLAttributes {}
 }
 
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
+
 declare global {
-  interface StencilElementInterfaces {
-    'RlDetailDialogItem': Components.RlDetailDialogItem;
-    'RlDetailDialog': Components.RlDetailDialog;
-    'RlMapEditor': Components.RlMapEditor;
-    'RlMap': Components.RlMap;
-    'RlSelectMenu': Components.RlSelectMenu;
-    'RlTextField': Components.RlTextField;
-    'RlTextLog': Components.RlTextLog;
-  }
-
-  interface StencilIntrinsicElements {
-    'rl-detail-dialog-item': Components.RlDetailDialogItemAttributes;
-    'rl-detail-dialog': Components.RlDetailDialogAttributes;
-    'rl-map-editor': Components.RlMapEditorAttributes;
-    'rl-map': Components.RlMapAttributes;
-    'rl-select-menu': Components.RlSelectMenuAttributes;
-    'rl-text-field': Components.RlTextFieldAttributes;
-    'rl-text-log': Components.RlTextLogAttributes;
-  }
 
 
-  interface HTMLRlDetailDialogItemElement extends Components.RlDetailDialogItem, HTMLStencilElement {}
-  var HTMLRlDetailDialogItemElement: {
-    prototype: HTMLRlDetailDialogItemElement;
-    new (): HTMLRlDetailDialogItemElement;
-  };
 
   interface HTMLRlDetailDialogElement extends Components.RlDetailDialog, HTMLStencilElement {}
   var HTMLRlDetailDialogElement: {
@@ -391,16 +378,22 @@ declare global {
     new (): HTMLRlDetailDialogElement;
   };
 
-  interface HTMLRlMapEditorElement extends Components.RlMapEditor, HTMLStencilElement {}
-  var HTMLRlMapEditorElement: {
-    prototype: HTMLRlMapEditorElement;
-    new (): HTMLRlMapEditorElement;
+  interface HTMLRlDetailDialogItemElement extends Components.RlDetailDialogItem, HTMLStencilElement {}
+  var HTMLRlDetailDialogItemElement: {
+    prototype: HTMLRlDetailDialogItemElement;
+    new (): HTMLRlDetailDialogItemElement;
   };
 
   interface HTMLRlMapElement extends Components.RlMap, HTMLStencilElement {}
   var HTMLRlMapElement: {
     prototype: HTMLRlMapElement;
     new (): HTMLRlMapElement;
+  };
+
+  interface HTMLRlMapEditorElement extends Components.RlMapEditor, HTMLStencilElement {}
+  var HTMLRlMapEditorElement: {
+    prototype: HTMLRlMapEditorElement;
+    new (): HTMLRlMapEditorElement;
   };
 
   interface HTMLRlSelectMenuElement extends Components.RlSelectMenu, HTMLStencilElement {}
@@ -422,32 +415,15 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
-    'rl-detail-dialog-item': HTMLRlDetailDialogItemElement
-    'rl-detail-dialog': HTMLRlDetailDialogElement
-    'rl-map-editor': HTMLRlMapEditorElement
-    'rl-map': HTMLRlMapElement
-    'rl-select-menu': HTMLRlSelectMenuElement
-    'rl-text-field': HTMLRlTextFieldElement
-    'rl-text-log': HTMLRlTextLogElement
-  }
-
-  interface ElementTagNameMap {
-    'rl-detail-dialog-item': HTMLRlDetailDialogItemElement;
     'rl-detail-dialog': HTMLRlDetailDialogElement;
-    'rl-map-editor': HTMLRlMapEditorElement;
+    'rl-detail-dialog-item': HTMLRlDetailDialogItemElement;
     'rl-map': HTMLRlMapElement;
+    'rl-map-editor': HTMLRlMapEditorElement;
     'rl-select-menu': HTMLRlSelectMenuElement;
     'rl-text-field': HTMLRlTextFieldElement;
     'rl-text-log': HTMLRlTextLogElement;
   }
 
-
-  export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
-  }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
+  interface ElementTagNameMap extends HTMLElementTagNameMap {}
 }
+

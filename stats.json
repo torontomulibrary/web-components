@@ -1,0 +1,13 @@
+{
+  "diagnostics": [
+    {
+      "level": "error",
+      "type": "build",
+      "header": "Build Error",
+      "messageText": "TypeError: Cannot read property 'length' of undefined\n    at isFileIncludePath (/data/dquast/_work/@ryelib/web-components/node_modules/@stencil/core/dist/compiler/index.js:12495:43)\n    at dirItems.filter.item (/data/dquast/_work/@ryelib/web-components/node_modules/@stencil/core/dist/compiler/index.js:12442:31)\n    at Array.filter (<anonymous>)\n    at scanDirForTsFiles (/data/dquast/_work/@ryelib/web-components/node_modules/@stencil/core/dist/compiler/index.js:12441:34)",
+      "relFilePath": null,
+      "absFilePath": null,
+      "lines": []
+    }
+  ]
+}
