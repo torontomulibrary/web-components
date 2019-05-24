@@ -63,7 +63,7 @@
     "@material/form-field": "^0.43.0",
     "@material/select": "^0.43.0",
     "@material/textfield": "^0.43.0",
-    "@stencil/core": "^0.18.0",
+    "@stencil/core": "0.18.0",
     "@stencil/sass": "^0.1.1",
     "@stencil/utils": "0.0.5",
     "@types/jest": "^23.3.13",
