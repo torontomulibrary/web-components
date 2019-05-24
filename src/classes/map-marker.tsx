@@ -86,8 +86,8 @@ export class MapMarker extends MapElement {
     }
 
     const rectClass = {
-      'rl-map-rect': true,
-      'rl-map-rect--activated': this.active,
+      'rl-svg__rect': true,
+      'rl-svg__rect--activated': this.active,
     };
 
     const contents: JSX.Element[] = [];
@@ -107,6 +107,9 @@ export class MapMarker extends MapElement {
       }
     } else {
       this._icon.size = { width: CONTROL_SIZE, height: CONTROL_SIZE };
+      if (this._icon instanceof MarkerSymbol) {
+        this._icon.alt = this._available;
+      }
       contents.push(this._icon.render());
     }
 
@@ -115,9 +118,8 @@ export class MapMarker extends MapElement {
     const gTrans = `translate(${this.position.toPathString()})`;
 
     const gClass = {
-      'rl-map-marker': true,
-      'rl-map-marker--clickable': this._clickable,
-      'rl-map-marker--available': this._available,
+      'rl-svg__marker': true,
+      'rl-svg__marker--clickable': this._clickable,
     };
 
     return (

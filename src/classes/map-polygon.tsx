@@ -92,21 +92,22 @@ export class MapPolygon extends MapElement {
       return undefined;
     }
 
-    const regionClass = {
-      'rl-map-polygon': true,
-      'rl-map-polygon--activated': this._active && !this._open,
-      'rl-map-polygon--open': this._open,
+    const classname = {
+      'rl-svg__polygon': true,
+      'rl-svg__polygon--activated': this._active && !this._open,
+      'rl-svg__polygon--open': this._open,
     };
 
     return (
-      <path
-        id={this._id}
-        class={regionClass}
-        d={this._path}
-        tabindex="0"
-        aria-label={this._name}
-        role="button"
-      />
+      <g id={this._id} class={classname}>
+        <path
+          d={this._path}
+          tabindex="0"
+          aria-label={this._name}
+          role="button"
+        />
+        {/* {this.renderControls()} */}
+      </g>
     );
   }
 
@@ -117,6 +118,10 @@ export class MapPolygon extends MapElement {
    * point created on each line.
    */
   renderControls() {
+    // if (!this._active && !this._open) {
+    //   return undefined;
+    // }
+
     const pts = this._points;
 
     // If there are no points, or element is not visible, don't render controls.
@@ -135,7 +140,7 @@ export class MapPolygon extends MapElement {
           cy={i.y}
           r={8 / this._scale}
           index={index * 2}
-          class="rl-map-control"
+          class="rl-svg__control"
         />
       )];
 
@@ -151,7 +156,7 @@ export class MapPolygon extends MapElement {
             cy={mid.y}
             r={8 / this._scale}
             index={index * 2 + 1}
-            class="rl-map-midpoint"
+            class="rl-svg__midpoint"
           />
         ));
       }
@@ -162,11 +167,11 @@ export class MapPolygon extends MapElement {
     // Render an additional line to 'connect the dots' of the control points.
     const path = (
       <path
-        class="rl-map-outline"
+        class="rl-svg__polygon-outline"
         d={pathFromCoordinateArray(pts, this._open)}
       />
     );
 
-    return (<g>{path}{points}</g>);
+    return [path, points];
   }
 }

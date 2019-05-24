@@ -16,6 +16,13 @@ interface Size {
  * A styled vector path displayed as the icon of a `MapMarker`.
  */
 export class MarkerSymbol {
+  _alt = false;
+  /**
+   * A flag indicating if this symbol should use an alternate style.
+   */
+  set alt(a: boolean) { this._alt = a; }
+  get alt() { return this._alt; }
+
   _anchor: Coordinate = new Coordinate(0, 0);
   /**
    * The position of the symbol relative to the marker.
@@ -75,10 +82,11 @@ export class MarkerSymbol {
       `translate(${tr}) rotate(${ro}) scale(${sx}, ${sy})`;
 
     const pathClass = {
-      'rl-map-symbol': true,
+      'rl-svg__symbol': true,
+      'rl-svg__symbol--alt': this._alt,
     };
 
-    pathClass[`rl-map-symbol--${this._pathName}`] = true;
+    pathClass[`rl-svg__symbol--${this._pathName}`] = true;
 
     return (
       <path
