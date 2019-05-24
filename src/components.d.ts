@@ -142,7 +142,7 @@ export namespace Components {
     /**
     * An array of the elements that will be displayed on the Map.
     */
-    'elements': MapElementDataMap;
+    'elements'?: MapElementDataMap;
     /**
     * The image displayed on the Map.
     */
@@ -244,9 +244,9 @@ export namespace Components {
     */
     'options': string[];
     /**
-    * The index of the currently selected option or `-1`.
+    * The index of the currently selected option or undefined if nothing selected.
     */
-    'selectedOption': number;
+    'selectedOption'?: number;
   }
   interface RlSelectMenuAttributes extends StencilHTMLAttributes {
     /**
@@ -262,7 +262,7 @@ export namespace Components {
     */
     'options'?: string[];
     /**
-    * The index of the currently selected option or `-1`.
+    * The index of the currently selected option or undefined if nothing selected.
     */
     'selectedOption'?: number;
   }
