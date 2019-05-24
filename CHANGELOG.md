@@ -1,3 +1,22 @@
+## [0.4.4](https://github.com/ryersonlibrary/web-components/compare/v0.4.3...v0.4.4) (2019-05-24)
+
+
+### Bug Fixes
+
+* 🐛 DetailDialog initial category/type ([f9132c6](https://github.com/ryersonlibrary/web-components/commit/f9132c6))
+* 🐛 linting issue with `select-menu` resolved ([abee7e7](https://github.com/ryersonlibrary/web-components/commit/abee7e7))
+* 🐛 linting issues ([d44f064](https://github.com/ryersonlibrary/web-components/commit/d44f064))
+* 🐛 satisfy build warning for initial negative number ([3da1239](https://github.com/ryersonlibrary/web-components/commit/3da1239))
+* 🐛 simplify `map` and `map-editor` SVG structure ([743ef42](https://github.com/ryersonlibrary/web-components/commit/743ef42))
+* 🐛 update demo for `map` and `map-editor` for changes ([5099fc4](https://github.com/ryersonlibrary/web-components/commit/5099fc4))
+
+
+### BREAKING CHANGES
+
+* Map and MapEditor CSS names have changed and follow a new BEM pattern.
+
+
+
 ## [0.4.3](https://github.com/ryersonlibrary/web-components/compare/v0.4.2...v0.4.3) (2019-05-10)
 
 
