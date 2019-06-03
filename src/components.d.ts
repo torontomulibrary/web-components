@@ -129,15 +129,14 @@ export namespace Components {
     * The label displayed on the select.
     */
     'label': string;
-    'elements'?: MapElementDataMap;
     /**
     * An array of the different options displayed in the select menu.
     */
     'options': string[];
     /**
-    * The index of the currently selected option or `-1`.
+    * The index of the currently selected option or undefined if nothing selected.
     */
-    'selectedOption': number;
+    'selectedOption'?: number;
   }
   interface RlTextField {
     /**
@@ -185,206 +184,7 @@ export namespace Components {
   }
 }
 
-declare namespace LocalJSX {
-  interface RlDetailDialog extends JSXBase.HTMLAttributes {
-    /**
-    * The different categories that each item can display.  Each category has a set of Detailtypes.
-    */
-    'categories': { name: string, id: number, items: MapElementDetailType[] }[];
-    /**
-    * The details that will be displayed in this dialog.
-    */
-    'details'?: MapElementDetailMap;
-    /**
-    * An array of strings that will be used to create action buttons for the dialog.  When the corresponding button is clicked by the user, MDCDialog will emit an event with the lowercase version of the action. For example the action `Yes` would emit the `MDCDialog:closing` with the property `event.detail.action === 'yes'`.
-    */
-    'dialogActions'?: string[];
-    /**
-    * The title of the dialog window.
-    */
-    'dialogTitle'?: string;
-    /**
-    * An event emitted when a new `DetailDialogItem` is added to the dialog.
-    */
-    'onAddDetail'?: (event: CustomEvent<any>) => void;
-  }
-  interface RlDetailDialogItem extends JSXBase.HTMLAttributes {
-    /**
-    * An array of all the different categories that can be selected.
-    */
-    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
-    /**
-    * The `MapElementDetail` that this item is displaying the information of.
-    */
-    'detail'?: MapElementDetail;
-  }
-  interface RlMap extends JSXBase.HTMLAttributes {
-    /**
-    * An array of the elements that will be displayed on the Map.
-    */
-    'elements': MapElementDataMap;
-    /**
-    * The image displayed on the Map.
-    */
-    'mapImage'?: string;
-    /**
-    * The maximum scale factor.
-    */
-    'maxScale'?: number;
-    /**
-    * The minimum scale factor.
-    */
-    'minScale'?: number;
-    /**
-    * An event fired when the user deselects the selected `MapElement`.
-    */
-    'onElementDeselected'?: (event: CustomEvent<any>) => void;
-    /**
-    * An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter.
-    */
-    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
-  }
-  interface RlMapEditor extends JSXBase.HTMLAttributes {
-    /**
-    * An array of the elements that will be displayed on the Map.
-    */
-    'elements': MapElementDataMap;
-    * The label displayed on the select.
-    */
-    'label': string;
-    /**
-    * An array of the different options displayed in the select menu.
-    */
-    'options': string[];
-    /**
-    * The index of the currently selected option or undefined if nothing selected.
-    */
-    'selectedOption'?: number;
-  }
-  interface RlSelectMenuAttributes extends StencilHTMLAttributes {
-    /**
-    * The image displayed on the Map.
-    */
-    'mapImage'?: string;
-    /**
-    * The maximum scale factor.
-    */
-    'maxScale'?: number;
-    /**
-    * The minimum scale factor.
-    */
-    'minScale'?: number;
-    /**
-    * An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.
-    * The index of the currently selected option or undefined if nothing selected.
-    */
-    'onElementCreated'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when one of the `MapElements` on this map is deleted.
-    */
-    'onElementDeleted'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when the user deselects a `MapElement`.
-    */
-    'onElementDeselected'?: (event: CustomEvent<any>) => void;
-    /**
-    * An event fired when one of the `MapElement`s on the map is double clicked.
-    */
-    'onElementDoubleClicked'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when the user selects a MapElement. The clicked element will be passed as the event parameter.
-    */
-    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was updated.
-    */
-    'onElementUpdated'?: (event: CustomEvent<MapElementData>) => void;
-  }
-  interface RlSelectMenu extends JSXBase.HTMLAttributes {
-    /**
-    * The label displayed on the select.
-    */
-    'label'?: string;
-    /**
-    * An event emitted when an item is selected.  The detail of the event is set to the index of the item selected.
-    */
-    'onSelected'?: (event: CustomEvent<number>) => void;
-    /**
-    * An array of the different options displayed in the select menu.
-    */
-    'options'?: string[];
-    /**
-    * The index of the currently selected option or `-1`.
-    */
-    'selectedOption'?: number;
-  }
-  interface RlTextField extends JSXBase.HTMLAttributes {
-    /**
-    * A flag indicating if the text field is disabled and does not allow user input.
-    */
-    'disabled'?: boolean;
-    /**
-    * A flag indicating if the text field uses the full-width style.
-    */
-    'fullwidth'?: boolean;
-    /**
-    * Additional text displayed below the main text field.
-    */
-    'helperText'?: string;
-    /**
-    * An icon displayed within the text field.
-    */
-    'icon'?: string;
-    /**
-    * The location of the icon displayed within the text field.
-    */
-    'iconLocation'?: 'trailing' | 'leading';
-    /**
-    * The supplemental label for the text field.
-    */
-    'label'?: string;
-    /**
-    * An event emitted when the value of the input or textarea changes.
-    */
-    'onChangeValue'?: (event: CustomEvent<any>) => void;
-    /**
-    * A flag indicating if the text field has an outlined style.
-    */
-    'outlined'?: boolean;
-    /**
-    * A flag indicating if the text field uses a textarea instead of an input.
-    */
-    'textarea'?: boolean;
-    /**
-    * The current value of the text field input or text area.
-    */
-    'value'?: string;
-  }
-  interface RlTextLog extends JSXBase.HTMLAttributes {}
-
-  interface IntrinsicElements {
-    'rl-detail-dialog': RlDetailDialog;
-    'rl-detail-dialog-item': RlDetailDialogItem;
-    'rl-map': RlMap;
-    'rl-map-editor': RlMapEditor;
-    'rl-select-menu': RlSelectMenu;
-    'rl-text-field': RlTextField;
-    'rl-text-log': RlTextLog;
-  }
-}
-
-export { LocalJSX as JSX };
-
-
-declare module "@stencil/core" {
-  export namespace JSX {
-    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
-  }
-}
-
-
 declare global {
-
 
 
   interface HTMLRlDetailDialogElement extends Components.RlDetailDialog, HTMLStencilElement {}
@@ -428,7 +228,6 @@ declare global {
     prototype: HTMLRlTextLogElement;
     new (): HTMLRlTextLogElement;
   };
-
   interface HTMLElementTagNameMap {
     'rl-detail-dialog': HTMLRlDetailDialogElement;
     'rl-detail-dialog-item': HTMLRlDetailDialogItemElement;
@@ -438,7 +237,189 @@ declare global {
     'rl-text-field': HTMLRlTextFieldElement;
     'rl-text-log': HTMLRlTextLogElement;
   }
-
-  interface ElementTagNameMap extends HTMLElementTagNameMap {}
 }
+
+declare namespace LocalJSX {
+  interface RlDetailDialog extends JSXBase.HTMLAttributes<HTMLRlDetailDialogElement> {
+    /**
+    * The different categories that each item can display.  Each category has a set of Detailtypes.
+    */
+    'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    /**
+    * The details that will be displayed in this dialog.
+    */
+    'details'?: MapElementDetailMap;
+    /**
+    * An array of strings that will be used to create action buttons for the dialog.  When the corresponding button is clicked by the user, MDCDialog will emit an event with the lowercase version of the action. For example the action `Yes` would emit the `MDCDialog:closing` with the property `event.detail.action === 'yes'`.
+    */
+    'dialogActions'?: string[];
+    /**
+    * The title of the dialog window.
+    */
+    'dialogTitle'?: string;
+    /**
+    * An event emitted when a new `DetailDialogItem` is added to the dialog.
+    */
+    'onAddDetail'?: (event: CustomEvent<any>) => void;
+  }
+  interface RlDetailDialogItem extends JSXBase.HTMLAttributes<HTMLRlDetailDialogItemElement> {
+    /**
+    * An array of all the different categories that can be selected.
+    */
+    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
+    /**
+    * The `MapElementDetail` that this item is displaying the information of.
+    */
+    'detail'?: MapElementDetail;
+  }
+  interface RlMap extends JSXBase.HTMLAttributes<HTMLRlMapElement> {
+    /**
+    * An array of the elements that will be displayed on the Map.
+    */
+    'elements': MapElementDataMap;
+    /**
+    * The image displayed on the Map.
+    */
+    'mapImage'?: string;
+    /**
+    * The maximum scale factor.
+    */
+    'maxScale'?: number;
+    /**
+    * The minimum scale factor.
+    */
+    'minScale'?: number;
+    /**
+    * An event fired when the user deselects the selected `MapElement`.
+    */
+    'onElementDeselected'?: (event: CustomEvent<any>) => void;
+    /**
+    * An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter.
+    */
+    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
+  }
+  interface RlMapEditor extends JSXBase.HTMLAttributes<HTMLRlMapEditorElement> {
+    /**
+    * An array of the elements that will be displayed on the Map.
+    */
+    'elements'?: MapElementDataMap;
+    /**
+    * The image displayed on the Map.
+    */
+    'mapImage'?: string;
+    /**
+    * The maximum scale factor.
+    */
+    'maxScale'?: number;
+    /**
+    * The minimum scale factor.
+    */
+    'minScale'?: number;
+    /**
+    * An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.
+    */
+    'onElementCreated'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when one of the `MapElements` on this map is deleted.
+    */
+    'onElementDeleted'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when the user deselects a `MapElement`.
+    */
+    'onElementDeselected'?: (event: CustomEvent<any>) => void;
+    /**
+    * An event fired when one of the `MapElement`s on the map is double clicked.
+    */
+    'onElementDoubleClicked'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when the user selects a MapElement. The clicked element will be passed as the event parameter.
+    */
+    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was updated.
+    */
+    'onElementUpdated'?: (event: CustomEvent<MapElementData>) => void;
+  }
+  interface RlSelectMenu extends JSXBase.HTMLAttributes<HTMLRlSelectMenuElement> {
+    /**
+    * The label displayed on the select.
+    */
+    'label'?: string;
+    /**
+    * An event emitted when an item is selected.  The detail of the event is set to the index of the item selected.
+    */
+    'onSelected'?: (event: CustomEvent<number>) => void;
+    /**
+    * An array of the different options displayed in the select menu.
+    */
+    'options'?: string[];
+    /**
+    * The index of the currently selected option or undefined if nothing selected.
+    */
+    'selectedOption'?: number;
+  }
+  interface RlTextField extends JSXBase.HTMLAttributes<HTMLRlTextFieldElement> {
+    /**
+    * A flag indicating if the text field is disabled and does not allow user input.
+    */
+    'disabled'?: boolean;
+    /**
+    * A flag indicating if the text field uses the full-width style.
+    */
+    'fullwidth'?: boolean;
+    /**
+    * Additional text displayed below the main text field.
+    */
+    'helperText'?: string;
+    /**
+    * An icon displayed within the text field.
+    */
+    'icon'?: string;
+    /**
+    * The location of the icon displayed within the text field.
+    */
+    'iconLocation'?: 'trailing' | 'leading';
+    /**
+    * The supplemental label for the text field.
+    */
+    'label'?: string;
+    /**
+    * An event emitted when the value of the input or textarea changes.
+    */
+    'onChangeValue'?: (event: CustomEvent<any>) => void;
+    /**
+    * A flag indicating if the text field has an outlined style.
+    */
+    'outlined'?: boolean;
+    /**
+    * A flag indicating if the text field uses a textarea instead of an input.
+    */
+    'textarea'?: boolean;
+    /**
+    * The current value of the text field input or text area.
+    */
+    'value'?: string;
+  }
+  interface RlTextLog extends JSXBase.HTMLAttributes<HTMLRlTextLogElement> {}
+
+  interface IntrinsicElements {
+    'rl-detail-dialog': RlDetailDialog;
+    'rl-detail-dialog-item': RlDetailDialogItem;
+    'rl-map': RlMap;
+    'rl-map-editor': RlMapEditor;
+    'rl-select-menu': RlSelectMenu;
+    'rl-text-field': RlTextField;
+    'rl-text-log': RlTextLog;
+  }
+}
+
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
 

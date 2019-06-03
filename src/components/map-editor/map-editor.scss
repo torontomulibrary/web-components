@@ -79,8 +79,9 @@
   }
 
   &__rect {
-    fill: none;
-    stroke: none;
+    fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
+    stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
+    stroke-width: 4;
 
     &--activated {
       @include rl-element-activated();
@@ -120,97 +121,6 @@
       fill: rgba(192, 192, 192, 0.3);
 
       cursor: pointer;
-    }
-  }
-}
-
-.rl-map {
-  &-polygon {
-    fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
-    stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
-    stroke-width: 4;
-
-    &:focus {
-      @include rl-element-focused();
-    }
-
-    &--activated {
-      @include rl-element-activated();
-    }
-
-    &:hover {
-      @include rl-element-focused();
-
-      cursor: pointer;
-    }
-
-    &--open {
-      fill: none;
-      stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
-
-      &:hover {
-        fill: none;
-        
-        cursor: default;
-      }
-    }
-  }
-
-  &-text {
-    font-family: var(--rl-map-element-font-family, "sans");
-    font-size: var(--rl-map-element-font-size, 24px);
-    // Text shouldn't be focusable or selectable, it's just a label.
-    user-select: none;
-
-    &:hover {
-      // In the editor, text can be clicked.
-      cursor: pointer;
-    }
-  }
-
-  &-comp {
-    fill: red;
-    fill-rule: evenodd;
-    stroke: red;
-    stroke-width: 2;
-    
-    &--available {
-      fill: green;
-      stroke: green;
-    }
-  }
-
-  &-marker {
-    text {
-      font-size: 52pt;
-
-      text-anchor: middle;
-
-      cursor: default;
-      user-select: none;
-    }
-
-    &:focus rect {
-      @include rl-element-focused();
-    }
-
-    &--clickable {
-      &:hover rect {
-        @include rl-element-focused();
-    
-        cursor: pointer;
-      }
-    }
-  }
-
-  &-rect {
-    fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
-    stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
-    stroke-width: 4;
-
-    &--activated {
-      @include rl-element-activated();
-      @include rl-element-focused();
     }
   }
 }

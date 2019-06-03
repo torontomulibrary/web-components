@@ -86,6 +86,7 @@
         let el = evt.detail;
         const newId = ++lastId;
         el.id = newId;
+        el.name = `New Marker ${el.id}`;
         elements[newId] = el; 
         editor.elements = { ...elements };
         editor.setActiveElement();

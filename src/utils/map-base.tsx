@@ -1,5 +1,3 @@
-import { h } from '@stencil/core';
-
 import { MapMarker } from '../classes/map-marker';
 import { MapPolygon } from '../classes/map-polygon';
 import { MarkerIcon } from '../classes/marker-icon';

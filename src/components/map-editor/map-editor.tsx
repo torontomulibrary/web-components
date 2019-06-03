@@ -244,7 +244,7 @@ export class RLMapEditor {
       if (e.target && e.target instanceof SVGCircleElement) {
         if (e.target.classList.contains('rl-svg__control') ||
             e.target.classList.contains('rl-svg__midpoint')) {
-          this.targetControl = Number(e.target.getAttribute('index'));
+          this.targetControl = Number(e.target.dataset.index);
         }
       }
     }

@@ -101,14 +101,13 @@ export class MapPolygon extends MapElement {
     };
 
     return (
-      <g id={this._id} class={classname}>
+      <g id={`${this._id}`} class={classname}>
         <path
           d={this._path}
-          tabindex="0"
+          tabIndex={0}
           aria-label={this._name}
           role="button"
         />
-        {/* {this.renderControls()} */}
       </g>
     );
   }
@@ -141,7 +140,7 @@ export class MapPolygon extends MapElement {
           cx={i.x}
           cy={i.y}
           r={8 / this._scale}
-          index={index * 2}
+          data-index={index * 2}
           class="rl-svg__control"
         />
       )];
@@ -157,7 +156,7 @@ export class MapPolygon extends MapElement {
             cx={mid.x}
             cy={mid.y}
             r={8 / this._scale}
-            index={index * 2 + 1}
+            data-index={index * 2 + 1}
             class="rl-svg__midpoint"
           />
         ));

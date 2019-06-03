@@ -31,7 +31,7 @@ export class DetailDialog {
   /**
    * Reference to the Material Dialog underlying this `DetailDialog`.
    */
-  private dialog: MDCDialog;
+  private dialog!: MDCDialog;
 
   /**
    * Array of the child `DetailDialogItem` elements.

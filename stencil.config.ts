@@ -5,19 +5,22 @@ export const config: Config = {
   namespace: 'rlwc',
   plugins: [
     sass({
-      includePaths: ['./node_modules', './src/global']
+      includePaths: [
+        './node_modules',
+        './src/global',
+      ]
     }),
   ],
   outputTargets: [
     {
       type: 'dist',
+      copy: [{ src: '**.*.scss' }],
     },
     {
       type: 'docs-readme',
       strict: true,
     },
   ],
-  copy: [{ src: '**.*.scss' }],
   preamble: '(C) Ryerson University Library https://library.ryerson.ca - MIT License',
   enableCache: true,
 };
