@@ -1,3 +1,19 @@
+# [0.5.0](https://github.com/ryersonlibrary/web-components/compare/v0.4.4...v0.5.0) (2019-06-03)
+
+
+### Bug Fixes
+
+* 🐛 change marker-symbol class name for alt colour ([e0d2734](https://github.com/ryersonlibrary/web-components/commit/e0d2734))
+* 🐛 Changes needed for stencil-one ([b9ed31b](https://github.com/ryersonlibrary/web-components/commit/b9ed31b))
+* 🐛 update to stencil 1.0.0 and other package updates ([d301923](https://github.com/ryersonlibrary/web-components/commit/d301923))
+
+
+### BREAKING CHANGES
+
+* Changed `rl-svg__symbol--alt` to `rl-svg__symbol-${symbolName}-alt`
+
+
+
 ## [0.4.4](https://github.com/ryersonlibrary/web-components/compare/v0.4.3...v0.4.4) (2019-05-24)
 
 
