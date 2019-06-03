@@ -4,11 +4,12 @@
 }
 
 @mixin rl-element-activated() {
+  outline: none;
   stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
   stroke-width: 8;
 }
 
-.rl-map {
+.rl-map-editor {
   display: inline-block;
 
   width: 100%;
@@ -19,6 +20,107 @@
   &__svg {
     width: 100%;
     height: 100%;
+  }
+}
+
+.rl-svg {
+  width: 100%;
+  height: 100%;
+
+  &__marker {
+    &:focus rect {
+      @include rl-element-focused();
+    }
+
+    &--clickable {
+      &:hover rect {
+        @include rl-element-focused();
+    
+        cursor: pointer;
+      }
+    }
+
+    text {
+      font-size: var(--rl-svg__text-size, 48px);
+
+      user-select: none;
+    }
+  }
+
+  &__polygon {
+    fill: var(--rl-svg__polygon-fill, rgba(0, 76, 155, 0.6));
+    stroke: var(--rl-svg__polygon-fill, rgb(0, 76, 155));
+    stroke-width: 4;
+
+    &:focus {
+      @include rl-element-focused();
+    }
+    
+    &--activated {
+      @include rl-element-activated();
+      @include rl-element-focused();
+    }
+
+    &:hover {
+      @include rl-element-focused();
+
+      cursor: pointer;
+    }
+
+    &-outline {
+      fill: none;
+      stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
+      stroke-width: 2;
+    }
+
+    path {
+      outline: none;
+    }
+  }
+
+  &__rect {
+    fill: none;
+    stroke: none;
+
+    &--activated {
+      @include rl-element-activated();
+    }
+  }
+
+  &__symbol {
+    fill: var(--rl-svg__symbol-fill, rgba(0, 76, 155, 0.6));
+    stroke: var(--rl-svg__symbol-fill, rgb(0, 76, 155));
+    stroke-width: 1;
+    fill-rule: evenodd;
+
+    &--alt {
+      fill: var(--rl-svg__symbol-fill-alt, rgba(255, 255, 83, 0.5));
+      stroke: var(--rl-svg__symbol-fill-alt, rgb(199, 171, 0));
+    }
+  }
+
+  &__control {
+    stroke: black;
+    fill: rgba(255, 255, 255, 0.6);
+    stroke-width: 2;
+
+    &:hover {
+      fill: rgba(192, 192, 192, 0.6);
+
+      cursor: pointer;
+    }
+  }
+
+  &__midpoint {
+    stroke: rgba(0, 0, 0, 0.6);
+    fill: rgba(255, 255, 255, 0.3);
+    stroke-width: 2;
+
+    &:hover {
+      fill: rgba(192, 192, 192, 0.3);
+
+      cursor: pointer;
+    }
   }
 }
 
@@ -75,36 +177,6 @@
     &--available {
       fill: green;
       stroke: green;
-    }
-  }
-
-  &-outline {
-    fill: none;
-    stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
-    stroke-width: 2;
-  }
-
-  &-control {
-    stroke: black;
-    fill: rgba(255, 255, 255, 0.6);
-    stroke-width: 2;
-
-    &:hover {
-      fill: rgba(192, 192, 192, 0.6);
-
-      cursor: pointer;
-    }
-  }
-
-  &-midpoint {
-    stroke: rgba(0, 0, 0, 0.6);
-    fill: rgba(255, 255, 255, 0.3);
-    stroke-width: 2;
-
-    &:hover {
-      fill: rgba(192, 192, 192, 0.3);
-
-      cursor: pointer;
     }
   }
 

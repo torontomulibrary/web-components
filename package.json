@@ -1,6 +1,6 @@
 {
   "name": "@ryersonlibrary/web-components",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Common web-components for Ryerson University Library.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -63,7 +63,7 @@
     "@material/form-field": "^0.43.0",
     "@material/select": "^0.43.0",
     "@material/textfield": "^0.43.0",
-    "@stencil/core": "^1.0.0-beta.4",
+    "@stencil/core": "^1.0.0",
     "@stencil/sass": "^0.1.1",
     "@stencil/utils": "0.0.5",
     "@types/jest": "^23.3.13",

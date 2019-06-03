@@ -474,18 +474,10 @@ export class RLMap {
     const matrix = 'matrix(' + m.join(',') + ')';
 
     return (
-      <svg class="rl-map__svg">
-        <g class="rl-map__transform" transform={matrix}>
-          <g class="rl-map__image-wrapper">
-            <image
-              class="rl-map__image"
-              xlinkHref={this.mapImage !== undefined ? this.mapImage : undefined}
-            >
-            </image>
-          </g>
-          <g class="rl-map__elements">
-            {this.processedElements.map(el => el.render())}
-          </g>
+      <svg class="rl-svg">
+        <g transform={matrix}>
+          <image xlinkHref={this.mapImage !== undefined ? this.mapImage : undefined} />
+          {this.processedElements.map(el => el.render())}
         </g>
       </svg>
     );

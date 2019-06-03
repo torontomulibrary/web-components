@@ -44,9 +44,9 @@ export class Select {
   @Prop() options: string[] = [];
 
   /**
-   * The index of the currently selected option or `-1`.
+   * The index of the currently selected option or undefined if nothing selected.
    */
-  @Prop() selectedOption: number = -1;
+  @Prop() selectedOption?: number;
 
   /**
    * An event emitted when an item is selected.  The detail of the event is set

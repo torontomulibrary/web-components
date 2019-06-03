@@ -54,7 +54,7 @@ export class MarkerIcon {
 
     return (
       <image
-        class="rl-map-element__icon"
+        class="rl-svg__icon"
         // Don't set width.  Some icons are not square and leaving width
         // unset will set the width automatically while keeping aspect.
         height={this.size.height}

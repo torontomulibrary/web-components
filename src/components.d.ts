@@ -129,6 +129,7 @@ export namespace Components {
     * The label displayed on the select.
     */
     'label': string;
+    'elements'?: MapElementDataMap;
     /**
     * An array of the different options displayed in the select menu.
     */
@@ -248,6 +249,19 @@ declare namespace LocalJSX {
     * An array of the elements that will be displayed on the Map.
     */
     'elements': MapElementDataMap;
+    * The label displayed on the select.
+    */
+    'label': string;
+    /**
+    * An array of the different options displayed in the select menu.
+    */
+    'options': string[];
+    /**
+    * The index of the currently selected option or undefined if nothing selected.
+    */
+    'selectedOption'?: number;
+  }
+  interface RlSelectMenuAttributes extends StencilHTMLAttributes {
     /**
     * The image displayed on the Map.
     */
@@ -262,6 +276,7 @@ declare namespace LocalJSX {
     'minScale'?: number;
     /**
     * An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.
+    * The index of the currently selected option or undefined if nothing selected.
     */
     'onElementCreated'?: (event: CustomEvent<MapElementData>) => void;
     /**

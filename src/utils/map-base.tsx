@@ -7,7 +7,6 @@ import { MarkerSymbol, MarkerSymbolPaths } from '../classes/marker-symbol';
 import {
   MapElementData,
   MapElementDataMap,
-  ParsedMapElement,
   Size,
 } from '../interface';
 import { Coordinate } from '../utils/coordinate';
@@ -53,12 +52,14 @@ export function computeLimits(iSize: Size, sSize: Size, scale: number) {
  * @param el The Element to use to find the ID.
  */
 export function getTargetId(el: EventTarget | null): number | undefined {
-  if (el instanceof SVGImageElement || el instanceof SVGRectElement) {
-    // There are two cases where the element is a child of the elemen
+  if (el instanceof SVGImageElement || el instanceof SVGRectElement ||
+      el instanceof SVGPathElement || el instanceof SVGTextElement) {
+    // The image (symbol), bounding rectangle, text or path were clicked.
+    // In these cases, the parent (group) tag holds the ID.
     el = el.parentElement;
   }
 
-  if (el instanceof SVGPathElement || el instanceof SVGGElement) {
+  if (el instanceof SVGGElement) {
     return Number(el.id);
   }
 
@@ -105,77 +106,4 @@ export function parseElements(elements: MapElementDataMap, scale = 1): (MapMarke
     newEl.clickable = el.clickable !== undefined ? el.clickable : true;
     return newEl;
   });
-}
-
-/**
- * Creates an array of JSX.Element nodes to be rendered based on an array of
- * `ParsedMapElements`.
- * @param els The array of `ParsedMapElements` to render
- */
-export function renderElements(els: ParsedMapElement[]) {
-  const elements = els.filter((el => el.enabled));
-  if (elements.length === 0) {
-    return undefined;
-  }
-
-  const parsed = elements.map(el => {
-    if (el.coordinates.length === 1) {
-      const rectClass = {
-        'rl-map-element__rect': true,
-        'rl-map-element__rect--activated': el.active,
-      };
-      const gTrans = 'translate(' + (el.coordinates[0].x - CONTROL_SIZE / 2) +
-          ' ' + (el.coordinates[0].y - CONTROL_SIZE / 2) + ')';
-
-      if (el.iconImages && el.iconImages.length !== 0) {
-        return el.iconImages.map(icon => {
-          let iconAspect = icon.height / icon.width;
-
-          if (isNaN(iconAspect)) {
-            iconAspect = 1;
-          }
-
-          return (
-            <g id={`${el.id}`} class="rl-map-element__point" tabIndex={0} transform={gTrans}>
-              <image
-                class="rl-map-element__icon"
-                // Don't set width.  Some icons are not square and leaving width
-                // unset will set the width automatically while keeping aspect.
-                height={CONTROL_SIZE}
-                xlinkHref={icon.src}
-              />
-              <rect
-                class={rectClass}
-                width={CONTROL_SIZE / iconAspect}
-                height={CONTROL_SIZE}
-                rx="12"
-                ry="12"
-              />
-            </g>
-          );
-        });
-      } else {
-        // We have a text node.
-        return (
-          <g id={`${el.id}`} class="rl-map-element__point" tabIndex={0} transform={gTrans}>
-            <rect rx="12" ry="12" width={CONTROL_SIZE} height={CONTROL_SIZE}/>
-          </g>
-          // <text id={el.id} class="rl-map-element__text" transform={gTrans}>
-          // </text>
-        );
-      }
-    } else {
-      const regionClass = {
-        'rl-map-element__region': true,
-        'rl-map-element__region--activated': el.active,
-        'rl-map-element__region--available': el.available,
-      };
-
-      return (
-        <path class={regionClass} id={`${el.id}`} d={el.path} tabIndex={0}/>
-      );
-    }
-  });
-
-  return parsed;
 }

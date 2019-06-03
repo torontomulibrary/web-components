@@ -40,17 +40,6 @@ import {
 
 export class RLMapEditor {
   /**
-   * The array of MapElements currently being displayed.  Created from the
-   * `elements` Prop with additional internal information added.
-   */
-  protected processedElements: (MapMarker | MapPolygon)[] = [];
-
-  /**
-   * The MapElement that is the target of any user interaction.
-   */
-  protected targetElement?: MapMarker | MapPolygon;
-
-  /**
    * The original size of the image being displayed by the map.
    */
   protected imgSize?: Size;
@@ -72,6 +61,12 @@ export class RLMapEditor {
   protected limits?: DOMRect;
 
   /**
+   * The array of MapElements currently being displayed.  Created from the
+   * `elements` Prop with additional internal information added.
+   */
+  protected processedElements: (MapMarker | MapPolygon)[] = [];
+
+  /**
    * Timer used to debounce multiple resize events.
    */
   protected resizeDebounce: any;
@@ -86,8 +81,15 @@ export class RLMapEditor {
    */
   protected state = STATES.NORMAL;
 
-  // The control point being targeted by user interaction.
-  private targetControl: number | undefined;
+  /**
+   * The MapElement that is the target of any user interaction.
+   */
+  protected targetElement?: MapMarker | MapPolygon;
+
+  /**
+   * The control point being targeted by user interaction.
+   */
+  protected targetControl?: number;
 
   // Reference to the root node (`rl-map-editor`).
   @Element() root!: HTMLRlMapEditorElement;
@@ -121,7 +123,18 @@ export class RLMapEditor {
   /**
    * An array of the elements that will be displayed on the Map.
    */
-  @Prop({ mutable: true }) elements!: MapElementDataMap;
+  @Prop() elements: MapElementDataMap = {};
+
+  /**
+   * Handle when the list of specified elements changes. The event details
+   * contains the `MapElement` that was deleted.
+   */
+  @Watch('elements')
+  onElementsChanged() {
+    // if (this.elements !== undefined) {
+    this.processedElements = parseElements(this.elements, this.svgScale);
+    // }
+  }
 
   /**
    * The image displayed on the Map.
@@ -194,17 +207,6 @@ export class RLMapEditor {
    */
   @Event() elementDoubleClicked!: EventEmitter<MapElementData>;
 
-  /**
-   * Handle when the list of specified elements changes. The event details
-   * contains the `MapElement` that was deleted.
-   */
-  @Watch('elements')
-  onElementsChanged() {
-    // if (this.elements !== undefined) {
-    this.processedElements = parseElements(this.elements, this.svgScale);
-    // }
-  }
-
   componentDidLoad() {
     this.onMapImageChanged();
     this.onElementsChanged();
@@ -230,6 +232,7 @@ export class RLMapEditor {
         this.activeElement.addPoint(this.toSvgSpace(this.start));
         this.root.forceUpdate();
       }
+
       this.state = STATES.ADD_REGION_FIRST;
     } else if (this.state !== STATES.ADD_POINT) {
       // Get the ID of the event target, if it is the correct type.
@@ -239,9 +242,9 @@ export class RLMapEditor {
       }
 
       if (e.target && e.target instanceof SVGCircleElement) {
-        if (e.target.classList.contains('rl-map-control') ||
-            e.target.classList.contains('rl-map-midpoint')) {
-          this.targetControl = Number(e.target.dataset.index);
+        if (e.target.classList.contains('rl-svg__control') ||
+            e.target.classList.contains('rl-svg__midpoint')) {
+          this.targetControl = Number(e.target.getAttribute('index'));
         }
       }
     }
@@ -263,69 +266,66 @@ export class RLMapEditor {
     const delta = Coordinate.difference(point, this.last);
     let dist = 0;
 
-    if (this.start) {
-      switch (this.state) {
-        case STATES.GESTURE_DOWN:
-          if (this.targetControl !== undefined || this.activeElement && this.targetElement === this.activeElement) {
-            dist = Coordinate.squareDistance(this.start, point);
-            if (dist > HYSTERESIS) {
-              this.state = STATES.DRAGGING;
-            }
-            break;
-          }
-        case STATES.DRAGGING:
-          if (this.targetControl !== undefined && this.activeElement !== undefined && this.activeElement instanceof MapPolygon) {
-            if (this.targetControl % 2 === 1) {
-              // If the target control is a midpoint, Add it to the array of
-              // controls.
-              const i = Math.floor(this.targetControl / 2) + 1;
-
-              this.activeElement.addPoint(
-                Coordinate.difference(
-                  this.toSvgSpace(point),
-                  this.toSvgSpace(this.svgTransform)
-                ),
-                i
-              );
-
-              // Update the targetControl to be the index of the new control.
-              this.targetControl = i * 2;
-            } else {
-              this.activeElement.movePoint(
-                this.toSvgScale(delta),
-                this.targetControl / 2
-              );
-              this.root.forceUpdate();
-            }
-          } else if (this.targetElement && this.activeElement &&
-              this.activeElement.id === this.targetElement.id) {
-            this.targetElement.move(this.toSvgScale(delta));
-            this.root.forceUpdate();
-          } else {
-            // Move the canvas otherwise.
-            if (this.limits !== undefined) {
-              this.state = STATES.DRAGGING;
-              this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
-            }
-          }
-          break;
-        case STATES.ADD_REGION_FIRST:
+    switch (this.state) {
+      case STATES.GESTURE_DOWN:
+        if (this.start && (this.targetControl !== undefined || this.activeElement && this.targetElement === this.activeElement)) {
           dist = Coordinate.squareDistance(this.start, point);
+
+          if (dist > HYSTERESIS) {
+            this.state = STATES.DRAGGING;
+          }
+
+          break;
+        }
+      case STATES.DRAGGING:
+        if (this.targetControl !== undefined && this.activeElement !== undefined && this.activeElement instanceof MapPolygon) {
+          if (this.targetControl % 2 === 1) {
+            // If the target control is a midpoint, Add it to the array of
+            // controls.
+            const i = Math.floor(this.targetControl / 2) + 1;
+
+            this.activeElement.addPoint(Coordinate.difference(this.toSvgSpace(point), this.toSvgSpace(this.svgTransform)), i);
+
+            // Update the targetControl to be the index of the new control.
+            this.targetControl = i * 2;
+          } else {
+            this.activeElement.movePoint(
+              this.toSvgScale(delta),
+              this.targetControl / 2
+            );
+            this.root.forceUpdate();
+          }
+        } else if (this.targetElement && this.activeElement &&
+            this.activeElement.id === this.targetElement.id) {
+          this.targetElement.move(this.toSvgScale(delta));
+          this.root.forceUpdate();
+        } else {
+          // Move the canvas otherwise.
+          if (this.limits !== undefined) {
+            this.state = STATES.DRAGGING;
+            this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
+          }
+        }
+        break;
+      case STATES.ADD_REGION_FIRST:
+        if (this.start) {
+          dist = Coordinate.squareDistance(this.start, point);
+
           if (this.activeElement && this.activeElement instanceof MapPolygon && dist > HYSTERESIS) {
             this.state = STATES.ADD_REGION;
             this.activeElement.addPoint(this.toSvgSpace(point));
             this.root.forceUpdate();
           }
-          break;
-        case STATES.ADD_REGION:
-          if (this.activeElement && this.activeElement instanceof MapPolygon) {
-            const idx = this.activeElement.points.length - 1;
-            this.activeElement.movePoint(this.toSvgScale(delta), idx);
-            this.root.forceUpdate();
-          }
-          break;
-        default:
-      }
+        }
+        break;
+      case STATES.ADD_REGION:
+        if (this.activeElement && this.activeElement instanceof MapPolygon) {
+          const idx = this.activeElement.points.length - 1;
+          this.activeElement.movePoint(this.toSvgScale(delta), idx);
+          this.root.forceUpdate();
+        }
+        break;
+      default:
     }
 
     this.last = point;
@@ -338,86 +338,84 @@ export class RLMapEditor {
   @Listen('mouseup')
   @Listen('touchend')
   onGestureUp(e: Event) {
-      // Convert the coordinate to SVG coordinate space.
-      const point = coordinateFromEvent(e, this.root);
+    // Convert the coordinate to SVG coordinate space.
+    const point = coordinateFromEvent(e, this.root);
 
-      switch (this.state) {
-        case STATES.GESTURE_DOWN:
-          if (this.targetElement) {
-            if (this.targetElement !== this.activeElement) {
-              this._setActiveElement(this.targetElement);
-            }
-          } else {
-            this._clearActiveElement();
-            this.elementDeselected.emit(this.activeElement);
+    switch (this.state) {
+      case STATES.GESTURE_DOWN:
+        if (this.targetElement) {
+          if (this.targetElement !== this.activeElement) {
+            this._setActiveElement(this.targetElement);
           }
-          this.state = STATES.NORMAL;
-          break;
-        case STATES.DRAGGING:
-          const delta = Coordinate.difference(point, this.last);
-          if (this.activeElement && this.activeElement instanceof MapPolygon && this.targetControl !== undefined) {
-            this.activeElement.movePoint(
-              this.toSvgScale(delta),
-              this.targetControl / 2
-            );
-            this.elementUpdated.emit(
-                this.mapElementFromParsedElement(this.activeElement));
-          } else if (this.targetElement && this.activeElement &&
-              this.activeElement.id === this.targetElement.id) {
-            // Move the targeted element, if there is one.
-            this.activeElement.move(this.toSvgScale(delta));
+        } else {
+          this._clearActiveElement();
+          this.elementDeselected.emit(this.activeElement);
+        }
 
-            this.elementUpdated.emit(
-                this.mapElementFromParsedElement(this.activeElement));
-          } else {
-            // Move the canvas otherwise.
-            if (this.limits) {
-              this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
-            }
+        this.state = STATES.NORMAL;
+        break;
+      case STATES.DRAGGING:
+        const delta = Coordinate.difference(point, this.last);
+
+        if (this.activeElement && this.activeElement instanceof MapPolygon && this.targetControl !== undefined) {
+          this.activeElement.movePoint(
+            this.toSvgScale(delta),
+            this.targetControl / 2
+          );
+          this.elementUpdated.emit(
+              this.mapElementFromParsedElement(this.activeElement));
+        } else if (this.targetElement && this.activeElement &&
+            this.activeElement.id === this.targetElement.id) {
+          // Move the targeted element, if there is one.
+          this.activeElement.move(this.toSvgScale(delta));
+
+          this.elementUpdated.emit(
+              this.mapElementFromParsedElement(this.activeElement));
+        } else {
+          // Move the canvas otherwise.
+          if (this.limits) {
+            this.svgTransform = Coordinate.sum(this.svgTransform, delta).limit(this.limits).round();
           }
-          this.state = STATES.NORMAL;
-          break;
-        case STATES.ADD_REGION_FIRST:
-          if (this.activeElement && this.activeElement instanceof MapPolygon) {
-            this.activeElement.addPoint(this.toSvgSpace(point));
-            this.root.forceUpdate();
-          }
-          // this.activeControls = [...this.activeControls, this.toSvgSpace(point)];
+        }
+        this.state = STATES.NORMAL;
+        break;
+      case STATES.ADD_REGION_FIRST:
+        if (this.activeElement && this.activeElement instanceof MapPolygon) {
+          this.activeElement.addPoint(this.toSvgSpace(point));
           this.state = STATES.ADD_REGION;
-          break;
-        case STATES.ADD_REGION:
-          if (this.activeElement && this.activeElement instanceof MapPolygon) {
-            if (this.targetControl === 0) {
-              // Remove the last point, it was used as a placeholder for drawing
-              // a line to the cursor.
-              this.activeElement.removePoint();
-              this.state = STATES.NORMAL;
-              this.root.forceUpdate();
-              this.elementCreated.emit(
-                  this.mapElementFromParsedElement(this.activeElement)
-              );
-            } else {
-              // Add a new point to the active controls array.
-              this.activeElement.addPoint(this.toSvgSpace(point));
-              this.root.forceUpdate();
-            }
-          }
-          break;
-        case STATES.ADD_POINT:
-          if (this.activeElement && this.activeElement instanceof MapMarker && this.root) {
-            this.activeElement.position = this.toSvgSpace(point);
+        }
+        break;
+      case STATES.ADD_REGION:
+        if (this.activeElement && this.activeElement instanceof MapPolygon) {
+          if (this.targetControl === 0) {
+            // Remove the last point, it was used as a placeholder for drawing
+            // a line to the cursor.
+            this.activeElement.removePoint();
             this.state = STATES.NORMAL;
             this.root.forceUpdate();
             this.elementCreated.emit(
-              this.mapElementFromParsedElement(this.activeElement)
+                this.mapElementFromParsedElement(this.activeElement)
             );
+          } else {
+            // Add a new point to the active controls array.
+            this.activeElement.addPoint(this.toSvgSpace(point));
           }
-        default:
-      }
+        }
+        break;
+      case STATES.ADD_POINT:
+        if (this.activeElement && this.activeElement instanceof MapMarker && this.root) {
+          this.activeElement.position = this.toSvgSpace(point);
+          this.state = STATES.NORMAL;
+          this.root.forceUpdate();
+          this.elementCreated.emit(
+            this.mapElementFromParsedElement(this.activeElement)
+          );
+        }
+      default:
+    }
 
-      this.targetControl = undefined;
-      this.targetElement = undefined;
-    // }
+    this.targetControl = undefined;
+    this.targetElement = undefined;
   }
 
   /**
@@ -433,6 +431,7 @@ export class RLMapEditor {
 
       if (this.state === STATES.DRAGGING && this.activeElement) {
         const delta = Coordinate.difference(point, this.last);
+
         if (this.activeElement && this.activeElement instanceof MapPolygon && this.targetControl !== undefined) {
           this.activeElement.movePoint(
             this.toSvgScale(delta),
@@ -463,6 +462,7 @@ export class RLMapEditor {
   onDoubleClick(e: Event) {
     if (this.state === STATES.NORMAL) {
       const id = getTargetId(e.target);
+
       if (id !== undefined) {
         this.elementDoubleClicked.emit(this.elements[id]);
       }
@@ -519,7 +519,8 @@ export class RLMapEditor {
   @Listen('keydown')
   onEnter(e: KeyboardEvent) {
     if (e.key === 'enter' && e.target && e.target instanceof SVGElement &&
-      e.target.classList.contains('rl-map-element')) {
+      (e.target.classList.contains('rl-svg__polygon') ||
+      e.target.classList.contains('rl-svg__marker'))) {
       const id = Number(e.target.id);
       const el = this.processedElements.find(i => i.id === id);
       this._setActiveElement(el);
@@ -587,11 +588,13 @@ export class RLMapEditor {
     }
   }
 
+  /**
+   * Generates a `MapElement` object based on the values in the corresponding
+   * `ParsedElement` object.
+   *
+   * @param el The ParsedElement to convert back to a MapElement
+   */
   private mapElementFromParsedElement(el: MapMarker | MapPolygon): MapElementData | undefined {
-    // if (this.elements === undefined) {
-    //   return undefined;
-    // }
-
     const originalEl = this.elements[el.id] || {
       altText: '',
       description: '',
@@ -600,6 +603,7 @@ export class RLMapEditor {
       iconPath: [],
       enabled: true,
     };
+
     return {
       altText: originalEl.altText,
       description: originalEl.description,
@@ -708,7 +712,6 @@ export class RLMapEditor {
   hostData() {
     return {
       class: {
-        'rl-map': true,
         'rl-map-editor': true,
       },
     };
@@ -722,20 +725,14 @@ export class RLMapEditor {
     ];
     const matrix = 'matrix(' + m.join(',') + ')';
 
+    const elements = this.processedElements.map(el => el.render());
+    const controls = this.activeElement !== undefined && this.activeElement instanceof MapPolygon && this.activeElement.renderControls();
+
     return (
-      <svg class="rl-map__svg">
-        <g class="rl-map__transform" transform={matrix}>
-          <g class="rl-map__image-wrapper">
-            <image
-              class="rl-map__image"
-              xlinkHref={this.mapImage !== undefined ? this.mapImage : undefined}
-            >
-            </image>
-          </g>
-          <g class="rl-map__elements">
-            {this.processedElements.map(el => el.render())}
-          </g>
-          {this.activeElement && this.activeElement instanceof MapPolygon && this.activeElement.renderControls()}
+      <svg class="rl-svg">
+        <g transform={matrix}>
+          <image xlinkHref={this.mapImage !== undefined ? this.mapImage : undefined} />
+          {controls ? [elements, controls] : elements}
         </g>
       </svg>
     );
