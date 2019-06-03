@@ -83,10 +83,10 @@ export class MarkerSymbol {
 
     const pathClass = {
       'rl-svg__symbol': true,
-      'rl-svg__symbol--alt': this._alt,
     };
 
     pathClass[`rl-svg__symbol--${this._pathName}`] = true;
+    pathClass[`rl-svg__symbol--${this._pathName}-alt`] = this._alt;
 
     return (
       <path
