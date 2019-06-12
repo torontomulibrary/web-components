@@ -4,7 +4,6 @@ import {
   Event,
   EventEmitter,
   Listen,
-  Method,
   Prop,
   State,
   Watch,
@@ -111,6 +110,17 @@ export class RLMap {
    * the SVG.
    */
   @State() svgTransform = new Coordinate(0, 0);
+
+  /**
+   * The ID of the currently active element.
+   */
+  @Prop() activeElementId?: number;
+  @Watch('activeElementId')
+  onActiveElementIdChanged() {
+    if (this.processedElements.length > 0) {
+      this._setActiveElement(this.processedElements.find(i => i.id === this.activeElementId), false);
+    }
+  }
 
   /**
    * An array of the elements that will be displayed on the Map.
@@ -346,26 +356,6 @@ export class RLMap {
   /**
    * Clears the currently active element.
    */
-  @Method()
-  async clearActiveElement() {
-    this._clearActiveElement();
-  }
-
-  /**
-   * Sets the element with the specified ID to active.
-   *
-   * @param id The ID of the element to set as active.
-   */
-  @Method()
-  async setActiveElement(id: number) {
-    if (this.processedElements.length > 0) {
-      this._setActiveElement(this.processedElements.find(i => i.id === id), false);
-    }
-  }
-
-  /**
-   * Clears the currently active element.
-   */
   private _clearActiveElement() {
     if (this.activeElement) {
       this.activeElement.active = false;
@@ -427,7 +417,7 @@ export class RLMap {
       return;
     }
 
-    this.clearActiveElement();
+    this._clearActiveElement();
     this.activeElement = el;
     this.activeElement.active = true;
 

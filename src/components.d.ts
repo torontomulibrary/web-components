@@ -61,10 +61,7 @@ export namespace Components {
     'toRemove': () => Promise<boolean>;
   }
   interface RlMap {
-    /**
-    * Clears the currently active element.
-    */
-    'clearActiveElement': () => Promise<void>;
+    'activeElementId'?: number;
     /**
     * An array of the elements that will be displayed on the Map.
     */
@@ -81,10 +78,6 @@ export namespace Components {
     * The minimum scale factor.
     */
     'minScale': number;
-    /**
-    * Sets the element with the specified ID to active.
-    */
-    'setActiveElement': (id: number) => Promise<void>;
   }
   interface RlMapEditor {
     /**
@@ -273,6 +266,7 @@ declare namespace LocalJSX {
     'detail'?: MapElementDetail;
   }
   interface RlMap extends JSXBase.HTMLAttributes<HTMLRlMapElement> {
+    'activeElementId'?: number;
     /**
     * An array of the elements that will be displayed on the Map.
     */
