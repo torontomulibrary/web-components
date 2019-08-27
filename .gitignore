@@ -113,6 +113,7 @@ data/
 
 # Build directory
 dist/
+www/
 
 # Stencil cache directory
 .stencil/
