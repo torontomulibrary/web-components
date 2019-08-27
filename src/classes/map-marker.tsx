@@ -7,7 +7,7 @@ import { MapElement } from './map-element';
 import { MarkerIcon } from './marker-icon';
 import { MarkerSymbol } from './marker-symbol';
 
-const CONTROL_SIZE = 72;
+const CONTROL_SIZE = 48;
 
 /**
  * A type of `MapElement`.  A marker is an image or text rendered at a specific
@@ -21,14 +21,14 @@ export class MapMarker extends MapElement {
   set anchor(newAnchor: Coordinate) { this._anchor = newAnchor; }
   get anchor() { return this._anchor; }
 
-  _available = false;
+  _alt = false;
   /**
    * A flag indicating if the this `MapMarker` represents an active or inactive
-   * point.  When the marker is available, it gets a matching `--available` CSS
+   * point.  When the marker is alt, it gets a matching `--alt` CSS
    * class added.
    */
-  set available(isAvailable: boolean) { this._available = isAvailable; }
-  get available() { return this._available; }
+  set alt(isAvailable: boolean) { this._alt = isAvailable; }
+  get alt() { return this._alt; }
 
   _icon?: MarkerIcon | MarkerSymbol;
   /**
@@ -65,7 +65,7 @@ export class MapMarker extends MapElement {
 
     if (opts) {
       this.anchor = opts.anchor ? opts.anchor : new Coordinate(0, 0);
-      this.available = opts.available ? opts.available : false;
+      this.alt = opts.alt ? opts.alt : false;
       this.icon = opts.icon ? opts.icon : undefined;
       this.label = (opts.label !== undefined) ? opts.label : '';
       this.opacity = (opts.opacity !== undefined) ? opts.opacity : 1;
@@ -110,7 +110,7 @@ export class MapMarker extends MapElement {
     } else {
       this._icon.size = { width: CONTROL_SIZE, height: CONTROL_SIZE };
       if (this._icon instanceof MarkerSymbol) {
-        this._icon.alt = this._available;
+        this._icon.alt = this.alt;
       }
       contents.push(this._icon.render());
     }

@@ -24,11 +24,11 @@ export interface MapElementDetailMap extends NumberMap<MapElementDetail> {}
 export interface MapElementData extends DescribedObject {
   details?: MapElementDetailMap;
   clickable?: boolean;
-  floorId: number;
+  floor: string;
   icon?: string;
   points: string;
   enabled: boolean;
-  available?: boolean;
+  alt?: boolean;
   category?: number;
   symbol?: string;
 }
@@ -36,7 +36,7 @@ export interface MapElementData extends DescribedObject {
 export interface MapElementDataMap extends NumberMap<MapElementData> {}
 
 export interface ParsedMapElement {
-  available: boolean;
+  alt: boolean;
   active: boolean;
   coordinates: Coordinate[];
   enabled: boolean;

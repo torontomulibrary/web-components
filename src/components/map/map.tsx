@@ -14,7 +14,7 @@ import { MapMarker } from '../../classes/map-marker';
 import { MapPolygon } from '../../classes/map-polygon';
 import {
   MapElementData,
-  MapElementDataMap,
+  // MapElementDataMap,
   Size,
 } from '../../interface';
 import { Coordinate } from '../../utils/coordinate';
@@ -25,9 +25,10 @@ import {
   HYSTERESIS,
   STATES,
   computeLimits,
-  getTargetId,
+  getTarget,
   parseElements,
 } from '../../utils/map-base';
+
 
 @Component({
   tag: 'rl-map',
@@ -44,12 +45,14 @@ export class RLMap {
   /**
    * The MapElement that is the target of any user interaction.
    */
-  protected targetElement?: MapMarker | MapPolygon;
+  // protected targetElement?: MapMarker | MapPolygon;
+  protected targetElement?: SVGElement;
 
   /**
    * The original size of the image being displayed by the map.
    */
-  protected imgSize?: Size;
+  // protected imgSize?: Size;
+  protected imgSize = { width: 4800, height: 2400 };
 
   /**
    * The original scale factor used to size the SVG so it fits into the SVG and
@@ -88,7 +91,8 @@ export class RLMap {
   /**
    * The currently active element.
    */
-  @State() activeElement: MapMarker | MapPolygon | undefined;
+  // @State() activeElement: MapMarker | MapPolygon | undefined;
+  @State() activeElement?: SVGElement;
 
   /**
    * Flag indicating if the map image has loaded or not.
@@ -114,18 +118,18 @@ export class RLMap {
   /**
    * The ID of the currently active element.
    */
-  @Prop() activeElementId?: number;
-  @Watch('activeElementId')
-  onActiveElementIdChanged() {
-    if (this.processedElements.length > 0) {
-      this._setActiveElement(this.processedElements.find(i => i.id === this.activeElementId), false);
-    }
-  }
+  // @Prop() activeElementId?: number;
+  // @Watch('activeElementId')
+  // onActiveElementIdChanged() {
+  //   if (this.activeElementId && this.processedElements.length > 0) {
+  //     this._setActiveElement(this.processedElements.find(i => i.id === this.activeElementId), false);
+  //   }
+  // }
 
   /**
    * An array of the elements that will be displayed on the Map.
    */
-  @Prop({ mutable: true }) elements!: MapElementDataMap;
+  @Prop({ mutable: true }) elements!: MapElementData[];
 
   /**
    * The image displayed on the Map.
@@ -174,7 +178,7 @@ export class RLMap {
    * An event fired when the user selects a `MapElement`. The clicked element
    * will be passed as the event parameter.
    */
-  @Event() elementSelected!: EventEmitter<MapElementData>;
+  @Event() elementSelected!: EventEmitter<SVGElement>;
 
   /**
    * Handle when the list of specified elements changes.
@@ -188,7 +192,8 @@ export class RLMap {
 
   componentDidLoad() {
     this.onMapImageChanged();
-    this.onElementsChanged();
+    // this.onElementsChanged();
+    // this.onActiveElementIdChanged();
     this.onResize();
   }
 
@@ -207,9 +212,10 @@ export class RLMap {
     }
 
     // Get the ID of the event target, if it is the correct type.
-    const id = getTargetId(e.target);
-    if (id !== undefined) {
-      this.targetElement = this.processedElements.find(i => i.id === id);
+    const trgt = getTarget(e.target);
+    if (trgt !== undefined) {
+      // this.targetElement = this.processedElements.find(i => i.id === id);
+      this.targetElement = trgt;
     }
   }
 
@@ -263,13 +269,13 @@ export class RLMap {
         }
         break;
       case STATES.GESTURE_DOWN:
-        if (this.targetElement) {
-          if (this.targetElement !== this.activeElement && this.targetElement.clickable) {
+        if (this.targetElement !== undefined) {
+          if (this.targetElement !== this.activeElement) {
             this._setActiveElement(this.targetElement);
             this.targetElement = undefined;
           }
         } else {
-          if (this.activeElement) {
+          if (this.activeElement !== undefined) {
             this.elementDeselected.emit(this.activeElement);
             this._clearActiveElement();
           }
@@ -347,9 +353,12 @@ export class RLMap {
     if (e.key === 'enter' && e.target && e.target instanceof SVGElement &&
       (e.target.classList.contains('rl-map-polygon') ||
       e.target.classList.contains('rl-map-marker'))) {
-      const id = Number(e.target.id);
-      const el = this.processedElements.find(i => i.id === id);
-      this._setActiveElement(el);
+        const trgt = getTarget(e.target);
+        if (trgt !== undefined) {
+          // this.targetElement = this.processedElements.find(i => i.id === id);
+          this._setActiveElement(trgt);
+        }
+      // this._setActiveElement(el);
     }
   }
 
@@ -358,7 +367,7 @@ export class RLMap {
    */
   private _clearActiveElement() {
     if (this.activeElement) {
-      this.activeElement.active = false;
+      this.activeElement.classList.remove('rl-active');
     }
     this.activeElement = undefined;
   }
@@ -412,19 +421,20 @@ export class RLMap {
    *
    * @param el The Element that will be set as the active element.
    */
-  private _setActiveElement(el?: MapMarker | MapPolygon, shouldEmit = true) {
+  private _setActiveElement(el?: SVGElement, shouldEmit = true) {
     if (!el || (this.activeElement && el.id === this.activeElement.id)) {
       return;
     }
 
     this._clearActiveElement();
     this.activeElement = el;
-    this.activeElement.active = true;
+    // this.activeElement.active = true;
+    this.activeElement.classList.add('rl-active');
 
     // Emit an event with the original (un-parsed) element as the new 'active'
     // element.  Don't emit an event if the flag is set.
     if (shouldEmit) {
-      this.elementSelected.emit(this.elements[this.activeElement.id]);
+      this.elementSelected.emit(this.activeElement);
     }
   }
 
@@ -465,9 +475,9 @@ export class RLMap {
 
     return (
       <svg class="rl-svg">
+        <SVGSYM></SVGSYM>
         <g transform={matrix}>
-          <image xlinkHref={this.mapImage !== undefined ? this.mapImage : undefined} />
-          {this.processedElements.map(el => el.render())}
+          <LIB02></LIB02>
         </g>
       </svg>
     );

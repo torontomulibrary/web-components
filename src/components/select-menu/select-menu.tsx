@@ -41,7 +41,7 @@ export class Select {
   /**
    * An array of the different options displayed in the select menu.
    */
-  @Prop() options: string[] = [];
+  @Prop() options: { label: string, value: number }[] = [];
 
   /**
    * The index of the currently selected option or undefined if nothing selected.
@@ -77,12 +77,14 @@ export class Select {
     return ([
       <i class="mdc-select__dropdown-icon"></i>,
       <select class="mdc-select__native-control">
-        {this.options.map((option, index) => {
-          const o = option.toLowerCase();
-          return index === this.selectedOption ?
-          <option value={o} selected>{option}</option> :
-          <option value={o}>{option}</option>;
-        })}
+        {this.options.map((op, index) =>
+          <option
+            value={op.value}
+            selected={index === this.selectedOption}
+          >
+            {op.label}
+          </option>
+        )}
       </select>,
       <label class="mdc-floating-label">{this.label}</label>,
       <div class="mdc-line-ripple"></div>,

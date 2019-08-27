@@ -88,7 +88,7 @@ export class DetailDialogItem {
           c.items.forEach((dt, dtidx) => {
             if (this.detailTypeId === dt.id) {
               this.updateCategory(cidx);
-              this.typeSelection = dtidx; // { ...dt };
+              this.typeSelection = dtidx;
             }
           });
         });
@@ -99,7 +99,7 @@ export class DetailDialogItem {
   /**
    * An array of all the different categories that can be selected.
    */
-  @Prop() categoryOptions!: { name: string, id: number, items: MapElementDetailType[] }[];
+  @Prop() categoryOptions!: { label: string, name: string, id: number, items: MapElementDetailType[] }[];
   @Watch('categoryOptions')
   onCategoryOptionsChanged() {
     this.updateCategory(0);
@@ -166,7 +166,7 @@ export class DetailDialogItem {
       <div class="rl-text-field-container">
         <rl-select-menu
           label="Category"
-          options={this.categoryOptions.map(c => c.name)}
+          options={this.categoryOptions.map(c => ({ label: c.label, value: c.id }))}
           selectedOption={this.categorySelection}
           onSelected={evt => {
             const categories = this.categoryOptions[evt.detail];
@@ -181,7 +181,7 @@ export class DetailDialogItem {
       <div class="rl-text-field-container">
         <rl-select-menu
           label="Type"
-          options={this.typeOptions.map((i: MapElementDetailType) => i.name)}
+          options={this.typeOptions.map((i: MapElementDetailType) => ({ label: i.name, value: i.id }))}
           selectedOption={this.typeSelection}
           onSelected={evt => {
             this.typeSelection = evt.detail;

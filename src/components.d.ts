@@ -8,7 +8,6 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   MapElementData,
-  MapElementDataMap,
   MapElementDetail,
   MapElementDetailMap,
   MapElementDetailType,
@@ -20,7 +19,7 @@ export namespace Components {
     /**
     * The different categories that each item can display.  Each category has a set of Detailtypes.
     */
-    'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    'categories': { label: string, name: string, id: number, items: MapElementDetailType[] }[];
     /**
     * The details that will be displayed in this dialog.
     */
@@ -46,7 +45,7 @@ export namespace Components {
     /**
     * An array of all the different categories that can be selected.
     */
-    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
+    'categoryOptions': { label: string, name: string, id: number, items: MapElementDetailType[] }[];
     /**
     * The `MapElementDetail` that this item is displaying the information of.
     */
@@ -61,45 +60,10 @@ export namespace Components {
     'toRemove': () => Promise<boolean>;
   }
   interface RlMap {
-    'activeElementId'?: number;
     /**
-    * An array of the elements that will be displayed on the Map.
+    * The ID of the currently active element. An array of the elements that will be displayed on the Map.
     */
-    'elements': MapElementDataMap;
-    /**
-    * The image displayed on the Map.
-    */
-    'mapImage'?: string;
-    /**
-    * The maximum scale factor.
-    */
-    'maxScale': number;
-    /**
-    * The minimum scale factor.
-    */
-    'minScale': number;
-  }
-  interface RlMapEditor {
-    /**
-    * Add a new `MapPoint` element to the map.  Calling this method starts the process.  The user must then click somewhere on the map to add the point.
-    */
-    'addPoint': () => Promise<void>;
-    /**
-    * Add a new `MapRegion` to the map. Calling this method starts the process. The user must then click numerous times on the map to add points.  Only when clicking again on the original point is the region added.
-    */
-    'addRegion': () => Promise<void>;
-    /**
-    * Cancels the current action and returns the map to its default state, ready for futher action.
-    */
-    'cancelAction': () => Promise<void>;
-    /**
-    * Removes the currently active element.  If no element is selected when this method is called, it has no effect.
-    */
-    'deleteRegion': () => Promise<void>;
-    /**
-    * An array of the elements that will be displayed on the Map.
-    */
-    'elements': MapElementDataMap;
+    'elements': MapElementData[];
     /**
     * The image displayed on the Map.
     */
@@ -112,10 +76,6 @@ export namespace Components {
     * The minimum scale factor.
     */
     'minScale': number;
-    /**
-    * Sets the element with the specified ID to active.
-    */
-    'setActiveElement': (id: number) => Promise<void>;
   }
   interface RlSelectMenu {
     /**
@@ -125,7 +85,7 @@ export namespace Components {
     /**
     * An array of the different options displayed in the select menu.
     */
-    'options': string[];
+    'options': { label: string, value: number }[];
     /**
     * The index of the currently selected option or undefined if nothing selected.
     */
@@ -198,12 +158,6 @@ declare global {
     new (): HTMLRlMapElement;
   };
 
-  interface HTMLRlMapEditorElement extends Components.RlMapEditor, HTMLStencilElement {}
-  var HTMLRlMapEditorElement: {
-    prototype: HTMLRlMapEditorElement;
-    new (): HTMLRlMapEditorElement;
-  };
-
   interface HTMLRlSelectMenuElement extends Components.RlSelectMenu, HTMLStencilElement {}
   var HTMLRlSelectMenuElement: {
     prototype: HTMLRlSelectMenuElement;
@@ -225,7 +179,6 @@ declare global {
     'rl-detail-dialog': HTMLRlDetailDialogElement;
     'rl-detail-dialog-item': HTMLRlDetailDialogItemElement;
     'rl-map': HTMLRlMapElement;
-    'rl-map-editor': HTMLRlMapEditorElement;
     'rl-select-menu': HTMLRlSelectMenuElement;
     'rl-text-field': HTMLRlTextFieldElement;
     'rl-text-log': HTMLRlTextLogElement;
@@ -237,7 +190,7 @@ declare namespace LocalJSX {
     /**
     * The different categories that each item can display.  Each category has a set of Detailtypes.
     */
-    'categories': { name: string, id: number, items: MapElementDetailType[] }[];
+    'categories': { label: string, name: string, id: number, items: MapElementDetailType[] }[];
     /**
     * The details that will be displayed in this dialog.
     */
@@ -259,18 +212,17 @@ declare namespace LocalJSX {
     /**
     * An array of all the different categories that can be selected.
     */
-    'categoryOptions': { name: string, id: number, items: MapElementDetailType[] }[];
+    'categoryOptions': { label: string, name: string, id: number, items: MapElementDetailType[] }[];
     /**
     * The `MapElementDetail` that this item is displaying the information of.
     */
     'detail'?: MapElementDetail;
   }
   interface RlMap extends JSXBase.HTMLAttributes<HTMLRlMapElement> {
-    'activeElementId'?: number;
     /**
-    * An array of the elements that will be displayed on the Map.
+    * The ID of the currently active element. An array of the elements that will be displayed on the Map.
     */
-    'elements': MapElementDataMap;
+    'elements': MapElementData[];
     /**
     * The image displayed on the Map.
     */
@@ -290,49 +242,7 @@ declare namespace LocalJSX {
     /**
     * An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter.
     */
-    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
-  }
-  interface RlMapEditor extends JSXBase.HTMLAttributes<HTMLRlMapEditorElement> {
-    /**
-    * An array of the elements that will be displayed on the Map.
-    */
-    'elements'?: MapElementDataMap;
-    /**
-    * The image displayed on the Map.
-    */
-    'mapImage'?: string;
-    /**
-    * The maximum scale factor.
-    */
-    'maxScale'?: number;
-    /**
-    * The minimum scale factor.
-    */
-    'minScale'?: number;
-    /**
-    * An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.
-    */
-    'onElementCreated'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when one of the `MapElements` on this map is deleted.
-    */
-    'onElementDeleted'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when the user deselects a `MapElement`.
-    */
-    'onElementDeselected'?: (event: CustomEvent<any>) => void;
-    /**
-    * An event fired when one of the `MapElement`s on the map is double clicked.
-    */
-    'onElementDoubleClicked'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when the user selects a MapElement. The clicked element will be passed as the event parameter.
-    */
-    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
-    /**
-    * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was updated.
-    */
-    'onElementUpdated'?: (event: CustomEvent<MapElementData>) => void;
+    'onElementSelected'?: (event: CustomEvent<SVGElement>) => void;
   }
   interface RlSelectMenu extends JSXBase.HTMLAttributes<HTMLRlSelectMenuElement> {
     /**
@@ -346,7 +256,7 @@ declare namespace LocalJSX {
     /**
     * An array of the different options displayed in the select menu.
     */
-    'options'?: string[];
+    'options'?: { label: string, value: number }[];
     /**
     * The index of the currently selected option or undefined if nothing selected.
     */
@@ -400,7 +310,6 @@ declare namespace LocalJSX {
     'rl-detail-dialog': RlDetailDialog;
     'rl-detail-dialog-item': RlDetailDialogItem;
     'rl-map': RlMap;
-    'rl-map-editor': RlMapEditor;
     'rl-select-menu': RlSelectMenu;
     'rl-text-field': RlTextField;
     'rl-text-log': RlTextLog;

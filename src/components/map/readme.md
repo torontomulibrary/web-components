@@ -9,8 +9,8 @@
 
 | Property                | Attribute           | Description                                                 | Type                  | Default             |
 | ----------------------- | ------------------- | ----------------------------------------------------------- | --------------------- | ------------------- |
-| `activeElementId`       | `active-element-id` |                                                             | `number \| undefined` | `undefined`         |
-| `elements` _(required)_ | --                  | An array of the elements that will be displayed on the Map. | `MapElementDataMap`   | `undefined`         |
+| `activeElementId`       | `active-element-id` | The ID of the currently active element.                     | `number \| undefined` | `undefined`         |
+| `elements` _(required)_ | --                  | An array of the elements that will be displayed on the Map. | `MapElementData[]`    | `undefined`         |
 | `mapImage`              | `map-image`         | The image displayed on the Map.                             | `string \| undefined` | `undefined`         |
 | `maxScale`              | `max-scale`         | The maximum scale factor.                                   | `number`              | `DEFAULT_MAX_SCALE` |
 | `minScale`              | `min-scale`         | The minimum scale factor.                                   | `number`              | `DEFAULT_MIN_SCALE` |

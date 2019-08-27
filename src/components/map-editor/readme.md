@@ -9,7 +9,7 @@
 
 | Property   | Attribute   | Description                                                 | Type                  | Default             |
 | ---------- | ----------- | ----------------------------------------------------------- | --------------------- | ------------------- |
-| `elements` | --          | An array of the elements that will be displayed on the Map. | `MapElementDataMap`   | `{}`                |
+| `elements` | --          | An array of the elements that will be displayed on the Map. | `MapElementData[]`    | `[]`                |
 | `mapImage` | `map-image` | The image displayed on the Map.                             | `string \| undefined` | `undefined`         |
 | `maxScale` | `max-scale` | The maximum scale factor.                                   | `number`              | `DEFAULT_MAX_SCALE` |
 | `minScale` | `min-scale` | The minimum scale factor.                                   | `number`              | `DEFAULT_MIN_SCALE` |
@@ -56,17 +56,6 @@ Type: `Promise<void>`
 
 Cancels the current action and returns the map to its default state, ready
 for futher action.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-### `deleteRegion() => Promise<void>`
-
-Removes the currently active element.  If no element is selected when
-this method is called, it has no effect.
 
 #### Returns
 

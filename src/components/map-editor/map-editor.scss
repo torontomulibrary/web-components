@@ -1,12 +1,12 @@
 @mixin rl-element-focused {
   outline: none;
-  fill: var(--rl-map-element-focus-fill, rgba(255, 255, 83, 0.3));
+  fill: var(--rl-svg__focus-fill, rgba(255, 255, 83, 0.3));
 }
 
 @mixin rl-element-activated() {
   outline: none;
-  stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
-  stroke-width: 8;
+  stroke: var(--rl-svg__active-stroke, rgb(199, 171, 0));
+  stroke-width: var(--rl-svg__active-stroke--width, 4);
 }
 
 .rl-map-editor {
@@ -49,8 +49,8 @@
 
   &__polygon {
     fill: var(--rl-svg__polygon-fill, rgba(0, 76, 155, 0.6));
-    stroke: var(--rl-svg__polygon-fill, rgb(0, 76, 155));
-    stroke-width: 4;
+    stroke: var(--rl-svg__polygon-stroke, rgb(0, 76, 155));
+    stroke-width: var(--rl-svg__polygon-stroke--width, 2);
 
     &:focus {
       @include rl-element-focused();
@@ -69,8 +69,8 @@
 
     &-outline {
       fill: none;
-      stroke: var(--rl-map-element-active-stroke, rgb(199, 171, 0));
-      stroke-width: 2;
+      stroke: var(--rl-svg__active-stroke, rgb(199, 171, 0));
+      stroke-width: var(--rl-svg__active-stroke--width, 2);
     }
 
     path {
@@ -79,9 +79,9 @@
   }
 
   &__rect {
-    fill: var(--rl-map-region-fill, rgba(0, 76, 155, 0.6));
-    stroke: var(--rl-map-region-fill, rgb(0, 76, 155));
-    stroke-width: 4;
+    fill: var(--rl-svg__rect-fill, rgba(0, 76, 155, 0.6));
+    stroke: var(--rl-svg__rect-stroke, rgb(0, 76, 155));
+    stroke-width: var(--rl-svg__rect-stroke--width, 1);
 
     &--activated {
       @include rl-element-activated();
@@ -90,13 +90,13 @@
 
   &__symbol {
     fill: var(--rl-svg__symbol-fill, rgba(0, 76, 155, 0.6));
-    stroke: var(--rl-svg__symbol-fill, rgb(0, 76, 155));
-    stroke-width: 1;
+    stroke: var(--rl-svg__symbol-stroke, rgb(0, 76, 155));
+    stroke-width: var(--rl-svg__symbol-stroke--width, 1);
     fill-rule: evenodd;
 
     &--alt {
-      fill: var(--rl-svg__symbol-fill-alt, rgba(255, 255, 83, 0.5));
-      stroke: var(--rl-svg__symbol-fill-alt, rgb(199, 171, 0));
+      fill: var(--rl-svg__symbol-fill--alt, rgba(255, 255, 83, 0.5));
+      stroke: var(--rl-svg__symbol-stroke--alt, rgb(199, 171, 0));
     }
   }
 

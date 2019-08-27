@@ -23,59 +23,68 @@
       fill: #006600;
       stroke: #003300;
     }
+
+    .rl-active {
+      fill: red;
+    }
+
+    svg {
+      background-color: #aaa;
+      user-select: none;
+    }
   </style>
 </head>
 <body class='demo-content'>
   <script>
-    const elements = {
-      1: {id: 1, icon: undefined, name: "Region 1", points: "1140 890 940 770 456 1019", enabled: true},
-      2: {id: 2, icon: "demo/64.png", name: "Point 1", points: "200 300", enabled: true},
-      3: {id: 3, icon: "demo/64.png", name: "Point 2", points: "200 400", enabled: true},
-      4: {id: 4, icon: undefined, name: "Computer 1", points: "500 500", enabled: true, symbol: "computer", available: false, clickable: false},
-      5: {id: 5, icon: undefined, name: "Computer 2", points: "600 500", enabled: true, symbol: "computer", available: true, clickable: true},
-      6: {id: 6, icon: undefined, name: "Text Label", points: "700 600", enabled: true, available: true, clickable: false},
-    }
+    // const elements = [
+    //   {id: 1, icon: undefined, name: "Region 1", points: "1140 890 940 770 456 1019", enabled: true},
+    //   {id: 2, icon: "demo/64.png", name: "Point 1", points: "200 300", enabled: true},
+    //   {id: 3, icon: "demo/64.png", name: "Point 2", points: "200 400", enabled: true},
+    //   {id: 4, icon: undefined, name: "Computer 1", points: "500 500", enabled: true, symbol: "computer", available: false, clickable: false},
+    //   {id: 5, icon: undefined, name: "Computer 2", points: "600 500", enabled: true, symbol: "computer", available: true, clickable: true},
+    //   {id: 6, icon: undefined, name: "Text Label", points: "700 600", enabled: true, available: true, clickable: false},
+    // ];
 
     window.onload = async () => {
       let map = document.querySelector('rl-map');
       let log = document.querySelector('rl-text-log');
       let activeEl = undefined;
 
-      map.elements = { ...elements };
+      // map.elements = [ ...elements ];
 
       map.addEventListener('elementSelected', evt => {
-        log.log(`Element selected: ${evt.detail.name}`);
+        log.log(`Element selected: ${evt.detail.id}`);
       });
 
       map.addEventListener('elementDeselected', evt => {
-        log.log(`Element deselected: ${evt.detail ? evt.detail.name: ''}`);
+        log.log(`Element deselected: ${evt.detail ? evt.detail.id: ''}`);
       });
 
       setTimeout(() => {
-        map.mapImage="demo/3840x2160.png";
+        map.mapImage="demo/Floor_05_min.svg";
       }, 1000);
 
       let btn1 = document.querySelector('#btn-main');
       btn1.disabled = true;
       btn1.addEventListener('click', evt => {
-        map.mapImage = "demo/3840x2160.png"
+        map.mapImage = "demo/Floor_05_min.svg"
         btn1.disabled = true;
         btn2.disabled = false;
       });
 
-      let btn2 = document.querySelector('#btn-alt');
-      btn2.addEventListener('click', evt => {
-        map.mapImage = "demo/3840x2160_alt.png"
-        btn1.disabled = false;
-        btn2.disabled = true;
-      });
+      // let btn2 = document.querySelector('#btn-alt');
+      // btn2.addEventListener('click', evt => {
+      //   map.mapImage = "demo/3840x2160_alt.png"
+      //   btn1.disabled = false;
+      //   btn2.disabled = true;
+      // });
     }
   </script>
 
   <button id="btn-main">Main Image</button>
   <button id="btn-alt">Alt Image</button>
   <div class="map-container">
-    <rl-map></rl-map>
+    <rl-map active-element-id="5"></rl-map>
   </div>
   <rl-text-log></rl-text-log>
 </div>

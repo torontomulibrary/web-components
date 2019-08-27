@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property                       | Attribute | Description                                                             | Type                                                             | Default     |
-| ------------------------------ | --------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------- |
-| `categoryOptions` _(required)_ | --        | An array of all the different categories that can be selected.          | `{ name: string; id: number; items: MapElementDetailType[]; }[]` | `undefined` |
-| `detail`                       | --        | The `MapElementDetail` that this item is displaying the information of. | `MapElementDetail \| undefined`                                  | `undefined` |
+| Property                       | Attribute | Description                                                             | Type                                                                            | Default     |
+| ------------------------------ | --------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
+| `categoryOptions` _(required)_ | --        | An array of all the different categories that can be selected.          | `{ label: string; name: string; id: number; items: MapElementDetailType[]; }[]` | `undefined` |
+| `detail`                       | --        | The `MapElementDetail` that this item is displaying the information of. | `MapElementDetail \| undefined`                                                 | `undefined` |
 
 
 ## Methods

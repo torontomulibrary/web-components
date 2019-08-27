@@ -36,7 +36,7 @@ export class DetailDialog {
   /**
    * Array of the child `DetailDialogItem` elements.
    */
-  private detailItems: HTMLRlDetailDialogItemElement[] = [];
+  private detailItems: (HTMLRlDetailDialogItemElement)[] = [];
 
   /**
    * Internal root of this component.
@@ -68,7 +68,7 @@ export class DetailDialog {
    * The different categories that each item can display.  Each category has
    * a set of Detailtypes.
    */
-  @Prop() categories!: { name: string, id: number, items: MapElementDetailType[] }[];
+  @Prop() categories!: { label: string, name: string, id: number, items: MapElementDetailType[] }[];
 
   /**
    * An event emitted when a new `DetailDialogItem` is added to the dialog.
@@ -94,10 +94,9 @@ export class DetailDialog {
   @Method()
   getDetails() {
     return Promise.all(
-      this.detailItems.map(item => {
+      this.detailItems.filter(item => item !== undefined && item !== null).map(item => {
         return Promise.all([item.getDetail(), item.toRemove()]).then(values =>
-          Promise.resolve({ ...values[0], remove: values[1] } as MapElementDetail)
-        );
+          Promise.resolve({ ...values[0], remove: values[1] } as MapElementDetail));
       })
     );
   }

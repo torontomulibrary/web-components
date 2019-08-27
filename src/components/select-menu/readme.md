@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property         | Attribute         | Description                                                                  | Type                  | Default     |
-| ---------------- | ----------------- | ---------------------------------------------------------------------------- | --------------------- | ----------- |
-| `label`          | `label`           | The label displayed on the select.                                           | `string`              | `''`        |
-| `options`        | --                | An array of the different options displayed in the select menu.              | `string[]`            | `[]`        |
-| `selectedOption` | `selected-option` | The index of the currently selected option or undefined if nothing selected. | `number \| undefined` | `undefined` |
+| Property         | Attribute         | Description                                                                  | Type                                  | Default     |
+| ---------------- | ----------------- | ---------------------------------------------------------------------------- | ------------------------------------- | ----------- |
+| `label`          | `label`           | The label displayed on the select.                                           | `string`                              | `''`        |
+| `options`        | --                | An array of the different options displayed in the select menu.              | `{ label: string; value: number; }[]` | `[]`        |
+| `selectedOption` | `selected-option` | The index of the currently selected option or undefined if nothing selected. | `number \| undefined`                 | `undefined` |
 
 
 ## Events

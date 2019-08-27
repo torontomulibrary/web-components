@@ -18,10 +18,10 @@
 </head>
 <body class='demo-content'>
   <script>
-    const elements = {
-      1: {id: 1, iconSrc: undefined, name: "Region 1", points: "1140 890 940 770 456 1019", enabled: true},
-      2: {id: 2, icon: undefined, name: "Text Label", points: "200 400", enabled: true},
-    }
+    let elements = [
+      {id: 1, iconSrc: undefined, name: "Region 1", points: "1140 890 940 770 456 1019", enabled: true},
+      {id: 2, icon: undefined, name: "Text Label", points: "200 400", enabled: true},
+    ];
 
     let lastId = 2;
 
@@ -34,7 +34,7 @@
       let log = document.querySelector('rl-text-log');
       let activeEl = undefined;
 
-      editor.elements = { ...elements };
+      editor.elements = [ ...elements ];
 
       addRg.addEventListener('click', () => {
         editor.addRegion();
@@ -52,6 +52,7 @@
       });
 
       editor.addEventListener('elementSelected', evt => {
+        activeEl = evt.detail;
         log.log(`Element clicked: ${evt.detail.name}`);
         delBtn.disabled = false;
       });
@@ -67,28 +68,26 @@
       });
 
       editor.addEventListener('elementDeselected', evt => {
-        delBtn.disabled = true;
-      });
-
-      editor.addEventListener('elementDeleted', evt => {
-        delete elements[evt.detail.id];
-        editor.elements = { ...elements };
-        editor.setActiveElement();
-        log.log(`Element deleted: ${evt.detail.name}`);
+        activeEl = undefined;
         delBtn.disabled = true;
       });
 
       delBtn.addEventListener('click', () => {
-        editor.deleteRegion();
+        elements = elements.filter(el => el.id !== activeEl.id);
+        editor.elements = [ ...elements ];
+        editor.setActiveElement();
+        log.log(`Element deleted: ${activeEl.name}`);
+        activeEl = undefined;
+        delBtn.disabled = true;
       });
 
       editor.addEventListener('elementCreated', evt => {
         let el = evt.detail;
         const newId = ++lastId;
         el.id = newId;
-        el.name = `New Marker ${el.id}`;
-        elements[newId] = el; 
-        editor.elements = { ...elements };
+        el.name = `New Element ${el.id}`;
+        elements.push(el);
+        editor.elements = [ ...elements ];
         editor.setActiveElement();
         log.log(`Element added, new path: ${evt.detail}`);
         cancel.disabled = true;

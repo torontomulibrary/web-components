@@ -25,7 +25,7 @@ export class MapElement {
   /**
    * The unique identifier for this `MapElement`.
    */
-  set id(newId: number) { this._id = newId; }
+  set id(newCode: number) { this._id = newCode; }
   get id() { return this._id; }
 
   _name = '';

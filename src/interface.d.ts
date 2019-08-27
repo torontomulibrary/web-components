@@ -63,7 +63,7 @@ export interface iMapElementOptions {
 
 export interface iMapMarkerOptions extends iMapElementOptions {
   anchor?: Coordinate;
-  available?: boolean;
+  alt?: boolean;
   icon?: MarkerIcon | MarkerSymbol;
   label?: string;
   opacity?: number;
