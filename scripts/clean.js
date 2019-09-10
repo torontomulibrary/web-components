@@ -4,6 +4,7 @@ const path = require('path');
 const cleanDirs = [
   'dist',
   'css',
+  'www',
   '.stencil'
 ];
 
