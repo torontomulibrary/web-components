@@ -22,6 +22,7 @@ export interface MapElementDetail extends DescribedObject {
 export interface MapElementDetailMap extends NumberMap<MapElementDetail> {}
 
 export interface MapElementData extends DescribedObject {
+  available?: boolean;
   details?: MapElementDetailMap;
   clickable?: boolean;
   floor: string;

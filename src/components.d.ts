@@ -8,11 +8,11 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   MapElementData,
+  MapElementDataMap,
   MapElementDetail,
   MapElementDetailMap,
   MapElementDetailType,
 } from './interface';
-
 
 export namespace Components {
   interface RlDetailDialog {
@@ -61,9 +61,13 @@ export namespace Components {
   }
   interface RlMap {
     /**
-    * The ID of the currently active element. An array of the elements that will be displayed on the Map.
+    * The ID of the currently active element.
     */
-    'elements': MapElementData[];
+    'activeElementId'?: number;
+    /**
+    * An array of the elements that will be displayed on the Map.
+    */
+    'elements': MapElementDataMap;
     /**
     * The image displayed on the Map.
     */
@@ -132,6 +136,7 @@ export namespace Components {
   interface RlTextLog {
     /**
     * Add a new line to the log.
+    * @param str A string to write to the log
     */
     'log': (str?: string) => Promise<void>;
   }
@@ -220,9 +225,13 @@ declare namespace LocalJSX {
   }
   interface RlMap extends JSXBase.HTMLAttributes<HTMLRlMapElement> {
     /**
-    * The ID of the currently active element. An array of the elements that will be displayed on the Map.
+    * The ID of the currently active element.
     */
-    'elements': MapElementData[];
+    'activeElementId'?: number;
+    /**
+    * An array of the elements that will be displayed on the Map.
+    */
+    'elements': MapElementDataMap;
     /**
     * The image displayed on the Map.
     */
@@ -242,7 +251,7 @@ declare namespace LocalJSX {
     /**
     * An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter.
     */
-    'onElementSelected'?: (event: CustomEvent<SVGElement>) => void;
+    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
   }
   interface RlSelectMenu extends JSXBase.HTMLAttributes<HTMLRlSelectMenuElement> {
     /**

@@ -4,7 +4,7 @@ import { MarkerIcon } from '../classes/marker-icon';
 import { MarkerSymbol, MarkerSymbolPaths } from '../classes/marker-symbol';
 import {
   MapElementData,
-  // MapElementDataMap,
+  MapElementDataMap,
   Size,
 } from '../interface';
 import { Coordinate } from '../utils/coordinate';
@@ -49,16 +49,17 @@ export function computeLimits(iSize: Size, sSize: Size, scale: number) {
  * known DOM structure of the SVG.
  * @param el The Element to use to find the ID.
  */
-export function getTarget(el: EventTarget | null): SVGElement | undefined {
-  if (el instanceof SVGElement && el.classList.contains('rl-clickable')) {
+export function getTargetId(el: EventTarget | null): number | undefined {
+  if (el instanceof SVGImageElement || el instanceof SVGRectElement ||
+      el instanceof SVGPathElement || el instanceof SVGTextElement) {
     // The image (symbol), bounding rectangle, text or path were clicked.
     // In these cases, the parent (group) tag holds the ID.
-    return el;
+    el = el.parentElement;
   }
 
-  // if (el instanceof SVGGElement) {
-  //   return Number(el.id);
-  // }
+  if (el instanceof SVGGElement) {
+    return Number(el.id);
+  }
 
   return undefined;
 }
@@ -70,8 +71,8 @@ export function getTarget(el: EventTarget | null): SVGElement | undefined {
  * @param elements An array of `MapElement`s to process
  * @param scale The scale applied to the `ParsedElement`
  */
-export function parseElements(elements: MapElementData[], scale = 1): (MapMarker | MapPolygon)[] {
-  return elements.map(el => {
+export function parseElements(elements: MapElementDataMap, scale = 1): (MapMarker | MapPolygon)[] {
+  return Object.values(elements).map((el: MapElementData) => {
     const decoded = decodeCoordinates(el.points, true);
 
     let icon;
@@ -90,7 +91,7 @@ export function parseElements(elements: MapElementData[], scale = 1): (MapMarker
       newEl.icon = icon;
       newEl.position = decoded.points;
       newEl.label = (typeof el.icon !== 'string' && typeof el.symbol !== 'string') ? el.name : '';
-      newEl.alt = el.alt || false;
+      newEl.available = el.available || false;
     } else {
       newEl = new MapPolygon();
       newEl.points = decoded.points;
