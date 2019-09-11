@@ -247,10 +247,7 @@ rules:
   property-blacklist:
     - background-position
     - direction
-    - right
-    - left
     - float
-    - transform-origin
 
   string-quotes:
     - double
