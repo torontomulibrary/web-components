@@ -36,21 +36,21 @@
 </head>
 <body class='demo-content'>
   <script>
-    // const elements = [
-    //   {id: 1, icon: undefined, name: "Region 1", points: "1140 890 940 770 456 1019", enabled: true},
-    //   {id: 2, icon: "demo/64.png", name: "Point 1", points: "200 300", enabled: true},
-    //   {id: 3, icon: "demo/64.png", name: "Point 2", points: "200 400", enabled: true},
-    //   {id: 4, icon: undefined, name: "Computer 1", points: "500 500", enabled: true, symbol: "computer", available: false, clickable: false},
-    //   {id: 5, icon: undefined, name: "Computer 2", points: "600 500", enabled: true, symbol: "computer", available: true, clickable: true},
-    //   {id: 6, icon: undefined, name: "Text Label", points: "700 600", enabled: true, available: true, clickable: false},
-    // ];
+    const elements = [
+      {id: 1, icon: undefined, name: "Region 1", points: "1140 890 940 770 456 1019", enabled: true},
+      {id: 2, icon: "demo/64.png", name: "Point 1", points: "200 300", enabled: true},
+      {id: 3, icon: "demo/64.png", name: "Point 2", points: "200 400", enabled: true},
+      {id: 4, icon: undefined, name: "Computer 1", points: "500 500", enabled: true, symbol: "computer", available: false, clickable: false},
+      {id: 5, icon: undefined, name: "Computer 2", points: "600 500", enabled: true, symbol: "computer", available: true, clickable: true},
+      {id: 6, icon: undefined, name: "Text Label", points: "700 600", enabled: true, available: true, clickable: false},
+    ];
 
     window.onload = async () => {
       let map = document.querySelector('rl-map');
       let log = document.querySelector('rl-text-log');
       let activeEl = undefined;
 
-      // map.elements = [ ...elements ];
+      map.elements = [ ...elements ];
 
       map.addEventListener('elementSelected', evt => {
         log.log(`Element selected: ${evt.detail.id}`);
@@ -72,12 +72,12 @@
         btn2.disabled = false;
       });
 
-      // let btn2 = document.querySelector('#btn-alt');
-      // btn2.addEventListener('click', evt => {
-      //   map.mapImage = "demo/3840x2160_alt.png"
-      //   btn1.disabled = false;
-      //   btn2.disabled = true;
-      // });
+      let btn2 = document.querySelector('#btn-alt');
+      btn2.addEventListener('click', evt => {
+        map.mapImage = "demo/3840x2160_alt.png"
+        btn1.disabled = false;
+        btn2.disabled = true;
+      });
     }
   </script>
 
