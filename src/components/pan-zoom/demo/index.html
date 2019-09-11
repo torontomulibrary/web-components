@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>rl-pan-zoom Example || Ryerson Library Web Components</title>
+  <script type="module" src="/dist/rlwc/rlwc.esm.js"></script>
+  <style>
+    body { margin: 0 }
+  h2 {
+    margin-left: 32px;
+    margin-bottom: 8px;
+  }
+    .demo {
+      display: inline-block;
+      margin: 16px;
+      user-select: none;
+    }
+
+    rl-pan-zoom {
+      width: 500px;
+      height: 500px;
+      background-color: grey;
+      overflow: hidden;
+    }
+
+    .content {
+      background-color: red;
+      width: 100px;
+      height: 100px;
+      position: absolute;
+    }
+  </style>
+</head>
+<body class='demo-content'>
+  <div class="demo">
+    <h2>Normal</h2>
+    <rl-pan-zoom>
+      <div slot="pz-content" class="content"></div>
+    </rl-pan-zoom>
+  </div>
+
+  <div class="demo">
+    <h2>Unbound</h2>
+    <rl-pan-zoom unbound>
+      <div slot="pz-content" class="content"></div>
+    </rl-pan-zoom>
+  </div>
+
+  <div class="demo">
+    <h2>Unbound and scale-to-fill</h2>
+    <rl-pan-zoom unbound scaled>
+      <div slot="pz-content" class="content"></div>
+    </rl-pan-zoom>
+  </div>
+</div>
+</body>
+</html>

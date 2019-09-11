@@ -6,12 +6,12 @@ export class Coordinate {
   /**
    * The X-value
    */
-  x: number;
+  x = 0;
 
   /**
    * The Y-value
    */
-  y: number;
+  y = 0;
 
   /**
    * Create a new Coordinate.
@@ -253,7 +253,23 @@ export class Coordinate {
    * @param a The first `Coordinate`.
    * @param b The second `Coordinate`.
    */
-  static midpoint(a: Coordinate, b: Coordinate) {
+  static midpoint = (a: Coordinate, b: Coordinate) => {
     return new Coordinate((a.x + b.x) / 2, (a.y + b.y) / 2);
+  }
+
+  /**
+   * Create a `Coordinate` from the top-left corner of a `DOMRect` or
+   * `ClientRect` object.
+   */
+  static fromRectTopLeft = (rect: DOMRect | ClientRect) => {
+    return new Coordinate(rect.left, rect.top);
+  }
+
+  /**
+   * Create a `Coordinate` from a `MouseEvent` or `Touch` object (both having
+   * the `x` and `y` values from `pageX` and `pageY` respectively).
+   */
+  static fromEvent = (evt: MouseEvent | Touch) => {
+    return new Coordinate(evt.pageX, evt.pageY);
   }
 }

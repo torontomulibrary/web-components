@@ -81,6 +81,24 @@ export namespace Components {
     */
     'minScale': number;
   }
+  interface RlPanZoom {
+    /**
+    * The largest factor allowed when scaling the content.  Calculated as a factor of the original size.  So a value of `3` would limit the scale to three times the original size.
+    */
+    'maxScale': number;
+    /**
+    * The smallest scale factor allowed when scaling the content.
+    */
+    'minScale': number;
+    /**
+    * If true, the content of the `PanZoom` will be scaled so that it fills the parent container initially.
+    */
+    'scaled': boolean;
+    /**
+    * If true, the content of the `PanZoom` will be able to move beyond the bounds of the parent container.
+    */
+    'unbound': boolean;
+  }
   interface RlSelectMenu {
     /**
     * The label displayed on the select.
@@ -163,6 +181,12 @@ declare global {
     new (): HTMLRlMapElement;
   };
 
+  interface HTMLRlPanZoomElement extends Components.RlPanZoom, HTMLStencilElement {}
+  var HTMLRlPanZoomElement: {
+    prototype: HTMLRlPanZoomElement;
+    new (): HTMLRlPanZoomElement;
+  };
+
   interface HTMLRlSelectMenuElement extends Components.RlSelectMenu, HTMLStencilElement {}
   var HTMLRlSelectMenuElement: {
     prototype: HTMLRlSelectMenuElement;
@@ -184,6 +208,7 @@ declare global {
     'rl-detail-dialog': HTMLRlDetailDialogElement;
     'rl-detail-dialog-item': HTMLRlDetailDialogItemElement;
     'rl-map': HTMLRlMapElement;
+    'rl-pan-zoom': HTMLRlPanZoomElement;
     'rl-select-menu': HTMLRlSelectMenuElement;
     'rl-text-field': HTMLRlTextFieldElement;
     'rl-text-log': HTMLRlTextLogElement;
@@ -253,6 +278,24 @@ declare namespace LocalJSX {
     */
     'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
   }
+  interface RlPanZoom extends JSXBase.HTMLAttributes<HTMLRlPanZoomElement> {
+    /**
+    * The largest factor allowed when scaling the content.  Calculated as a factor of the original size.  So a value of `3` would limit the scale to three times the original size.
+    */
+    'maxScale'?: number;
+    /**
+    * The smallest scale factor allowed when scaling the content.
+    */
+    'minScale'?: number;
+    /**
+    * If true, the content of the `PanZoom` will be scaled so that it fills the parent container initially.
+    */
+    'scaled'?: boolean;
+    /**
+    * If true, the content of the `PanZoom` will be able to move beyond the bounds of the parent container.
+    */
+    'unbound'?: boolean;
+  }
   interface RlSelectMenu extends JSXBase.HTMLAttributes<HTMLRlSelectMenuElement> {
     /**
     * The label displayed on the select.
@@ -319,6 +362,7 @@ declare namespace LocalJSX {
     'rl-detail-dialog': RlDetailDialog;
     'rl-detail-dialog-item': RlDetailDialogItem;
     'rl-map': RlMap;
+    'rl-pan-zoom': RlPanZoom;
     'rl-select-menu': RlSelectMenu;
     'rl-text-field': RlTextField;
     'rl-text-log': RlTextLog;

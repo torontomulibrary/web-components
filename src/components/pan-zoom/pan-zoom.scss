@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+.rl-pan-zoom__transform {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  transform-origin: 0 0;
+}
