@@ -1,6 +1,7 @@
 # rl-map-editor
 
-
+> This component is now *deprecated* and will no longer be developed and will
+eventually be removed from the library in a future version.
 
 <!-- Auto Generated Below -->
 
