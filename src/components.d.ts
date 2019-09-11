@@ -81,6 +81,41 @@ export namespace Components {
     */
     'minScale': number;
   }
+  interface RlMapEditor {
+    /**
+    * Add a new `MapPoint` element to the map.  Calling this method starts the process.  The user must then click somewhere on the map to add the point.
+    */
+    'addPoint': () => Promise<void>;
+    /**
+    * Add a new `MapRegion` to the map. Calling this method starts the process. The user must then click numerous times on the map to add points.  Only when clicking again on the original point is the region added.
+    */
+    'addRegion': () => Promise<void>;
+    /**
+    * Cancels the current action and returns the map to its default state, ready for futher action.
+    */
+    'cancelAction': () => Promise<void>;
+    /**
+    * An array of the elements that will be displayed on the Map.
+    */
+    'elements': MapElementData[];
+    /**
+    * The image displayed on the Map.
+    */
+    'mapImage'?: string;
+    /**
+    * The maximum scale factor.
+    */
+    'maxScale': number;
+    /**
+    * The minimum scale factor.
+    */
+    'minScale': number;
+    /**
+    * Sets the element with the specified ID to active.
+    * @param id The ID of the element to set as active.
+    */
+    'setActiveElement': (id: number) => Promise<void>;
+  }
   interface RlPanZoom {
     /**
     * The largest factor allowed when scaling the content.  Calculated as a factor of the original size.  So a value of `3` would limit the scale to three times the original size.
@@ -181,6 +216,12 @@ declare global {
     new (): HTMLRlMapElement;
   };
 
+  interface HTMLRlMapEditorElement extends Components.RlMapEditor, HTMLStencilElement {}
+  var HTMLRlMapEditorElement: {
+    prototype: HTMLRlMapEditorElement;
+    new (): HTMLRlMapEditorElement;
+  };
+
   interface HTMLRlPanZoomElement extends Components.RlPanZoom, HTMLStencilElement {}
   var HTMLRlPanZoomElement: {
     prototype: HTMLRlPanZoomElement;
@@ -208,6 +249,7 @@ declare global {
     'rl-detail-dialog': HTMLRlDetailDialogElement;
     'rl-detail-dialog-item': HTMLRlDetailDialogItemElement;
     'rl-map': HTMLRlMapElement;
+    'rl-map-editor': HTMLRlMapEditorElement;
     'rl-pan-zoom': HTMLRlPanZoomElement;
     'rl-select-menu': HTMLRlSelectMenuElement;
     'rl-text-field': HTMLRlTextFieldElement;
@@ -277,6 +319,48 @@ declare namespace LocalJSX {
     * An event fired when the user selects a `MapElement`. The clicked element will be passed as the event parameter.
     */
     'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
+  }
+  interface RlMapEditor extends JSXBase.HTMLAttributes<HTMLRlMapEditorElement> {
+    /**
+    * An array of the elements that will be displayed on the Map.
+    */
+    'elements'?: MapElementData[];
+    /**
+    * The image displayed on the Map.
+    */
+    'mapImage'?: string;
+    /**
+    * The maximum scale factor.
+    */
+    'maxScale'?: number;
+    /**
+    * The minimum scale factor.
+    */
+    'minScale'?: number;
+    /**
+    * An event fired when a new `MapElement` is created. The event details contains the `MapElement` that was created.
+    */
+    'onElementCreated'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when one of the `MapElements` on this map is deleted.
+    */
+    'onElementDeleted'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when the user deselects a `MapElement`.
+    */
+    'onElementDeselected'?: (event: CustomEvent<any>) => void;
+    /**
+    * An event fired when one of the `MapElement`s on the map is double clicked.
+    */
+    'onElementDoubleClicked'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when the user selects a MapElement. The clicked element will be passed as the event parameter.
+    */
+    'onElementSelected'?: (event: CustomEvent<MapElementData>) => void;
+    /**
+    * An event fired when a `MapElement` is updated (moved or changes shape). The event details contains the `MapElement` that was updated.
+    */
+    'onElementUpdated'?: (event: CustomEvent<MapElementData>) => void;
   }
   interface RlPanZoom extends JSXBase.HTMLAttributes<HTMLRlPanZoomElement> {
     /**
@@ -362,6 +446,7 @@ declare namespace LocalJSX {
     'rl-detail-dialog': RlDetailDialog;
     'rl-detail-dialog-item': RlDetailDialogItem;
     'rl-map': RlMap;
+    'rl-map-editor': RlMapEditor;
     'rl-pan-zoom': RlPanZoom;
     'rl-select-menu': RlSelectMenu;
     'rl-text-field': RlTextField;
