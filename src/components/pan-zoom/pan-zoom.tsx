@@ -23,7 +23,7 @@ export class PanZoom {
   /**
    * Bounds used to define how far the content can be moved.
    */
-  private _limits = new DOMRect(0, 0, 1, 1);
+  private _limits = { x: 0, y: 0, width: 1, height: 1 } as DOMRect;
 
   /**
    * The initial scale of the content.  Any further scaling is done relative
@@ -293,7 +293,7 @@ export class PanZoom {
   render() {
     const style = {
       'transform':
-        `translate3d(${this._d.x}px, ${this._d.y}px, 0) scale(${this._scale})`,
+        `translate3d(${this._d.x}px, ${this._d.y}px, 0px) scale(${this._scale})`,
     };
 
     return (
