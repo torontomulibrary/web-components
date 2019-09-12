@@ -33,6 +33,11 @@ export class PanZoom {
   private _initScale = 1;
 
   /**
+   * The initial size of the content to be moved.
+   */
+  private _initSize?: { height: number, width: number};
+
+  /**
    * The element used to perform the transform.
    */
   private _tEl?: HTMLElement;
@@ -91,7 +96,7 @@ export class PanZoom {
     this.root.addEventListener('mousedown', this.onPointerDown);
     this.root.addEventListener('touchstart', this.onPointerDown,
         { passive: true });
-    this.root.addEventListener('wheel', this.onWheel, { passive: true });
+    this.root.addEventListener('wheel', this.onWheel);
 
     if (this.scaled) {
       this._setInitialScale();
@@ -107,7 +112,6 @@ export class PanZoom {
    * component.
    */
   onPointerLeave = (event: MouseEvent | TouchEvent): void => {
-    console.log('mouseleave');
     this._active--;
     this._lastPoints.pop();
 
@@ -158,7 +162,7 @@ export class PanZoom {
     const avgLastPoint = this._lastPoints.reduce(Coordinate.midpoint);
     const bounds = this._tEl.getBoundingClientRect();
 
-    this._d = Coordinate.difference(avgPoint, avgLastPoint);
+    this._d.translate(Coordinate.difference(avgPoint, avgLastPoint));
 
     if (!this.unbound) {
       this._d.limit(this._limits);
@@ -179,10 +183,10 @@ export class PanZoom {
       }
 
       this._scale *= scaleDiff;
-      this._d = Coordinate.difference(
+      this._d.translate(Coordinate.difference(
         Coordinate.fromRectTopLeft(bounds),
         avgPoint
-      ).scale(scaleDiff - 1);
+      )).scale(scaleDiff - 1);
 
       if (!this.unbound) {
         this._d.limit(this._limits);
@@ -235,14 +239,12 @@ export class PanZoom {
     }
 
     this._scale *= scaleDiff;
-    this._computeLimits();
-    const offset = new Coordinate(
-      bounds.left - event.pageX,
-      bounds.top - event.pageY
-      ).scale(scaleDiff - 1);
-    this._d.translate(offset);
+    this._d.translate(Coordinate.difference(
+      Coordinate.fromRectTopLeft(bounds), Coordinate.fromEvent(event)
+      ).scale(scaleDiff - 1));
 
     if (!this.unbound) {
+      this._computeLimits();
       this._d.limit(this._limits);
     }
   }
@@ -254,11 +256,18 @@ export class PanZoom {
     const content = this.root.querySelector('[slot=pz-content]');
 
     if (content !== null) {
-      const contentBounds = content.getBoundingClientRect();
+      if (this._initSize === undefined) {
+        const contentBounds = content.getBoundingClientRect();
+        this._initSize = {
+          height: contentBounds.height,
+          width: contentBounds.width,
+        };
+      }
+
       const parentBounds = this.root.getBoundingClientRect();
 
-      const contentW = contentBounds.width * this._scale;
-      const contentH = contentBounds.height * this._scale;
+      const contentW = this._initSize.width * this._scale;
+      const contentH = this._initSize.height * this._scale;
 
       this._limits = new DOMRect(
         Math.min(0, parentBounds.width - contentW),   // left / x
