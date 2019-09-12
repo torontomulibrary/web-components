@@ -26,8 +26,8 @@
     }
 
     .content {
-      background-color: red;
-      width: 100px;
+      background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);;
+      width: 300px;
       height: 100px;
       position: absolute;
     }
@@ -51,6 +51,13 @@
   <div class="demo">
     <h2>Unbound and scale-to-fill</h2>
     <rl-pan-zoom unbound scaled>
+      <div slot="pz-content" class="content"></div>
+    </rl-pan-zoom>
+  </div>
+
+  <div class="demo">
+    <h2>Bound and scale-to-fill</h2>
+    <rl-pan-zoom scaled>
       <div slot="pz-content" class="content"></div>
     </rl-pan-zoom>
   </div>
