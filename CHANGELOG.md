@@ -1,3 +1,29 @@
+# [0.6.0](https://github.com/ryersonlibrary/web-components/compare/v0.5.0...v0.6.0) (2019-09-12)
+
+
+### Bug Fixes
+
+* 🐛 activeElementId now changes selected element on map ([caddc1a](https://github.com/ryersonlibrary/web-components/commit/caddc1a))
+* 🐛 add missing dependency for svg-floorplan ([a0982cb](https://github.com/ryersonlibrary/web-components/commit/a0982cb))
+* 🐛 map-editor properly deprecated ([4617607](https://github.com/ryersonlibrary/web-components/commit/4617607))
+* 🐛 remove some prohibited styles ([a2f7bdb](https://github.com/ryersonlibrary/web-components/commit/a2f7bdb))
+* 🐛 revert map demo changes ([9d0e3dc](https://github.com/ryersonlibrary/web-components/commit/9d0e3dc))
+
+
+### Features
+
+* 🎸 add PanZoom component ([c5f305b](https://github.com/ryersonlibrary/web-components/commit/c5f305b))
+* 🎸 add svg-floorplan component ([6ad3e99](https://github.com/ryersonlibrary/web-components/commit/6ad3e99))
+
+
+### BREAKING CHANGES
+
+* 🧨 removed public methods `clearActiveElement` and `setActiveElement`.
+Instead, provide the ID of the element to select with the property
+`activeElementId`.
+
+
+
 # [0.5.0](https://github.com/ryersonlibrary/web-components/compare/v0.4.4...v0.5.0) (2019-06-03)
 
 
