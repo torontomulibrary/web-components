@@ -1,3 +1,18 @@
+## [0.6.1](https://github.com/ryersonlibrary/web-components/compare/v0.6.0...v0.6.1) (2019-09-12)
+
+
+### Bug Fixes
+
+* 🐛 limits work correctly for PanZoom ([5902a58](https://github.com/ryersonlibrary/web-components/commit/5902a58))
+* 🐛 pan-zoom fills parent container and is abs positioned ([c474b34](https://github.com/ryersonlibrary/web-components/commit/c474b34))
+
+
+### Features
+
+* 🎸 improve PanZoom demo ([3d35660](https://github.com/ryersonlibrary/web-components/commit/3d35660))
+
+
+
 # [0.6.0](https://github.com/ryersonlibrary/web-components/compare/v0.5.0...v0.6.0) (2019-09-12)
 
 
