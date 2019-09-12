@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>rl-svg-floorplan Example || Ryerson Library Web Components</title>
+  <script type="module" src="/dist/rlwc/rlwc.esm.js"></script>
+  <style>
+    body { margin: 0 }
+
+    rl-svg-floorplan {
+      width: 1000px;
+      height: 500px;
+    }
+
+    .demo {
+      display: block;
+      position: relative;
+      width: 1000px;
+      height: 500px;
+    }
+  </style>
+</head>
+<body class="demo-content">
+  <script>
+    window.onload = () => {
+      let fp = document.querySelector('rl-svg-floorplan');
+      let log = document.querySelector('rl-text-log');
+
+      fp.addEventListener('rlElementClicked', evt => {
+        log.log(`Element selected: ${evt.detail}`);
+        fp.activeId = evt.detail;
+      });
+
+      fp.addEventListener('rlElementCleared', evt => {
+        log.log(`Element cleared.`);
+        fp.activeId = '';
+      });
+    }
+  </script>
+
+  <div class="demo">
+    <rl-svg-floorplan width="100%" height="100%" vb-width="4800" vb-height="2400" use-viewbox></rl-svg-floorplan>
+  </div>
+  <rl-text-log></rl-text-log>
+</body>
+</html>

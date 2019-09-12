@@ -13,6 +13,9 @@ import {
   MapElementDetailMap,
   MapElementDetailType,
 } from './interface';
+import {
+  FunctionalComponent,
+} from '@stencil/core';
 
 export namespace Components {
   interface RlDetailDialog {
@@ -148,6 +151,36 @@ export namespace Components {
     */
     'selectedOption'?: number;
   }
+  interface RlSvgFloorplan {
+    /**
+    * The ID of the active (selected) element.
+    */
+    'activeId': string;
+    /**
+    * The height for the SVG element.
+    */
+    'height': string;
+    /**
+    * The contents of the SVG, as a `FunctionalComponent`.
+    */
+    'svg'?: FunctionalComponent;
+    /**
+    * Setting to true adds a viewbox attribute to the SVG element.
+    */
+    'useViewbox': boolean;
+    /**
+    * The width of the SVG viewbox.
+    */
+    'vbHeight': string;
+    /**
+    * The height of the SVG viewbox.
+    */
+    'vbWidth': string;
+    /**
+    * The width for the SVG element.
+    */
+    'width': string;
+  }
   interface RlTextField {
     /**
     * A flag indicating if the text field is disabled and does not allow user input.
@@ -234,6 +267,12 @@ declare global {
     new (): HTMLRlSelectMenuElement;
   };
 
+  interface HTMLRlSvgFloorplanElement extends Components.RlSvgFloorplan, HTMLStencilElement {}
+  var HTMLRlSvgFloorplanElement: {
+    prototype: HTMLRlSvgFloorplanElement;
+    new (): HTMLRlSvgFloorplanElement;
+  };
+
   interface HTMLRlTextFieldElement extends Components.RlTextField, HTMLStencilElement {}
   var HTMLRlTextFieldElement: {
     prototype: HTMLRlTextFieldElement;
@@ -252,6 +291,7 @@ declare global {
     'rl-map-editor': HTMLRlMapEditorElement;
     'rl-pan-zoom': HTMLRlPanZoomElement;
     'rl-select-menu': HTMLRlSelectMenuElement;
+    'rl-svg-floorplan': HTMLRlSvgFloorplanElement;
     'rl-text-field': HTMLRlTextFieldElement;
     'rl-text-log': HTMLRlTextLogElement;
   }
@@ -398,6 +438,44 @@ declare namespace LocalJSX {
     */
     'selectedOption'?: number;
   }
+  interface RlSvgFloorplan extends JSXBase.HTMLAttributes<HTMLRlSvgFloorplanElement> {
+    /**
+    * The ID of the active (selected) element.
+    */
+    'activeId'?: string;
+    /**
+    * The height for the SVG element.
+    */
+    'height'?: string;
+    /**
+    * Event fired when the SVG is clicked but no specific element is targeted, that is, the active element is cleared.
+    */
+    'onRlElementCleared'?: (event: CustomEvent<void>) => void;
+    /**
+    * Event fired when an element in the SVG is clicked (if it is clickable). Details will be the `id` of the clicked element.
+    */
+    'onRlElementClicked'?: (event: CustomEvent<string>) => void;
+    /**
+    * The contents of the SVG, as a `FunctionalComponent`.
+    */
+    'svg'?: FunctionalComponent;
+    /**
+    * Setting to true adds a viewbox attribute to the SVG element.
+    */
+    'useViewbox'?: boolean;
+    /**
+    * The width of the SVG viewbox.
+    */
+    'vbHeight'?: string;
+    /**
+    * The height of the SVG viewbox.
+    */
+    'vbWidth'?: string;
+    /**
+    * The width for the SVG element.
+    */
+    'width'?: string;
+  }
   interface RlTextField extends JSXBase.HTMLAttributes<HTMLRlTextFieldElement> {
     /**
     * A flag indicating if the text field is disabled and does not allow user input.
@@ -449,6 +527,7 @@ declare namespace LocalJSX {
     'rl-map-editor': RlMapEditor;
     'rl-pan-zoom': RlPanZoom;
     'rl-select-menu': RlSelectMenu;
+    'rl-svg-floorplan': RlSvgFloorplan;
     'rl-text-field': RlTextField;
     'rl-text-log': RlTextLog;
   }
