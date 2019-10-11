@@ -129,6 +129,10 @@ export namespace Components {
     */
     'minScale': number;
     /**
+    * Force a recalculation of the size of the content.
+    */
+    'resize': () => Promise<void>;
+    /**
     * If true, the content of the `PanZoom` will be scaled so that it fills the parent container initially.
     */
     'scaled': boolean;

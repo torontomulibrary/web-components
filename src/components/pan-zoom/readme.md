@@ -15,6 +15,19 @@
 | `unbound`  | `unbound`   | If true, the content of the `PanZoom` will be able to move beyond the bounds of the parent container.                                                                         | `boolean` | `false` |
 
 
+## Methods
+
+### `resize() => Promise<void>`
+
+Force a recalculation of the size of the content.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

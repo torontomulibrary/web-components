@@ -1,4 +1,4 @@
-import { Component, Element, Host, Prop, State, h } from '@stencil/core';
+import { Component, Element, Host, Method, Prop, State, h, } from '@stencil/core';
 
 import { Coordinate } from '../../utils/coordinate';
 
@@ -21,9 +21,9 @@ function getPoints(event: TouchEvent | MouseEvent): Coordinate[] {
 })
 export class PanZoom {
   /**
-   * Bounds used to define how far the content can be moved.
+   * The number of active pointer events.
    */
-  private _limits = { x: 0, y: 0, width: 1, height: 1 } as DOMRect;
+  private _active = 0;
 
   /**
    * The initial scale of the content.  Any further scaling is done relative
@@ -38,6 +38,11 @@ export class PanZoom {
   private _initSize?: { height: number, width: number};
 
   /**
+   * Bounds used to define how far the content can be moved.
+   */
+  private _limits = { x: 0, y: 0, width: 1, height: 1 } as DOMRect;
+
+  /**
    * The element used to perform the transform.
    */
   private _tEl?: HTMLElement;
@@ -50,19 +55,14 @@ export class PanZoom {
   @State() _d = new Coordinate(0, 0);
 
   /**
-   * The scale factor applied to the object.
-   */
-  @State() _scale = 1;
-
-  /**
-   * The number of active pointer events.
-   */
-  @State() _active = 0;
-
-  /**
    * All the old pointer event locations.
    */
   @State() _lastPoints: Coordinate[] = [];
+
+  /**
+   * The scale factor applied to the object.
+   */
+  @State() _scale = 1;
 
   /**
    * If true, the content of the `PanZoom` will be scaled so that it fills
@@ -250,10 +250,19 @@ export class PanZoom {
   }
 
   /**
+   * Force a recalculation of the size of the content.
+   */
+  @Method()
+  async resize() {
+    this._computeLimits();
+    this._d = this._d.clone().limit(this._limits);
+  }
+
+  /**
    * Computes the limits used to constrain how far the content can move.
    */
   private _computeLimits() {
-    const content = this.root.querySelector('[slot=pz-content]');
+    const content = this.root.querySelector('[slot]');
 
     if (content !== null) {
       if (this._initSize === undefined) {
