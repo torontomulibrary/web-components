@@ -1,3 +1,22 @@
+# [0.7.0](https://github.com/ryersonlibrary/web-components/compare/v0.6.1...v0.7.0) (2019-10-11)
+
+
+### Bug Fixes
+
+* 🐛 make pan-zoom.active private to avoid extra updates ([630ef62](https://github.com/ryersonlibrary/web-components/commit/630ef62))
+
+
+### Features
+
+* 🎸 remove `svg-floorplan` component ([f756c5b](https://github.com/ryersonlibrary/web-components/commit/f756c5b))
+
+
+### BREAKING CHANGES
+
+* 🧨 `svg-floorplan` component no longer exists
+
+
+
 ## [0.6.1](https://github.com/ryersonlibrary/web-components/compare/v0.6.0...v0.6.1) (2019-09-12)
 
 
