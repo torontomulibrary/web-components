@@ -104,7 +104,7 @@ export class MapPolygon extends MapElement {
       <g id={`${this._id}`} class={classname}>
         <path
           d={this._path}
-          tabIndex={0}
+          tabindex={0}
           aria-label={this._name}
           role="button"
         />

@@ -125,7 +125,7 @@ export class MapMarker extends MapElement {
     };
 
     return (
-      <g id={`${this._id}`} class={gClass} tabIndex={this._clickable ? 0 : undefined} transform={gTrans}>
+      <g id={`${this._id}`} class={gClass} tabindex={this._clickable ? 0 : undefined} transform={gTrans}>
         {contents}
       </g>
     );
