@@ -1,9 +1,7 @@
-import {
-  LIB02Flat,
-} from './floors';
 import { Component, Event, EventEmitter, Host, Prop, h } from '@stencil/core';
 
 import { SVGContent } from './content';
+import { SVGEl } from '../../interface';
 import { SVGDefs } from './defs';
 
 @Component({
@@ -12,10 +10,6 @@ import { SVGDefs } from './defs';
   shadow: true,
 })
 export class Floorplan {
-  private data = {
-    'LIB-02' : LIB02Flat,
-  };
-
   /**
    * Event fired when an element in the SVG is clicked (if it is clickable).
    * Details will be the `id` of the clicked element.
@@ -37,7 +31,7 @@ export class Floorplan {
   /**
    * The ID of the floorplan to display.
    */
-  @Prop() floorId?: string;
+  // @Prop() floorId?: string;
 
   /**
    * The height for the SVG element.
@@ -48,6 +42,11 @@ export class Floorplan {
    * The width for the SVG element.
    */
   @Prop() width = '4800';
+
+  /**
+   * An SVG encoded into a JSON object that will be displayed.
+   */
+  @Prop() svgData?: SVGEl[];
 
   /**
    * Setting to use the orthographic variant of the floorplan.
@@ -70,21 +69,23 @@ export class Floorplan {
   @Prop() vbWidth = this.width;
 
   render() {
-    const elements = this.floorId !== undefined && this.data[this.floorId] !== undefined
-        ? this.data[this.floorId]
+    const elements = this.svgData !== undefined
+        ? this.svgData
         : [{
-            'elem': 'text',
-            'prefix': '',
-            'local': 'text',
-            'attrs': {
-              'style': 'font-size: 72px; text-anchor: middle;',
-              'x': '50%',
-              'y': '50%',
+            elem: 'text',
+            prefix: '',
+            local: 'text',
+            attrs: {
+              style: 'font-size: 72px; text-anchor: middle;',
+              x: '50%',
+              y: '50%',
+              id: 'placeholder-svg'
             },
-            'content': [{
-              'text': 'No SVG Specified',
+            content: [{
+              text: 'No SVG Specified',
             }],
-          }];
+            type: 'text'
+          } as SVGEl];
 
     return (
       <Host class="rl-floorplan">

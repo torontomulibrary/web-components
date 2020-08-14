@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { MapElementData, MapElementDataMap, MapElementDetail, MapElementDetailMap, MapElementDetailType } from "./interface";
+import { MapElementData, MapElementDataMap, MapElementDetail, MapElementDetailMap, MapElementDetailType, SVGEl } from "./interface";
 export namespace Components {
     interface RlDetailDialog {
         /**
@@ -57,13 +57,13 @@ export namespace Components {
          */
         "extraElementData"?: {[key: string]: { [key: string]: string }};
         /**
-          * The ID of the floorplan to display.
-         */
-        "floorId"?: string;
-        /**
           * The height for the SVG element.
          */
         "height": string;
+        /**
+          * An SVG encoded into a JSON object that will be displayed.
+         */
+        "svgData"?: SVGEl[];
         /**
           * Setting to use the orthographic variant of the floorplan.
          */
@@ -330,10 +330,6 @@ declare namespace LocalJSX {
          */
         "extraElementData"?: {[key: string]: { [key: string]: string }};
         /**
-          * The ID of the floorplan to display.
-         */
-        "floorId"?: string;
-        /**
           * The height for the SVG element.
          */
         "height"?: string;
@@ -345,6 +341,10 @@ declare namespace LocalJSX {
           * Event fired when an element in the SVG is clicked (if it is clickable). Details will be the `id` of the clicked element.
          */
         "onRlElementClicked"?: (event: CustomEvent<string>) => void;
+        /**
+          * An SVG encoded into a JSON object that will be displayed.
+         */
+        "svgData"?: SVGEl[];
         /**
           * Setting to use the orthographic variant of the floorplan.
          */

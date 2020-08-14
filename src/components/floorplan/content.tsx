@@ -1,18 +1,19 @@
 import { FunctionalComponent, h } from '@stencil/core';
 import merge from 'lodash/merge';
+import { SVGEl } from '../../interface';
 
-interface SVGEl {
-  elem: string;
-  prefix: string;
-  local: string;
-  attrs: {
-    [key: string]: string | { [key: string]: string },
-    id: string,
-    style: string | { [key: string]: string },
-  };
-  content?: Array<{ text: string }>;
-  type: string;
-}
+// export interface SVGEl {
+//   elem: string;
+//   prefix: string;
+//   local: string;
+//   attrs: {
+//     [key: string]: string | { [key: string]: string },
+//     id: string,
+//     style: string | { [key: string]: string },
+//   };
+//   content?: Array<{ text: string }>;
+//   type: string;
+// }
 
 interface SVGContentProps {
   elements: SVGEl[];

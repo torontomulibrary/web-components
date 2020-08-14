@@ -3,7 +3,7 @@ import { MapMarker } from './classes/map-marker';
 import { MapPolygon } from './classes/map-polygon';
 import { MarkerIcon } from './classes/marker-icon';
 import { MarkerSymbol } from './classes/marker-symbol';
-import { RLMap } from './components/map/map';
+// import { RLMap } from './components/map/map';
 
 export * from './utils/coordinate';
 export * from './components/map-editor/map-editor-interface';
@@ -73,4 +73,17 @@ export interface iMapMarkerOptions extends iMapElementOptions {
 
 export interface iMapPolygonOptions extends iMapElementOptions {
   points: string;
+}
+
+export interface SVGEl {
+  elem: string;
+  prefix: string;
+  local: string;
+  attrs: {
+    [key: string]: string | { [key: string]: string },
+    id: string,
+    style: string | { [key: string]: string },
+  };
+  content?: Array<{ text: string }>;
+  type: string;
 }

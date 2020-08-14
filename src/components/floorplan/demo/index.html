@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>rl-floorplan Example || Ryerson Library Web Components</title>
+  <script type="module" src="/dist/rlwc/rlwc.esm.js"></script>
+  <!-- <script type="module" src="https://unpkg.com/@ryersonlibrary/floorplans@1.0.1/dist/index.js"></script> -->
+
+  <style>
+    body { margin: 0 }
+
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body class='demo-content'>
+  <script type="module">
+    import * as Floorplans from 'https://unpkg.com/@ryersonlibrary/floorplans@1.0.1/dist/index.js';
+
+    window.onload = async () => {
+      let fp = document.querySelector('rl-floorplan');
+      fp.svgData = Floorplans.LIB02Flat;
+    }
+  </script>
+  <rl-floorplan></rl-floorplan>
+</div>
+</body>
+</html>

@@ -10,8 +10,8 @@
 | Property           | Attribute     | Description                                                                                     | Type                                                          | Default       |
 | ------------------ | ------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------- |
 | `extraElementData` | --            | An array of extra attributes that will be assigned to each element based on the element's code. | `undefined \| { [key: string]: { [key: string]: string; }; }` | `undefined`   |
-| `floorId`          | `floor-id`    | The ID of the floorplan to display.                                                             | `string \| undefined`                                         | `undefined`   |
 | `height`           | `height`      | The height for the SVG element.                                                                 | `string`                                                      | `'2400'`      |
+| `svgData`          | --            | An SVG encoded into a JSON object that will be displayed.                                       | `SVGEl[] \| undefined`                                        | `undefined`   |
 | `useOrtho`         | `use-ortho`   | Setting to use the orthographic variant of the floorplan.                                       | `boolean`                                                     | `false`       |
 | `useViewbox`       | `use-viewbox` | Setting to true adds a viewbox attribute to the SVG element.                                    | `boolean`                                                     | `false`       |
 | `vbHeight`         | `vb-height`   | The width of the SVG viewbox.                                                                   | `string`                                                      | `this.height` |
