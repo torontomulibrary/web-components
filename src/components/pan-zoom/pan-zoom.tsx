@@ -222,6 +222,8 @@ export class PanZoom {
       return;
     }
 
+    event.preventDefault();
+
     const bounds = this._tEl.getBoundingClientRect();
     let delta = -event.deltaY;
 
