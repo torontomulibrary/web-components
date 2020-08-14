@@ -25,9 +25,7 @@
     "target": "es2017"
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "stencil.config.ts"
+    "src"
   ],
   "exclude": [
     "node_modules"
