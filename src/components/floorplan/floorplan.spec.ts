@@ -8,9 +8,8 @@ describe('rl-floorplan', () => {
       html: '<rl-floorplan></rl-floorplan>',
     });
     expect(root).toEqualHtml(`
-    <rl-floorplan class="rl-floorplan hydrated">
+    <rl-floorplan class="rl-floorplan">
       <mock:shadow-root>
-        <style sty-id="sc-rl-floorplan">:host{display:block;position:absolute;user-select:none}:host(:not([show-computers])) .rl-svg__g--computers{visibility:hidden}:host(:not([show-shelves])) .rl-svg__g--shelves{visibility:hidden}:host[show-computers] .rl-svg__g--computers,:host[show-shelves] .rl-svg__g-shelves{visibility:visible}.rl-floorplan__svg{background-color:rgba(0, 0, 0, 0.3);overflow:hidden}.rl-svg__el--selected{fill:var(--mdc-theme-secondary, #ffdc00)}</style>
         <svg width="4800" height="2400" class="rl-floorplan__svg">
           <defs id="defs">
             <symbol id="SYM_Elevator">
