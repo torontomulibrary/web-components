@@ -1,3 +1,18 @@
+# [0.8.0](https://github.com/ryersonlibrary/web-components/compare/v0.7.0...v0.8.0) (2020-08-14)
+
+
+### Bug Fixes
+
+* 🐛 map-marker and map-polygon jsx typo fixed ([9e8bed4](https://github.com/ryersonlibrary/web-components/commit/9e8bed44a633efc24eed84ec903e26fcc7ffa802))
+* 🐛 typo in floorplan.spec test ([8b545bf](https://github.com/ryersonlibrary/web-components/commit/8b545bf75fc62d03cec2869b7c2fdae927b44c6d))
+
+
+### Features
+
+* 🎸 Add floorplan component ([21d28c6](https://github.com/ryersonlibrary/web-components/commit/21d28c636543a431e4dce8ee9c3d88371242b18f))
+
+
+
 # [0.7.0](https://github.com/ryersonlibrary/web-components/compare/v0.6.1...v0.7.0) (2019-10-11)
 
 
