@@ -36,4 +36,4 @@ describe('rl-floorplan', () => {
 //       </rl-floorplan>
 //     `);
 //   });
-// });
+});
