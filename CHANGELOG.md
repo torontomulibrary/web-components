@@ -1,3 +1,12 @@
+## [0.8.1](https://github.com/ryersonlibrary/web-components/compare/v0.8.0...v0.8.1) (2020-08-15)
+
+
+### Bug Fixes
+
+* 🐛 `pan-zoom` now stops scroll propagation ([cde199e](https://github.com/ryersonlibrary/web-components/commit/cde199edd1a05c6c977e5078fca6adbb7c547462))
+
+
+
 # [0.8.0](https://github.com/ryersonlibrary/web-components/compare/v0.7.0...v0.8.0) (2020-08-14)
 
 
