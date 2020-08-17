@@ -1,3 +1,12 @@
+## [0.8.2](https://github.com/ryersonlibrary/web-components/compare/v0.8.1...v0.8.2) (2020-08-17)
+
+
+### Bug Fixes
+
+* 🐛 prevent extra attributes overriding xlinkHref ([3fe69ed](https://github.com/ryersonlibrary/web-components/commit/3fe69edb67cd8869b604fcba51cbfe7fe8b0fc43))
+
+
+
 ## [0.8.1](https://github.com/ryersonlibrary/web-components/compare/v0.8.0...v0.8.1) (2020-08-15)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@ryersonlibrary/web-components",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Common web-components for Ryerson University Library.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
