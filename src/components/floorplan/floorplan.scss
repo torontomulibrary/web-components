@@ -13,7 +13,7 @@
 }
 
 :host[show-computers] .rl-svg__g--computers,
-:host[show-shelves] .rl-svg__g-shelves {
+:host[show-shelves] .rl-svg__g--shelves {
   visibility: visible;
 }
 
@@ -24,4 +24,16 @@
 
 .rl-svg__el--selected {
   fill: var(--mdc-theme-secondary, #ffdc00);
+}
+
+.rl-svg__el--red {
+  fill: var(--rl-colour-red, #a01b1b);
+}
+
+.rl-svg__el--blue {
+  fill: var(--rl-colour-blue, #1857df);
+}
+
+.rl-svg__el--green {
+  fill: var(--rl-color-green, #12ad0c);
 }
