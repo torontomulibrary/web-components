@@ -43,15 +43,17 @@ export const SVGContent: FunctionalComponent<SVGContentProps> = ({ elements, ext
     // attributes are referenced, then any modifications are lasting.
     let attrs = { ...el.attrs };
 
-    if (attrs.hasOwnProperty('xlink:href')) {
-      attrs['xlinkHref'] = attrs['xlink:href'];
-      delete attrs['xlink:href'];
-    }
-
     if (extra !== undefined && extra.hasOwnProperty(el.attrs.id)) {
       // Attrs can have properties that are objects (class and style), so do
       // a deep merge when adding any extra attributes.
       attrs = merge(attrs, extra[el.attrs.id]);
+    }
+
+    if (attrs.hasOwnProperty('xlink:href')) {
+      // extra can add an xlinkHref to the attributes, so perform this
+      // conversion after extras are merged in.
+      attrs['xlinkHref'] = attrs['xlink:href'];
+      delete attrs['xlink:href'];
     }
 
     if (attrs.hasOwnProperty('style') && typeof attrs.style === 'string') {
